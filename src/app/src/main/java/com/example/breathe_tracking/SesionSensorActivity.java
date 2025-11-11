@@ -3,8 +3,11 @@ package com.example.breathe_tracking;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,11 +21,8 @@ import java.util.Locale;
 public class SesionSensorActivity extends AppCompatActivity {
 
     // Vistas de la UI
-    private TextView ubicacionTextView;
-    private TextView ultimaConexionTextView;
-    private TextView bateriaTextView;
-    private TextView ozonoTextView; // Nuevo
-    private TextView temperaturaTextView; // Nuevo
+    private TextView ubicacionTextView, ultimaConexionTextView, bateriaTextView, ozonoTextView, temperaturaTextView, co2TextView, alertaTextView, alertaHoraTextView, estadoTextView;
+    private ProgressBar co2ProgressBar, ozonoProgressBar, temperaturaProgressBar;
 
     private TrackingDataHolder dataHolder;
 
@@ -45,8 +45,15 @@ public class SesionSensorActivity extends AppCompatActivity {
         ubicacionTextView = findViewById(R.id.textView_ubicacion);
         ultimaConexionTextView = findViewById(R.id.textView_ultimaConexion);
         bateriaTextView = findViewById(R.id.textView_bateria);
-        ozonoTextView = findViewById(R.id.textView_ozono); // Enlazamos
-        temperaturaTextView = findViewById(R.id.textView_temperatura); // Enlazamos
+        ozonoTextView = findViewById(R.id.textView_ozono);
+        temperaturaTextView = findViewById(R.id.textView_temperatura);
+        co2TextView = findViewById(R.id.textView_co2);
+        co2ProgressBar = findViewById(R.id.progressBar_co2);
+        ozonoProgressBar = findViewById(R.id.progressBar_ozono);
+        temperaturaProgressBar = findViewById(R.id.progressBar_temperatura);
+        alertaTextView = findViewById(R.id.textView_alerta);
+        alertaHoraTextView = findViewById(R.id.textView_alertaHora);
+        estadoTextView = findViewById(R.id.textView_estado);
         ImageView cerrarSesionButton = findViewById(R.id.imageView_cerrarSesion);
 
         dataHolder = TrackingDataHolder.getInstance();
@@ -74,20 +81,58 @@ public class SesionSensorActivity extends AppCompatActivity {
         dataHolder.bateriaData.observe(this, bateria -> {
             if (bateria != null) {
                 bateriaTextView.setText(String.format(Locale.getDefault(), "%d%%", bateria));
+                if (bateria <= 15) {
+                    bateriaTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_red));
+                } else {
+                    bateriaTextView.setTextColor(Color.BLACK);
+                }
             }
         });
 
-        // ¡NUEVO! Observador para el Ozono
         dataHolder.ozonoData.observe(this, ozono -> {
             if (ozono != null) {
                 ozonoTextView.setText(String.format(Locale.getDefault(), "%.3f ppm", ozono));
+                ozonoProgressBar.setProgress((int) (ozono * 1000));
+                Drawable d = (ozono < 0.6) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_green) : (ozono < 0.9) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_orange) : ContextCompat.getDrawable(this, R.drawable.progress_bar_red);
+                ozonoProgressBar.setProgressDrawable(d);
             }
         });
 
-        // ¡NUEVO! Observador para la Temperatura
         dataHolder.temperaturaData.observe(this, temperatura -> {
             if (temperatura != null) {
                 temperaturaTextView.setText(String.format(Locale.getDefault(), "%.1f ºC", temperatura));
+                temperaturaProgressBar.setProgress(temperatura.intValue());
+                Drawable d = (temperatura <= 20) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_blue) : (temperatura <= 28) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_orange) : ContextCompat.getDrawable(this, R.drawable.progress_bar_red);
+                temperaturaProgressBar.setProgressDrawable(d);
+            }
+        });
+
+        dataHolder.co2Data.observe(this, co2 -> {
+            if (co2 != null) {
+                co2TextView.setText(String.format(Locale.getDefault(), "%d ppm", co2));
+                co2ProgressBar.setProgress(co2);
+                Drawable d = (co2 < 800) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_green) : (co2 < 1200) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_orange) : ContextCompat.getDrawable(this, R.drawable.progress_bar_red);
+                co2ProgressBar.setProgressDrawable(d);
+            }
+        });
+        
+        dataHolder.alertData.observe(this, alert -> {
+            if(alert != null) alertaTextView.setText(alert);
+        });
+        
+        dataHolder.alertTimeData.observe(this, time -> {
+            if(time != null) alertaHoraTextView.setText(time);
+        });
+
+        // ¡Observador para el estado de conexión FINALMENTE CONECTADO!
+        dataHolder.estadoData.observe(this, estado -> {
+            if (estado != null) {
+                estadoTextView.setText(estado);
+                if ("Conectado".equals(estado)) {
+                    estadoTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_green));
+                } else {
+                    estadoTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_red));
+                }
             }
         });
     }

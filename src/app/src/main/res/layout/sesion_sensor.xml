@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="Última conex. 14:32"
+        android:text="Última conex. --:--"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="@+id/view4"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="C/ Joan Ramon Jimenez, Gandia"
+        android:text="Buscando..."
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -116,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text=" a 20km del punto de origen"
+        android:text="--"
         app:layout_constraintBottom_toBottomOf="@+id/textView8"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
@@ -139,7 +139,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="20%"
+        android:text="--%"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
         app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -170,22 +170,26 @@
     <ProgressBar
         android:id="@+id/progressBar_ozono"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView15"
+        android:max="1500"
+        android:progressDrawable="@drawable/progress_bar_green"
+        android:scaleY="0.6"
+        app:layout_constraintBottom_toBottomOf="@+id/textView14"
         app:layout_constraintEnd_toEndOf="@+id/progressBar_temperatura"
         app:layout_constraintStart_toStartOf="@+id/progressBar_temperatura"
-        app:layout_constraintTop_toTopOf="@+id/textView15" />
+        app:layout_constraintTop_toTopOf="@+id/textView14" />
 
     <TextView
         android:id="@+id/textView_ozono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0.3 ppm"
+        android:layout_marginEnd="16dp"
+        android:text="-.--- ppm"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar_temperatura"
-        app:layout_constraintEnd_toEndOf="@+id/textView_co2"
-        app:layout_constraintTop_toTopOf="@+id/progressBar_temperatura" />
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar_ozono"
+        app:layout_constraintEnd_toEndOf="@+id/view5"
+        app:layout_constraintTop_toTopOf="@+id/progressBar_ozono" />
 
     <TextView
         android:id="@+id/textView15"
@@ -200,22 +204,27 @@
     <ProgressBar
         android:id="@+id/progressBar_temperatura"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView14"
-        app:layout_constraintEnd_toEndOf="@+id/progressBar"
-        app:layout_constraintStart_toStartOf="@+id/progressBar"
-        app:layout_constraintTop_toTopOf="@+id/textView14" />
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:max="50"
+        android:progressDrawable="@drawable/progress_bar_blue"
+        android:scaleY="0.6"
+        app:layout_constraintBottom_toBottomOf="@+id/Co2"
+        app:layout_constraintEnd_toStartOf="@+id/textView_ozono"
+        app:layout_constraintStart_toEndOf="@+id/Co2"
+        app:layout_constraintTop_toTopOf="@+id/Co2" />
 
     <TextView
         android:id="@+id/textView_temperatura"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="24 ºC"
+        android:text="--.- ºC"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar_temperatura"
         app:layout_constraintEnd_toEndOf="@+id/textView_ozono"
-        app:layout_constraintTop_toTopOf="@+id/progressBar" />
+        app:layout_constraintTop_toTopOf="@+id/progressBar_temperatura" />
 
     <TextView
         android:id="@+id/textView19"
@@ -231,11 +240,13 @@
 
     <TextView
         android:id="@+id/textView_alerta"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Temperatura alta en C/calle"
+        android:layout_marginEnd="8dp"
+        android:text="--"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/textView_alertaHora"
         app:layout_constraintStart_toStartOf="@+id/textView19"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -244,7 +255,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:text="14:32"
+        android:text="--:--"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView_alerta"
         app:layout_constraintEnd_toEndOf="@+id/view6"
@@ -266,6 +277,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="Temperatura"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/textView14"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -273,24 +285,23 @@
         android:id="@+id/textView_co2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="100ppm"
+        android:text="---- ppm"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBar_ozono"
-        app:layout_constraintEnd_toEndOf="@+id/view5"
-        app:layout_constraintTop_toTopOf="@+id/progressBar_ozono"
-        app:layout_constraintVertical_bias="0.375" />
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar_co2"
+        app:layout_constraintEnd_toEndOf="@+id/textView_ozono"
+        app:layout_constraintTop_toTopOf="@+id/progressBar_co2" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progressBar_co2"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/Co2"
-        app:layout_constraintEnd_toStartOf="@+id/textView_co2"
-        app:layout_constraintStart_toEndOf="@+id/Co2"
-        app:layout_constraintTop_toTopOf="@+id/Co2" />
+        android:max="1500"
+        android:progressDrawable="@drawable/progress_bar_green"
+        android:scaleY="0.6"
+        app:layout_constraintBottom_toBottomOf="@+id/textView15"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar_ozono"
+        app:layout_constraintStart_toStartOf="@+id/progressBar_ozono"
+        app:layout_constraintTop_toTopOf="@+id/textView15" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

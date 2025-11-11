@@ -13,6 +13,12 @@
     <color name="bright_blue">#3846ff</color>
     <color name="vibrant_blue">#0047ff</color>
 
+    //Colores para barras de progreso
+    <color name="progress_green">#4CAF50</color>
+    <color name="progress_orange">#FF9800</color>
+    <color name="progress_red">#F44336</color>
+    <color name="progress_purple">#9C27B0</color> <!-- Nuevo color -->
+
 
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
