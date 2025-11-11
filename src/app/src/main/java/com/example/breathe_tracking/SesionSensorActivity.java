@@ -1,10 +1,7 @@
 package com.example.breathe_tracking;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -15,23 +12,27 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import java.util.Locale;
 
 public class SesionSensorActivity extends AppCompatActivity {
 
+    // Vistas de la UI
     private TextView ubicacionTextView;
     private TextView ultimaConexionTextView;
-    private BroadcastReceiver locationReceiver;
-    private BroadcastReceiver timeReceiver;
+    private TextView bateriaTextView;
+    private TextView ozonoTextView; // Nuevo
+    private TextView temperaturaTextView; // Nuevo
 
-    // Launcher para pedir permisos de ubicación
+    private TrackingDataHolder dataHolder;
+
     private final ActivityResultLauncher<String[]> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(),
             permissions -> {
                 if (Boolean.TRUE.equals(permissions.get(Manifest.permission.ACCESS_FINE_LOCATION))) {
                     startTrackingService();
                 } else {
-                    Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Permisos necesarios denegados", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -40,11 +41,16 @@ public class SesionSensorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sesion_sensor);
 
+        // Inicialización de Vistas
         ubicacionTextView = findViewById(R.id.textView_ubicacion);
         ultimaConexionTextView = findViewById(R.id.textView_ultimaConexion);
+        bateriaTextView = findViewById(R.id.textView_bateria);
+        ozonoTextView = findViewById(R.id.textView_ozono); // Enlazamos
+        temperaturaTextView = findViewById(R.id.textView_temperatura); // Enlazamos
         ImageView cerrarSesionButton = findViewById(R.id.imageView_cerrarSesion);
 
-        // Botón para cerrar sesión y detener el servicio
+        dataHolder = TrackingDataHolder.getInstance();
+
         cerrarSesionButton.setOnClickListener(v -> {
             stopTrackingService();
             Intent intent = new Intent(SesionSensorActivity.this, MainActivity.class);
@@ -52,37 +58,59 @@ public class SesionSensorActivity extends AppCompatActivity {
             finish();
         });
 
-        // Receiver para la ubicación
-        locationReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String address = intent.getStringExtra(SensorTrackingService.EXTRA_LOCATION_ADDRESS);
-                if (address != null) {
-                    ubicacionTextView.setText(address);
-                }
-            }
-        };
-
-        // Receiver para la hora
-        timeReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String time = intent.getStringExtra(SensorTrackingService.EXTRA_TIME);
-                if (time != null) {
-                    ultimaConexionTextView.setText(time);
-                }
-            }
-        };
-
-        // Comprobar permisos e iniciar el servicio
+        setupObservers();
         checkPermissionsAndStartService();
     }
 
+    private void setupObservers() {
+        dataHolder.locationData.observe(this, address -> {
+            if (address != null) ubicacionTextView.setText(address);
+        });
+
+        dataHolder.timeData.observe(this, time -> {
+            if (time != null) ultimaConexionTextView.setText(time);
+        });
+
+        dataHolder.bateriaData.observe(this, bateria -> {
+            if (bateria != null) {
+                bateriaTextView.setText(String.format(Locale.getDefault(), "%d%%", bateria));
+            }
+        });
+
+        // ¡NUEVO! Observador para el Ozono
+        dataHolder.ozonoData.observe(this, ozono -> {
+            if (ozono != null) {
+                ozonoTextView.setText(String.format(Locale.getDefault(), "%.3f ppm", ozono));
+            }
+        });
+
+        // ¡NUEVO! Observador para la Temperatura
+        dataHolder.temperaturaData.observe(this, temperatura -> {
+            if (temperatura != null) {
+                temperaturaTextView.setText(String.format(Locale.getDefault(), "%.1f ºC", temperatura));
+            }
+        });
+    }
+
     private void checkPermissionsAndStartService() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissionLauncher.launch(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION});
-        } else {
+        String[] permissionsToRequest = {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT
+        };
+
+        boolean allPermissionsGranted = true;
+        for (String permission : permissionsToRequest) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
+            }
+        }
+
+        if (allPermissionsGranted) {
             startTrackingService();
+        } else {
+            requestPermissionLauncher.launch(permissionsToRequest);
         }
     }
 
@@ -94,21 +122,5 @@ public class SesionSensorActivity extends AppCompatActivity {
     private void stopTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
         stopService(serviceIntent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Registrar los receivers para empezar a escuchar los datos del servicio
-        LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver, new IntentFilter(SensorTrackingService.ACTION_LOCATION_UPDATE));
-        LocalBroadcastManager.getInstance(this).registerReceiver(timeReceiver, new IntentFilter(SensorTrackingService.ACTION_TIME_UPDATE));
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Dejar de escuchar cuando la actividad no está en primer plano para no hacer trabajo innecesario
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationReceiver);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(timeReceiver);
     }
 }
