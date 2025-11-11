@@ -40,6 +40,7 @@ Permite al trabajador verificar el estado operativo del sensor de un vistazo.
 Confirma que el sensor está recolectando datos ambientales en tiempo real. El trabajador puede ver los valores actuales de:
 * Ozono
 * Temperatura
+* CO2
 
 #### C. Alertas e Incidencias
 Este es el canal de comunicación clave. Si el sensor detecta una anomalía (ej. "Temperaturas altas en C/Acacias"), la alerta se muestra en la app del trabajador.
