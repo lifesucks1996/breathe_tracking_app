@@ -7,5 +7,45 @@
     </style>
 
     <style name="Theme.Breathe_tracking" parent="Base.Theme.Breathe_tracking" />
+
+
+    <style name="MiEstiloDePopup" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+
+        <item name="shapeAppearanceOverlay">@style/MiPopupShapeAppearance</item>
+
+        <item name="android:windowTitleStyle">@style/MiPopupTitulo</item>
+        <item name="android:textAppearanceMedium">@style/MiPopupMensaje</item>
+
+        <item name="materialButtonStyle">@style/MiEstiloBotonPopup</item>
+    </style>
+
+
+    <style name="MiPopupShapeAppearance" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="MiPopupTitulo" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="MiPopupMensaje" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MiEstiloBotonPopup" parent="Widget.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/poppins_bold</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+
+        <item name="cornerRadius">50dp</item>
+
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
 </resources>
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -60,7 +61,6 @@ public class SensorTrackingService extends Service {
     private ScanCallback callbackDelEscaneo;
     private TrackingDataHolder dataHolder;
 
-    // Lógica de Vigilancia (Watchdog)
     private Handler watchdogHandler = new Handler(Looper.getMainLooper());
     private Runnable watchdogRunnable;
     private static final long WATCHDOG_DELAY_MS = 3 * 60 * 1000; // 3 minutos
@@ -90,19 +90,29 @@ public class SensorTrackingService extends Service {
         watchdogRunnable = () -> {
             Log.e(ETIQUETA_LOG, "¡No se han recibido datos del sensor en 3 minutos!");
             dataHolder.estadoData.postValue("Desconectado");
-            dataHolder.alertData.postValue("El sensor esta desconectado o no esta funcionando correctamente");
-            dataHolder.alertTimeData.postValue(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+            String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+            String message = currentTime + " - El sensor no está funcionando correctamente";
+            dataHolder.incidenciaData.postValue(message);
             sendAlertNotification("Alerta de Conexión", "El sensor no está funcionando correctamente", CONNECTION_ALERT_ID);
         };
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle("Breathe Traking").setContentText("Monitorizando el sensor en tiempo real.").setSmallIcon(R.drawable.logo_app).build();
+        Intent notificationIntent = new Intent(this, SesionSensorActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("Breathe Traking")
+                .setContentText("Monitorizando el sensor en tiempo real.")
+                .setSmallIcon(R.drawable.logo_app)
+                .setContentIntent(pendingIntent) 
+                .build();
+
         startForeground(NOTIFICATION_ID, notification);
         startLocationUpdates();
         inicializarYComenzarEscaneoBeacon();
-        // Iniciamos el vigilante aquí para que empiece la cuenta atrás desde el principio
+        // ¡INICIAMOS EL VIGILANTE AQUÍ!
         resetWatchdog(); 
         return START_STICKY;
     }
@@ -186,23 +196,27 @@ public class SensorTrackingService extends Service {
     
     private void checkAlerts(int co2, float ozono, float temperatura, int bateria) {
         List<String> currentAlertMessages = new ArrayList<>();
+        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
 
         if (co2 >= 1200) {
-            currentAlertMessages.add("Nivel de CO2 elevado: " + co2 + " ppm");
+            String message = currentTime + " - Nivel de CO2 elevado: " + co2 + " ppm";
+            currentAlertMessages.add(message);
             sendAlertNotification("Alerta de CO2", "Nivel de CO2 elevado: " + co2 + " ppm", CO2_ALERT_ID);
         } else {
             cancelAlertNotification(CO2_ALERT_ID);
         }
 
         if (ozono >= 0.9) {
-            currentAlertMessages.add("Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono));
+            String message = currentTime + " - Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono);
+            currentAlertMessages.add(message);
             sendAlertNotification("Alerta de Ozono", "Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono), OZONE_ALERT_ID);
         } else {
             cancelAlertNotification(OZONE_ALERT_ID);
         }
 
         if (temperatura > 35) {
-            currentAlertMessages.add("Temperatura elevada: " + String.format(Locale.getDefault(), "%.1f ºC", temperatura));
+            String message = currentTime + " - Temperatura elevada: " + String.format(Locale.getDefault(), "%.1f ºC", temperatura);
+            currentAlertMessages.add(message);
             sendAlertNotification("Alerta de Temperatura", "Temperatura elevada: " + String.format(Locale.getDefault(), "%.1f ºC", temperatura), TEMP_ALERT_ID);
         } else {
             cancelAlertNotification(TEMP_ALERT_ID);
@@ -214,23 +228,32 @@ public class SensorTrackingService extends Service {
             cancelAlertNotification(BATTERY_ALERT_ID);
         }
         
-        if (dataHolder.estadoData.getValue() == null || "Conectado".equals(dataHolder.estadoData.getValue())) {
-             if (currentAlertMessages.isEmpty()) {
-                dataHolder.alertData.postValue("Sin alertas");
-                dataHolder.alertTimeData.postValue("");
-            } else {
-                StringJoiner joiner = new StringJoiner("\n"); 
-                for (String msg : currentAlertMessages) {
-                    joiner.add(msg);
-                }
-                dataHolder.alertData.postValue(joiner.toString());
-                dataHolder.alertTimeData.postValue(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date()));
+        if (currentAlertMessages.isEmpty()) {
+            dataHolder.alertData.postValue("Sin alertas");
+        } else {
+            StringJoiner joiner = new StringJoiner("\n\n");
+            for (String msg : currentAlertMessages) {
+                joiner.add(msg);
             }
+            dataHolder.alertData.postValue(joiner.toString());
+        }
+
+        if ("Conectado".equals(dataHolder.estadoData.getValue())) {
+            dataHolder.incidenciaData.postValue("Sin incidencias");
         }
     }
     
     private void sendAlertNotification(String title, String message, int notificationId) {
-        Notification n = new NotificationCompat.Builder(this, ALERT_CHANNEL_ID).setContentTitle(title).setContentText(message).setSmallIcon(R.drawable.logo_app).setPriority(NotificationCompat.PRIORITY_HIGH).build();
+        Intent notificationIntent = new Intent(this, SesionSensorActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        Notification n = new NotificationCompat.Builder(this, ALERT_CHANNEL_ID)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.logo_app)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .build();
         getSystemService(NotificationManager.class).notify(notificationId, n);
     }
 
@@ -277,8 +300,7 @@ public class SensorTrackingService extends Service {
         if (!"Conectado".equals(dataHolder.estadoData.getValue())) {
             Log.i(ETIQUETA_LOG, "¡Reconexión con el sensor detectada!");
             cancelAlertNotification(CONNECTION_ALERT_ID);
-            dataHolder.alertData.postValue("Sin alertas");
-            dataHolder.alertTimeData.postValue("");
+            dataHolder.incidenciaData.postValue("Sin incidencias");
         }
         dataHolder.estadoData.postValue("Conectado");
     }

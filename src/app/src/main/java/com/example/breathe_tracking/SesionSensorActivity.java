@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import java.util.Locale;
 public class SesionSensorActivity extends AppCompatActivity {
 
     // Vistas de la UI
-    private TextView ubicacionTextView, ultimaConexionTextView, bateriaTextView, ozonoTextView, temperaturaTextView, co2TextView, alertaTextView, alertaHoraTextView, estadoTextView;
+    private TextView ubicacionTextView, ultimaConexionTextView, bateriaTextView, ozonoTextView, temperaturaTextView, co2TextView, alertaTextView, incidenciaTextView, estadoTextView, reportarIncidenciaTextView, nombreSensorTextView;
     private ProgressBar co2ProgressBar, ozonoProgressBar, temperaturaProgressBar;
 
     private TrackingDataHolder dataHolder;
@@ -52,8 +53,10 @@ public class SesionSensorActivity extends AppCompatActivity {
         ozonoProgressBar = findViewById(R.id.progressBar_ozono);
         temperaturaProgressBar = findViewById(R.id.progressBar_temperatura);
         alertaTextView = findViewById(R.id.textView_alerta);
-        alertaHoraTextView = findViewById(R.id.textView_alertaHora);
+        incidenciaTextView = findViewById(R.id.textView_incidencia);
         estadoTextView = findViewById(R.id.textView_estado);
+        reportarIncidenciaTextView = findViewById(R.id.textView_reportar_incidencia);
+        nombreSensorTextView = findViewById(R.id.textView_nombreSensor);
         ImageView cerrarSesionButton = findViewById(R.id.imageView_cerrarSesion);
 
         dataHolder = TrackingDataHolder.getInstance();
@@ -63,6 +66,23 @@ public class SesionSensorActivity extends AppCompatActivity {
             Intent intent = new Intent(SesionSensorActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
+        });
+
+        // Listener para el botón de reportar incidencia
+        reportarIncidenciaTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(SesionSensorActivity.this, EnvioIncidenciasActivity.class);
+            
+            // Recopilamos los datos necesarios de los TextViews
+            String sensorName = nombreSensorTextView.getText().toString();
+            String ubicacion = ubicacionTextView.getText().toString();
+            String ultimaConexion = ultimaConexionTextView.getText().toString();
+
+            // Los añadimos al Intent para que la otra actividad los pueda leer
+            intent.putExtra("SENSOR_NAME", sensorName);
+            intent.putExtra("UBICACION", ubicacion);
+            intent.putExtra("ULTIMA_CONEXION", ultimaConexion);
+            
+            startActivity(intent);
         });
 
         setupObservers();
@@ -119,19 +139,20 @@ public class SesionSensorActivity extends AppCompatActivity {
         dataHolder.alertData.observe(this, alert -> {
             if(alert != null) alertaTextView.setText(alert);
         });
-        
-        dataHolder.alertTimeData.observe(this, time -> {
-            if(time != null) alertaHoraTextView.setText(time);
+
+        dataHolder.incidenciaData.observe(this, incidencia -> {
+            if(incidencia != null) incidenciaTextView.setText(incidencia);
         });
 
-        // ¡Observador para el estado de conexión FINALMENTE CONECTADO!
         dataHolder.estadoData.observe(this, estado -> {
             if (estado != null) {
                 estadoTextView.setText(estado);
                 if ("Conectado".equals(estado)) {
                     estadoTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_green));
+                    reportarIncidenciaTextView.setVisibility(View.GONE);
                 } else {
                     estadoTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_red));
+                    reportarIncidenciaTextView.setVisibility(View.VISIBLE);
                 }
             }
         });

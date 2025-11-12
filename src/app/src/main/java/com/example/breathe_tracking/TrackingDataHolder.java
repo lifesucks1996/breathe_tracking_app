@@ -13,12 +13,12 @@ public class TrackingDataHolder {
     public final MutableLiveData<Integer> co2Data = new MutableLiveData<>();
     public final MutableLiveData<Integer> bateriaData = new MutableLiveData<>();
 
-    // LiveData para Alertas
-    public final MutableLiveData<String> alertData = new MutableLiveData<>();
-    public final MutableLiveData<String> alertTimeData = new MutableLiveData<>();
-
-    // --- ¡NUEVO! LiveData para el estado de conexión ---
+    // LiveData para el estado de conexión
     public final MutableLiveData<String> estadoData = new MutableLiveData<>();
+
+    // LiveData para Alertas e Incidencias
+    public final MutableLiveData<String> alertData = new MutableLiveData<>();
+    public final MutableLiveData<String> incidenciaData = new MutableLiveData<>();
 
     private TrackingDataHolder() {}
 
