@@ -19,14 +19,23 @@ import androidx.core.content.ContextCompat;
 
 import java.util.Locale;
 
+/**
+ * Clase que representa la actividad de la sesión del sensor.
+ * - Muestra datos, incidencias, alertas, ubicacion, bateria baja
+ */
+
 public class SesionSensorActivity extends AppCompatActivity {
 
-    // Vistas de la UI
+    // Variables de los datos a mostrar que recibimos del sensor o que calculamos
     private TextView ubicacionTextView, ultimaConexionTextView, bateriaTextView, ozonoTextView, temperaturaTextView, co2TextView, alertaTextView, incidenciaTextView, estadoTextView, reportarIncidenciaTextView, nombreSensorTextView;
+    //Variables para dibujar con colores las medidas
     private ProgressBar co2ProgressBar, ozonoProgressBar, temperaturaProgressBar;
 
+    // Instancia de la clase para acceder a los datos del sensor y del usuario en tiempo real
     private TrackingDataHolder dataHolder;
 
+    // --- Permisos ------------------------------------------------------------------------------------------------------------
+    // Solicitar los permisos necesarios (ubicación, bluetooth)
     private final ActivityResultLauncher<String[]> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(),
             permissions -> {
@@ -36,13 +45,15 @@ public class SesionSensorActivity extends AppCompatActivity {
                     Toast.makeText(this, "Permisos necesarios denegados", Toast.LENGTH_LONG).show();
                 }
             });
+    // --- Fin Permisos --------------------------------------------------------------------------------------------------------
 
+    // --- Inicio onCreate --------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sesion_sensor);
 
-        // Inicialización de Vistas
+        // Inicialización de Vistas y Objetos que vamos a usar en la actividad
         ubicacionTextView = findViewById(R.id.textView_ubicacion);
         ultimaConexionTextView = findViewById(R.id.textView_ultimaConexion);
         bateriaTextView = findViewById(R.id.textView_bateria);
@@ -61,6 +72,7 @@ public class SesionSensorActivity extends AppCompatActivity {
 
         dataHolder = TrackingDataHolder.getInstance();
 
+        // Listener para el botón de cerrar sesión
         cerrarSesionButton.setOnClickListener(v -> {
             stopTrackingService();
             Intent intent = new Intent(SesionSensorActivity.this, MainActivity.class);
@@ -85,19 +97,33 @@ public class SesionSensorActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Inicializamos los Observers
         setupObservers();
+        // Pedimos los permisos necesarios
         checkPermissionsAndStartService();
     }
 
+    // --- Fin onCreate --------------------------------------------------------------------------------------------------------
+
+
+    // --- setupObservers --------------------------------------------------------------------------------------------------------
+
+    // Funcion para inicializar los Observers que van a estar observando los cambios en los datos del sensor y del usuario
+    //Cambios en ubicacion, ultimaConexion, bateria, ozono, temperatura, co2, alerta, incidencia, estado
     private void setupObservers() {
+
+        // Ubicacion del dispositivo -----------------------------------
         dataHolder.locationData.observe(this, address -> {
             if (address != null) ubicacionTextView.setText(address);
         });
 
+        // Hora de recepcion de datos del sensor -----------------------
         dataHolder.timeData.observe(this, time -> {
             if (time != null) ultimaConexionTextView.setText(time);
         });
 
+        // Bateria del dispositivo -------------------------------------
+        // Si es baja cambiamos el color a rojo para que destaque, si no el texto se ve en negro
         dataHolder.bateriaData.observe(this, bateria -> {
             if (bateria != null) {
                 bateriaTextView.setText(String.format(Locale.getDefault(), "%d%%", bateria));
@@ -109,6 +135,9 @@ public class SesionSensorActivity extends AppCompatActivity {
             }
         });
 
+        // Dato de ozono -----------------------------------------------
+        // Mostramos el dato de ozono y ademas en la progress bar se muestra por rangos de colores:
+        // Verde: 0-0.6 ppm, Amarillo: 0.6-0.9 ppm y Rojo: >0.9 ppm
         dataHolder.ozonoData.observe(this, ozono -> {
             if (ozono != null) {
                 ozonoTextView.setText(String.format(Locale.getDefault(), "%.3f ppm", ozono));
@@ -118,6 +147,9 @@ public class SesionSensorActivity extends AppCompatActivity {
             }
         });
 
+        // Dato de temperatura ----------------------------------------
+        // Mostramos el dato de temperatura y ademas en la progress bar se muestra por rangos de colores:
+        // Verde: 0-20 ºC, Amarillo: 20-28 ºC y Rojo: >28 ºC
         dataHolder.temperaturaData.observe(this, temperatura -> {
             if (temperatura != null) {
                 temperaturaTextView.setText(String.format(Locale.getDefault(), "%.1f ºC", temperatura));
@@ -127,6 +159,9 @@ public class SesionSensorActivity extends AppCompatActivity {
             }
         });
 
+        // Dato de Co2 ------------------------------------------------
+        // Mostramos el dato de Co2 y ademas en la progress bar se muestra por rangos de colores:
+        // Verde: 0-800 ppm, Amarillo: 800-1200 ppm y Rojo: >1200 ppm
         dataHolder.co2Data.observe(this, co2 -> {
             if (co2 != null) {
                 co2TextView.setText(String.format(Locale.getDefault(), "%d ppm", co2));
@@ -135,15 +170,20 @@ public class SesionSensorActivity extends AppCompatActivity {
                 co2ProgressBar.setProgressDrawable(d);
             }
         });
-        
+
+        // Alertas ----------------------------------------------------
         dataHolder.alertData.observe(this, alert -> {
-            if(alert != null) alertaTextView.setText(alert);
+            if(alert != null) alertaTextView.setText(alert); // si no es null muestra el texto de alerta
+
         });
 
+        // Incidencias ------------------------------------------------
         dataHolder.incidenciaData.observe(this, incidencia -> {
-            if(incidencia != null) incidenciaTextView.setText(incidencia);
+            if(incidencia != null) incidenciaTextView.setText(incidencia); // si no es null muestra el texto de incidencia
         });
 
+        // Estado conectado - desconectado ----------------------------
+        // Si esta conectado cambiamos el color a verde, si no el texto se ve en rojo
         dataHolder.estadoData.observe(this, estado -> {
             if (estado != null) {
                 estadoTextView.setText(estado);
@@ -158,6 +198,9 @@ public class SesionSensorActivity extends AppCompatActivity {
         });
     }
 
+    // --- Fin setupObservers --------------------------------------------------------------------------------------------------
+
+    // metodo pedir los permisos necesarios de bluetooth y ubicacion para empezar el servicio de TRACKING
     private void checkPermissionsAndStartService() {
         String[] permissionsToRequest = {
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -173,6 +216,7 @@ public class SesionSensorActivity extends AppCompatActivity {
             }
         }
 
+        //Si hay permisos empezamos el servicio de tracking
         if (allPermissionsGranted) {
             startTrackingService();
         } else {
@@ -180,11 +224,13 @@ public class SesionSensorActivity extends AppCompatActivity {
         }
     }
 
+    // Metodo para empezar el servicio de tracking --------------------------
     private void startTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
+    // Metodo para parar el servicio de tracking --------------------------
     private void stopTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
         stopService(serviceIntent);

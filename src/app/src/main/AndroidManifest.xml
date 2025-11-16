@@ -5,10 +5,20 @@
     <!-- Permisos -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Permisos de Servicio en Primer Plano -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+
+    <!-- Permisos de Bluetooth -->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- ¡NUEVO! Permiso para Notificaciones (Android 13+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -23,12 +33,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Breathe_tracking"
-        tools:targetApi="31">
+        tools:targetApi="34">
 
         <service
             android:name=".SensorTrackingService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="location|connectedDevice" />
 
         <activity
             android:name=".MainActivity"
@@ -41,7 +52,6 @@
         </activity>
         <activity android:name=".SesionSensorActivity" />
         
-        <!-- ¡NUEVA DECLARACIÓN! -->
         <activity android:name=".EnvioIncidenciasActivity" />
 
     </application>
