@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -52,7 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/drawable_bordes_linea"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/view5"
@@ -63,7 +64,7 @@
         android:id="@+id/textView_nombreSensor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:text="Sensor AKMSF134"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,7 +173,7 @@
     <ProgressBar
         android:id="@+id/progressBar_ozono"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="114dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:max="1500"
         android:progressDrawable="@drawable/progress_bar_green"
@@ -206,7 +207,7 @@
     <ProgressBar
         android:id="@+id/progressBar_temperatura"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="114dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -297,7 +298,7 @@
     <ProgressBar
         android:id="@+id/progressBar_co2"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="114dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:max="1500"
         android:progressDrawable="@drawable/progress_bar_green"
@@ -334,6 +335,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/drawable_bordes_botones"
         android:paddingLeft="25dp"
         android:paddingTop="5dp"
@@ -342,6 +344,7 @@
         android:text="Reportar incidencia"
         android:textColor="@color/colorOnPrimary"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view6"
         app:layout_constraintEnd_toEndOf="@+id/textView_incidencia"
         app:layout_constraintStart_toStartOf="@+id/textView_incidencia"
         app:layout_constraintTop_toBottomOf="@+id/textView_incidencia" />

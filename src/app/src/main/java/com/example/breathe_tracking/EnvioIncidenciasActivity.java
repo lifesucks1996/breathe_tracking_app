@@ -32,6 +32,8 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
             ultimaConexion = ultimaConexion.replace("Última conex. ", "");
         }
 
+        // --- Lógica para rellenar los campos de texto ---
+        // rellenamos automaticamente el asunto y el mensaje
         String titulo = String.format("AVISO:'%s' Desconectado", sensorName);
         String mensaje = String.format(Locale.getDefault(),
                 "El '%s' de la zona '%s' ha dejado de funcionar. La última lectura se recibió a las %s. Por favor, compruebe la conexión o si existe algún problema con el sensor.",
