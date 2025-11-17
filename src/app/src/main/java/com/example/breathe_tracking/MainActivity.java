@@ -17,6 +17,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 /**
  * CLASE MAIN ACTIVITY - LOG IN
  * - Logica fake log in
@@ -39,9 +44,13 @@ public class MainActivity extends AppCompatActivity {
             });
     // --- Fin Lanzador de Permisos ---------------------------------------------------------------------------------------
 
+    //----- Lanzador de la camara -----------------------------------------------------------------------------------------
+    private ActivityResultLauncher<Intent> qrScannerLauncher;
+    //----- Fin Lanzador de la camara -------------------------------------------------------------------------------------
 
 
-    // --- Método Principal (onCreate) ----------------------------------------------------------------
+
+    // --- Metodo Principal (onCreate) ----------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +62,28 @@ public class MainActivity extends AppCompatActivity {
         EditText sensorCodeEditText = findViewById(R.id.editText_codigo);
         Button loginButton = findViewById(R.id.button_entrar);
         TextView qrCodeTextView = findViewById(R.id.textView_codigoQR);
+
+        //Inicializamos el manejador de resultados del QR
+        qrScannerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Manejador del resultado de la actividad QR
+                    IntentResult scanResult = IntentIntegrator.parseActivityResult(result.getResultCode(), result.getData());
+
+                    if (scanResult != null && scanResult.getContents() != null) {
+                        String codigoQR = scanResult.getContents();
+
+                        // ⭐ ACCIÓN PRINCIPAL: PEGAR EL CÓDIGO EN EL CAMPO ⭐
+                        sensorCodeEditText.setText(codigoQR);
+
+                        Toast.makeText(this, "Código de sesión pegado", Toast.LENGTH_SHORT).show();
+
+                    } else if (result.getResultCode() == RESULT_CANCELED) {
+                        Toast.makeText(this, "Escaneo cancelado", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        
 
         // Definimos el comportamiento del boton de login
         loginButton.setOnClickListener(v -> {
@@ -98,9 +129,18 @@ public class MainActivity extends AppCompatActivity {
 
     // --- Intent para abrir la camara ------------------------------------------------------------------------------------
     private void openCamera() {
-        // Esto abre la app de la cámara. Para escanear QR, necesitarás una librería.
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivity(intent);
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setPrompt("Escanea el Código de Sesión");
+        integrator.setCameraId(0);
+        integrator.setBeepEnabled(false);
+        integrator.setBarcodeImageEnabled(true);
+
+        // Obtener el Intent de la librería ZXing
+        Intent scanIntent = integrator.createScanIntent();
+
+        // Iniciar el escaneo usando el lanzador que configuramos para manejar el resultado
+        qrScannerLauncher.launch(scanIntent);
     }
 
     // --- Fin Intent para abrir la camara ------------------------------------------------------------------------------
