@@ -38,9 +38,10 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation("com.google.android.gms:play-services-location:21.2.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0") // Nueva dependencia
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("androidx.biometric:biometric:1.1.0")
 }
