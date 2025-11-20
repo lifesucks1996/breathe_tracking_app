@@ -23,10 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.firestore.FieldValue;
 
 /**
  * Clase que representa la actividad de la sesión del sensor.
@@ -44,10 +40,6 @@ public class SesionSensorActivity extends AppCompatActivity {
     // Instancia de la clase para acceder a los datos del sensor y del usuario en tiempo real
     private TrackingDataHolder dataHolder;
 
-    // Variables de firestore para guardar los datos del sensor en la bbdd
-    private FirebaseFirestore db;
-    private String sensorCode;
-    private DocumentReference sensorDocRef;
 
     // --- Permisos ------------------------------------------------------------------------------------------------------------
     // Solicitar los permisos necesarios (ubicación, bluetooth)
@@ -88,9 +80,6 @@ public class SesionSensorActivity extends AppCompatActivity {
         dataHolder = TrackingDataHolder.getInstance();
 
 
-        // Inicializar firestore
-        db = FirebaseFirestore.getInstance();
-        sensorDocRef = db.collection("sensores").document("12345");
 
         // Listener para el botón de cerrar sesión
         cerrarSesionButton.setOnClickListener(v -> {
@@ -166,22 +155,6 @@ public class SesionSensorActivity extends AppCompatActivity {
                 Drawable d = (ozono < 0.6) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_green) : (ozono < 0.9) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_orange) : ContextCompat.getDrawable(this, R.drawable.progress_bar_red);
                 ozonoProgressBar.setProgressDrawable(d);
             }
-
-            // ------- Lógica de firestore/firebase: Recoge y sube los datos cuando se disparan cambios en el ozono ----------------------------------------------------------
-
-            // Recolectamos los valores más recientes de TODOS los demás LiveData
-            Float temp = dataHolder.temperaturaData.getValue();
-            Integer co2 = dataHolder.co2Data.getValue();
-            Integer bat = dataHolder.bateriaData.getValue();
-            String ubicacion = dataHolder.locationData.getValue();
-            String estado = dataHolder.estadoData.getValue();
-
-            // Verificamos que todos los datos necesarios para Firebase estén disponibles (no sean null)
-            if (temp != null && co2 != null && bat != null && ubicacion != null && estado != null) {
-                // Pasamos 'ozono' (el valor actualizado) y el resto de los valores recogidos
-                subirDatosAFirebase(ozono, temp, co2, bat, ubicacion, estado);
-            }
-            // ---------------- Fin lógica firebase/firestore --------------------------------------------------------------------------------------
 
         });
 
@@ -277,51 +250,6 @@ public class SesionSensorActivity extends AppCompatActivity {
         stopService(serviceIntent);
     }
 
-
-    // --- Inicio subirDatosFirebase --------------------------------------------------------------------------------------------------
-    public void subirDatosAFirebase(Float o3_ppm, Float temp_c, Integer co2_ppm, Integer bat_porc, String ubicacion, String estado) {
-
-        // Verficar que esten todos los datos necesarios para subir a la bbdd
-        if (o3_ppm == null || temp_c == null || co2_ppm == null || bat_porc == null || ubicacion == null || estado == null) {
-            Log.w("Firestore", "Intento de subida fallido: LiveData incompleto.");
-            return;
-        }
-
-        LecturaSensor nuevaLectura = new LecturaSensor(o3_ppm, temp_c, co2_ppm, bat_porc, ubicacion, estado);
-
-        sensorDocRef.collection("mediciones").add(nuevaLectura) // Se sube el objeto completo
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "Historial guardado.");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error al escribir en el historial", e);
-                });
-
-
-        // Subida a Campos Directos (Última Lectura)
-
-        Map<String, Object> camposDirectos = new HashMap<>();
-
-        // Datos de la Lectura
-        camposDirectos.put("ozono", o3_ppm);
-        camposDirectos.put("temperatura", temp_c);
-        camposDirectos.put("co2", co2_ppm);
-        camposDirectos.put("bateria", bat_porc);
-
-        // Metadatos (Campos añadidos)
-        camposDirectos.put("ubicacion", ubicacion);
-        camposDirectos.put("estado", estado);
-        camposDirectos.put("ultima_conexion", FieldValue.serverTimestamp());
-
-        // Usamos SET con MERGE
-        sensorDocRef.set(camposDirectos, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Campos directos del sensor actualizados."))
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error al actualizar campos directos: " + e.getMessage());
-                });
-    }
-
-    // --- Fin subirDatosFirebase --------------------------------------------------------------------------------------------------
 
 
 }
