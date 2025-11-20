@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -18,10 +19,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Collections;
+
 
 /**
  * Clase que representa la actividad de la sesión del sensor.
  * - Muestra datos, incidencias, alertas, ubicacion, bateria baja
+ * - Conexión con base de datos (19/11/25 - Rocio)
  */
 
 public class SesionSensorActivity extends AppCompatActivity {
@@ -33,6 +39,7 @@ public class SesionSensorActivity extends AppCompatActivity {
 
     // Instancia de la clase para acceder a los datos del sensor y del usuario en tiempo real
     private TrackingDataHolder dataHolder;
+
 
     // --- Permisos ------------------------------------------------------------------------------------------------------------
     // Solicitar los permisos necesarios (ubicación, bluetooth)
@@ -72,6 +79,8 @@ public class SesionSensorActivity extends AppCompatActivity {
 
         dataHolder = TrackingDataHolder.getInstance();
 
+
+
         // Listener para el botón de cerrar sesión
         cerrarSesionButton.setOnClickListener(v -> {
             stopTrackingService();
@@ -101,6 +110,7 @@ public class SesionSensorActivity extends AppCompatActivity {
         setupObservers();
         // Pedimos los permisos necesarios
         checkPermissionsAndStartService();
+
     }
 
     // --- Fin onCreate --------------------------------------------------------------------------------------------------------
@@ -145,6 +155,7 @@ public class SesionSensorActivity extends AppCompatActivity {
                 Drawable d = (ozono < 0.6) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_green) : (ozono < 0.9) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_orange) : ContextCompat.getDrawable(this, R.drawable.progress_bar_red);
                 ozonoProgressBar.setProgressDrawable(d);
             }
+
         });
 
         // Dato de temperatura ----------------------------------------
@@ -196,6 +207,9 @@ public class SesionSensorActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
     }
 
     // --- Fin setupObservers --------------------------------------------------------------------------------------------------
@@ -235,4 +249,7 @@ public class SesionSensorActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
         stopService(serviceIntent);
     }
+
+
+
 }

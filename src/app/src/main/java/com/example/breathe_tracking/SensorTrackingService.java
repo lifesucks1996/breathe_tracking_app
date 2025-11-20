@@ -43,6 +43,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
 
+// Imports de Firebase
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Clase para gestionar el servicio principal en segundo plano (Foreground Service).
  * Esta clase es el motor de la aplicación y tiene múltiples responsabilidades:
@@ -52,6 +62,7 @@ import java.util.StringJoiner;
  * 4.  **Publicación de Datos (LiveData):** Actualiza el TrackingDataHolder (el "tablón de anuncios") con los nuevos datos de ubicación y mediciones para que la SesionSensorActivity pueda mostrarlos en tiempo real.
  * 5.  **Lógica de Alertas:** Compara las mediciones recibidas con umbrales predefinidos (ej. CO2 > 1200) y envía notificaciones de alta prioridad al usuario si se superan.
  * 6.  **Vigilante de Conexión (Watchdog):** Mantiene un temporizador que se reinicia con cada beacon recibido. Si pasan 3 minutos sin datos, asume que el sensor está desconectado y notifica al usuario.
+ * 7.  **Subida de datos en tiempo real a Firebase
  */
 
 public class SensorTrackingService extends Service {
@@ -87,6 +98,12 @@ public class SensorTrackingService extends Service {
     private float lastUpdatedOzono = -999.0f;
     private int lastUpdatedCo2 = -999;
 
+    // Conexión y referncias de firebase
+    private FirebaseFirestore db;
+    private String sensorCode;
+    private DocumentReference sensorDocRef;
+    private static final String SENSOR_DOCUMENT_ID = "12345";
+
 
     // --- onCreate --------------------------------------------------------------------------------------
     @Override
@@ -97,6 +114,10 @@ public class SensorTrackingService extends Service {
         dataHolder = TrackingDataHolder.getInstance();
         // Configuración de los canales de notificaciones
         createNotificationChannels();
+
+        // Incializamos la base de datos de firebase
+        db = FirebaseFirestore.getInstance();
+
 
         //Mostrar nueva ubicacion si cambia
         locationCallback = new LocationCallback() {
@@ -122,6 +143,19 @@ public class SensorTrackingService extends Service {
             dataHolder.incidenciaData.postValue(message);
             //Envia notificacion sobre la alerta
             sendAlertNotification("Alerta de Conexión", "El sensor no está funcionando correctamente", CONNECTION_ALERT_ID);
+
+            // Logica de firestor para actualizacion del estado del sensor
+            // Creamos un Mapa con solo los campos que queremos modificar: estado y timestamp.
+            Map<String, Object> desconexionData = new HashMap<>();
+            desconexionData.put("estado", "Desconectado");
+            desconexionData.put("ultima_conexion", FieldValue.serverTimestamp());
+
+            // Usamos SET con MERGE: Esto garantiza que los campos de medición no se borren
+            sensorDocRef.set(desconexionData, SetOptions.merge())
+                    .addOnSuccessListener(aVoid -> Log.d(ETIQUETA_LOG, "Estado de Desconexión subido a Firestore."))
+                    .addOnFailureListener(e -> Log.e(ETIQUETA_LOG, "Fallo al subir estado de desconexión: " + e.getMessage()));
+
+
         };
     }
     // --- Fin onCreate ----------------------------------------------------------------------------------
@@ -146,7 +180,13 @@ public class SensorTrackingService extends Service {
         startLocationUpdates();
         inicializarYComenzarEscaneoBeacon();
         // Inicializamos al vigilante de conexión
-        resetWatchdog(); 
+        resetWatchdog();
+
+        // Asignar el código de sensor fijo
+        sensorCode = SENSOR_DOCUMENT_ID;
+        // Inicializar la referencia de Firestore
+        sensorDocRef = db.collection("sensores").document(sensorCode);
+
         return START_STICKY;
     }
     // --- Fin onStarCommand -----------------------------------------------------------------------------
@@ -249,6 +289,18 @@ public class SensorTrackingService extends Service {
         dataHolder.temperaturaData.postValue(temperatura_c);
         dataHolder.co2Data.postValue(co2_ppm);
         dataHolder.bateriaData.postValue(bat_porc);
+
+        // Lógica de subida a firestore
+        // Obtenemos los valores de contexto (que se actualizaron en los otros hilos/callbacks)
+        String ubicacion = dataHolder.locationData.getValue();
+        String estado = dataHolder.estadoData.getValue();
+
+        // Llamamos a la función de subida. Pasamos los 6 argumentos.
+        if (ubicacion != null && estado != null) {
+            subirDatosAFirebase(o3_ppm, temperatura_c, co2_ppm, bat_porc, ubicacion, estado);
+        }
+        // Fin lógica
+
     }
     //--- fin mostrar la informacion del beacon -------------------------------------------------------
 
@@ -387,4 +439,52 @@ public class SensorTrackingService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+
+    // --- Inicio subirDatosFirebase --------------------------------------------------------------------------------------------------
+    public void subirDatosAFirebase(Float o3_ppm, Float temp_c, Integer co2_ppm, Integer bat_porc, String ubicacion, String estado) {
+
+        // Verficar que esten todos los datos necesarios para subir a la bbdd
+        if (o3_ppm == null || temp_c == null || co2_ppm == null || bat_porc == null || ubicacion == null || estado == null) {
+            Log.w("Firestore", "Intento de subida fallido: LiveData incompleto.");
+            return;
+        }
+
+        LecturaSensor nuevaLectura = new LecturaSensor(o3_ppm, temp_c, co2_ppm, bat_porc, ubicacion, estado);
+
+        sensorDocRef.collection("mediciones").add(nuevaLectura) // Se sube el objeto completo
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "Historial guardado.");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error al escribir en el historial", e);
+                });
+
+
+        // Subida a Campos Directos (Última Lectura)
+
+        Map<String, Object> camposDirectos = new HashMap<>();
+
+        // Datos de la Lectura
+        camposDirectos.put("ozono", o3_ppm);
+        camposDirectos.put("temperatura", temp_c);
+        camposDirectos.put("co2", co2_ppm);
+        camposDirectos.put("bateria", bat_porc);
+
+        // Metadatos (Campos añadidos)
+        camposDirectos.put("ubicacion", ubicacion);
+        camposDirectos.put("estado", estado);
+        camposDirectos.put("ultima_conexion", FieldValue.serverTimestamp());
+
+        // Usamos SET con MERGE
+        sensorDocRef.set(camposDirectos, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Campos directos del sensor actualizados."))
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error al actualizar campos directos: " + e.getMessage());
+                });
+    }
+
+    // --- Fin subirDatosFirebase --------------------------------------------------------------------------------------------------
+
+
 }
