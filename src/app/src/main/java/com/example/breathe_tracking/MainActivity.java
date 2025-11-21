@@ -18,9 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 /**
+ * Nombre: Sandra Moll Cots
+ *
  * CLASE MAIN ACTIVITY - LOG IN
  * - Logica fake log in
- * - Fake lector QR
+ * - Lector QR
+ *
+ * Copyrigth © 2025
+ * Fecha, autor, aportacion: Sandra Moll Cots, Permisos bluetooh, ubicacion y  comportamiento login
  */
 
 
