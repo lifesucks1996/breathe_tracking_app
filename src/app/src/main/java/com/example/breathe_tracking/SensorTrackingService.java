@@ -164,9 +164,31 @@ public class SensorTrackingService extends Service {
     //Se llama cada vez que la Activity (SesionSensorActivity) llama a startForegroundService().
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        // --- LÓGICA DE RECUPERACIÓN DEL SENSOR ID (AÑADIR) ---
+        if (intent != null && intent.hasExtra("SENSOR_ID_KEY")) {
+            // Obtiene el ID que fue enviado desde SesionSensorActivity
+            sensorCode = intent.getStringExtra("SENSOR_ID_KEY");
+
+            // Inicializa la referencia de Firestore usando el ID DINÁMICO
+            // EJ: sensores/ABC-123
+            sensorDocRef = db.collection("sensores").document(sensorCode);
+
+            Log.d(ETIQUETA_LOG, "Servicio iniciado para sensor: " + sensorCode);
+        } else {
+            // Si no recibimos un ID, no podemos rastrear correctamente.
+            Log.e(ETIQUETA_LOG, "ERROR: Servicio iniciado sin SENSOR_ID_KEY.");
+            stopSelf(); // Detenemos el servicio si no hay ID.
+            return START_NOT_STICKY;
+        }
+        // -------------------------------------------------------------------
+
         // se llama a la notificacion que nos muestra que el servicio esta en segundo plano
         // Crea la intención para que al tocar la notificación se abra sesionSensor
         Intent notificationIntent = new Intent(this, SesionSensorActivity.class);
+        // Necesitamos pasar el ID de vuelta a la actividad si queremos que mantenga el contexto
+        if (sensorCode != null) {
+            notificationIntent.putExtra("SENSOR_CODE", sensorCode);
+        }
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -183,9 +205,9 @@ public class SensorTrackingService extends Service {
         resetWatchdog();
 
         // Asignar el código de sensor fijo
-        sensorCode = SENSOR_DOCUMENT_ID;
+        //sensorCode = SENSOR_DOCUMENT_ID;
         // Inicializar la referencia de Firestore
-        sensorDocRef = db.collection("sensores").document(sensorCode);
+        //sensorDocRef = db.collection("sensores").document(sensorCode);
 
         return START_STICKY;
     }
