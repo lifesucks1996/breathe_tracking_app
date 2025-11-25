@@ -39,6 +39,8 @@ public class SesionSensorActivity extends AppCompatActivity {
 
     // Instancia de la clase para acceder a los datos del sensor y del usuario en tiempo real
     private TrackingDataHolder dataHolder;
+    //Codigo de sensor iniciado
+    private String sensorId;
 
 
     // --- Permisos ------------------------------------------------------------------------------------------------------------
@@ -78,6 +80,18 @@ public class SesionSensorActivity extends AppCompatActivity {
         ImageView cerrarSesionButton = findViewById(R.id.imageView_cerrarSesion);
 
         dataHolder = TrackingDataHolder.getInstance();
+
+        // Logica para codigo de sensor
+        Intent currentintent = getIntent();
+        if (currentintent != null && currentintent.hasExtra("SENSOR_CODE")) {
+            sensorId = currentintent.getStringExtra("SENSOR_CODE");
+            // Mostrar el nombre
+            String displayMessage = "Sensor " + sensorId;
+
+            if (nombreSensorTextView != null) {
+                nombreSensorTextView.setText(displayMessage);
+            }
+        }
 
 
 
@@ -241,6 +255,9 @@ public class SesionSensorActivity extends AppCompatActivity {
     // Metodo para empezar el servicio de tracking --------------------------
     private void startTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
+        if (sensorId != null) {
+            serviceIntent.putExtra("SENSOR_ID_KEY", sensorId);
+        }
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 

@@ -2,6 +2,7 @@ package com.example.breathe_tracking;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,7 +23,19 @@ import androidx.core.content.ContextCompat;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.google.firebase.FirebaseApp;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+// Necesarios para la consulta
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnCompleteListener;
+
 
 /**
  * Nombre: Sandra Moll Cots
@@ -40,6 +53,14 @@ import com.google.firebase.FirebaseApp;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    // EditText para el código del sensor
+    private EditText sensorCodeEditText;
+
+    // Referencia a la base de datos de Firebase
+    private FirebaseFirestore db;
+
+
 
     // --- Definición del Lanzador de Permisos ----------------------------------------------------------------------------
     // Permisos para abrir la camara (si acepta llama al metodo para abrir la camara, si no se muestra un toast)
@@ -68,8 +89,11 @@ public class MainActivity extends AppCompatActivity {
         // Vinculamos con la vista de login
         setContentView(R.layout.login);
 
+        // Inicialización de Firebase
+        db = FirebaseFirestore.getInstance();
+
         // Buscamos los elementos de la vista  y los inicializamos en variables
-        EditText sensorCodeEditText = findViewById(R.id.editText_codigo);
+        sensorCodeEditText = findViewById(R.id.editText_codigo);
         Button loginButton = findViewById(R.id.button_entrar);
         TextView qrCodeTextView = findViewById(R.id.textView_codigoQR);
 
@@ -98,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
-        // Definimos el comportamiento del boton de login
+        /* Definimos el comportamiento del boton de login
         loginButton.setOnClickListener(v -> {
             String sensorCode = sensorCodeEditText.getText().toString();
 
@@ -123,6 +147,24 @@ public class MainActivity extends AppCompatActivity {
                         .setMessage("El código de vinculación es incorrecto.")
                         .setPositiveButton("Aceptar", null)
                         .show();
+            }
+        });*/
+
+        // Definimos el comportamiento del boton de login
+        loginButton.setOnClickListener(v -> {
+            String sensorCode = sensorCodeEditText.getText().toString().trim();
+
+            // Comprobamos que el campo no esté vacío
+            if (sensorCode.isEmpty()) {
+                // Si el campo está vacío, mostramos un mensaje de error
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Error, campo vacío")
+                        .setMessage("Añade el código del sensor para vincular.")
+                        .setPositiveButton("Aceptar", null)
+                        .show();
+            } else {
+                // Si no está vacío, iniciamos la verificación asíncrona con Firebase
+                checkSensorCodeInDatabase(sensorCode);
             }
         });
 
@@ -174,8 +216,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        // Acceso concedido
-                        iniciarSesionExitosa("BIOMETRIC_CODE");
+                        // 1. Recuperar el último ID guardado
+                        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                        String lastSensorId = prefs.getString("LAST_SENSOR_ID", null);
+
+                        if (lastSensorId != null) {
+                            // 2. Si se encuentra un ID real, iniciar la sesión con ese ID.
+                            Log.d("BIOMETRIA", "Acceso biométrico exitoso. Usando ID guardado: " + lastSensorId);
+                            iniciarSesionExitosa(lastSensorId); // ¡Usamos el ID real aquí!
+                        } else {
+                            // 3. Caso de primer uso: No hay ID guardado.
+                            Toast.makeText(MainActivity.this, "Inicie sesión con un código primero para habilitar el acceso rápido.", Toast.LENGTH_LONG).show();
+                            // Nota: Mantenemos el usuario en la pantalla de login.
+                        }
                     }
 
                     @Override
@@ -189,7 +242,18 @@ public class MainActivity extends AppCompatActivity {
         biometricPrompt.authenticate(promptInfo);
     }
 
+    // Dentro de MainActivity.java
+
     private void iniciarSesionExitosa(String code) {
+
+        // 1. Lógica de Guardado (SOLO si no es la propia biometría la que lo está llamando)
+        if (!"BIOMETRIC_CODE".equals(code)) {
+            SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+            prefs.edit().putString("LAST_SENSOR_ID", code).apply();
+            Log.d("BIOMETRIA", "ID de sensor guardado para uso futuro: " + code);
+        }
+
+        // 2. Inicio de actividad (Se mantiene igual)
         Intent intent = new Intent(MainActivity.this, SesionSensorActivity.class);
         intent.putExtra("SENSOR_CODE", code);
         startActivity(intent);
@@ -197,5 +261,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // --- Fin Metodo para acceso biométrico ----------------------------------------------------------------------
+
+    // --- Inicio Metodo para comprobación firebase ----------------------------------------------------------------------
+
+    private void checkSensorCodeInDatabase(String sensorCode) {
+        Toast.makeText(this, "Verificando código en Firestore...", Toast.LENGTH_SHORT).show();
+
+        // Referencia específica al documento del sensor: coleccion(sensores)/documento(código)
+        db.collection("sensores").document(sensorCode)
+                .get() // Consulta de un solo evento
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            // Diseño Lógico: Validación de Existencia
+                            if (document.exists()) {
+                                // Éxito: El documento existe en la colección 'sensores'.
+                                Log.d("Firestore_LOGIN", "Sensor encontrado: " + sensorCode);
+                                Toast.makeText(MainActivity.this, "Conexión exitosa con el sensor.", Toast.LENGTH_SHORT).show();
+                                iniciarSesionExitosa(sensorCode);
+                            } else {
+                                // Fallo 1: El código NO existe
+                                Log.e("Firestore_LOGIN", "Código NO encontrado: " + sensorCode);
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("Error de Vinculación")
+                                        .setMessage("El código de sensor '" + sensorCode + "' no es válido o no está registrado.")
+                                        .setPositiveButton("Aceptar", null)
+                                        .show();
+                            }
+                        } else {
+                            // Fallo 2: Error de conexión o tarea
+                            Log.e("Firestore_LOGIN", "Fallo al consultar Firestore: ", task.getException());
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Error de Conexión")
+                                    .setMessage("Fallo al consultar la BD: " + task.getException().getMessage())
+                                    .setPositiveButton("Aceptar", null)
+                                    .show();
+                        }
+                    }
+                });
+    }
+    // --- Fin Metodo para comprobación firebase ----------------------------------------------------------------------
+
+
 
 }
