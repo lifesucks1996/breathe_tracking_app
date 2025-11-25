@@ -85,9 +85,11 @@ public class SesionSensorActivity extends AppCompatActivity {
         Intent currentintent = getIntent();
         if (currentintent != null && currentintent.hasExtra("SENSOR_CODE")) {
             sensorId = currentintent.getStringExtra("SENSOR_CODE");
-            // Opcional: Mostrar el código en una vista
+            // Mostrar el nombre
+            String displayMessage = "Sensor " + sensorId;
+
             if (nombreSensorTextView != null) {
-                nombreSensorTextView.setText("Sensor " + sensorId);
+                nombreSensorTextView.setText(displayMessage);
             }
         }
 

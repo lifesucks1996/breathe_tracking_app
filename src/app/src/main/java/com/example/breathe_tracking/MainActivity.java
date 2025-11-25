@@ -2,6 +2,7 @@ package com.example.breathe_tracking;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -215,8 +216,19 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                         super.onAuthenticationSucceeded(result);
-                        // Acceso concedido
-                        iniciarSesionExitosa("BIOMETRIC_CODE");
+                        // 1. Recuperar el último ID guardado
+                        SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                        String lastSensorId = prefs.getString("LAST_SENSOR_ID", null);
+
+                        if (lastSensorId != null) {
+                            // 2. Si se encuentra un ID real, iniciar la sesión con ese ID.
+                            Log.d("BIOMETRIA", "Acceso biométrico exitoso. Usando ID guardado: " + lastSensorId);
+                            iniciarSesionExitosa(lastSensorId); // ¡Usamos el ID real aquí!
+                        } else {
+                            // 3. Caso de primer uso: No hay ID guardado.
+                            Toast.makeText(MainActivity.this, "Inicie sesión con un código primero para habilitar el acceso rápido.", Toast.LENGTH_LONG).show();
+                            // Nota: Mantenemos el usuario en la pantalla de login.
+                        }
                     }
 
                     @Override
@@ -230,7 +242,18 @@ public class MainActivity extends AppCompatActivity {
         biometricPrompt.authenticate(promptInfo);
     }
 
+    // Dentro de MainActivity.java
+
     private void iniciarSesionExitosa(String code) {
+
+        // 1. Lógica de Guardado (SOLO si no es la propia biometría la que lo está llamando)
+        if (!"BIOMETRIC_CODE".equals(code)) {
+            SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+            prefs.edit().putString("LAST_SENSOR_ID", code).apply();
+            Log.d("BIOMETRIA", "ID de sensor guardado para uso futuro: " + code);
+        }
+
+        // 2. Inicio de actividad (Se mantiene igual)
         Intent intent = new Intent(MainActivity.this, SesionSensorActivity.class);
         intent.putExtra("SENSOR_CODE", code);
         startActivity(intent);
