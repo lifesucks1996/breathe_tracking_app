@@ -192,10 +192,11 @@ public class SensorTrackingService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Breathe Traking")
+                .setContentTitle("Breathe Tracking")
                 .setContentText("Monitorizando el sensor en tiempo real.")
                 .setSmallIcon(R.drawable.logo_app)
-                .setContentIntent(pendingIntent) 
+                .setOngoing(true) // <--- ESTATICA
+                .setContentIntent(pendingIntent)
                 .build();
 
         startForeground(NOTIFICATION_ID, notification);
