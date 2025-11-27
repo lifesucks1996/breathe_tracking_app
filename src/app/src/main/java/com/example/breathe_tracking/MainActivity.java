@@ -49,6 +49,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
  * - Logica fake log in (30/10/25 - Sandra)
  * - Lector QR (16/11/25 - Rocio)
  * - Acceso biometrico (17/11/25 - Rocio)
+ * - Logica bbdd log in (30/10/25 - Rocio)
  */
 
 
