@@ -1,3 +1,8 @@
+/**
+ * @file SesionSensorActivity.java
+ * @brief Actividad principal que muestra en tiempo real los datos recibidos del sensor y el estado del servicio de rastreo.
+ * @package com.example.breathe_tracking
+ */
 package com.example.breathe_tracking;
 
 import android.Manifest;
@@ -6,7 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -19,10 +24,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.util.Locale;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collections;
 
+
+/**
+ * @class SesionSensorActivity
+ * @brief Clase que representa la actividad de la sesión del sensor.
+ *
+ * Se encarga de:
+ * - Mostrar datos en tiempo real (CO2, Ozono, Temp, Batería, Ubicación) obtenidos del \ref SensorTrackingService.
+ * - Utilizar \ref TrackingDataHolder (LiveData) para observar los cambios en las mediciones.
+ * - Gestionar la solicitud de permisos (Ubicación, Bluetooth).
+ * - Iniciar y detener el \ref SensorTrackingService.
+ * - Ofrecer la funcionalidad para reportar incidencias.
+ *
+ * @extends AppCompatActivity
+ */
 
 /**
  * Clase que representa la actividad de la sesión del sensor.
@@ -32,19 +48,48 @@ import java.util.Collections;
 
 public class SesionSensorActivity extends AppCompatActivity {
 
-    // Variables de los datos a mostrar que recibimos del sensor o que calculamos
-    private TextView ubicacionTextView, ultimaConexionTextView, bateriaTextView, ozonoTextView, temperaturaTextView, co2TextView, alertaTextView, incidenciaTextView, estadoTextView, reportarIncidenciaTextView, nombreSensorTextView;
-    //Variables para dibujar con colores las medidas
-    private ProgressBar co2ProgressBar, ozonoProgressBar, temperaturaProgressBar;
+    /** @brief Muestra la ubicación actual del dispositivo. */
+    private TextView ubicacionTextView;
+    /** @brief Muestra la hora de la última conexión/recepción de datos del sensor. */
+    private TextView ultimaConexionTextView;
+    /** @brief Muestra el porcentaje de batería del sensor. */
+    private TextView bateriaTextView;
+    /** @brief Muestra el nivel de ozono. */
+    private TextView ozonoTextView;
+    /** @brief Muestra la temperatura. */
+    private TextView temperaturaTextView;
+    /** @brief Muestra la concentración de CO2. */
+    private TextView co2TextView;
+    /** @brief Muestra las alertas de mediciones fuera de rango. */
+    private TextView alertaTextView;
+    /** @brief Muestra el estado de incidencias o de desconexión. */
+    private TextView incidenciaTextView;
+    /** @brief Muestra el estado de conexión del sensor ("Conectado"/"Desconectado"). */
+    private TextView estadoTextView;
+    /** @brief Botón o enlace para iniciar la actividad de reportar incidencia. */
+    private TextView reportarIncidenciaTextView;
+    /** @brief Muestra el código o nombre del sensor que se está rastreando. */
+    private TextView nombreSensorTextView;
 
-    // Instancia de la clase para acceder a los datos del sensor y del usuario en tiempo real
+    //Variables para dibujar con colores las medidas
+    /** @brief Barra de progreso visual para el nivel de CO2. */
+    private ProgressBar co2ProgressBar;
+    /** @brief Barra de progreso visual para el nivel de Ozono. */
+    private ProgressBar ozonoProgressBar;
+    /** @brief Barra de progreso visual para el nivel de Temperatura. */
+    private ProgressBar temperaturaProgressBar;
+
+    /** @brief Instancia Singleton para acceder a los datos observados (LiveData). */
     private TrackingDataHolder dataHolder;
-    //Codigo de sensor iniciado
+    /** @brief Código único del sensor que se está monitorizando. */
     private String sensorId;
 
 
     // --- Permisos ------------------------------------------------------------------------------------------------------------
-    // Solicitar los permisos necesarios (ubicación, bluetooth)
+    /**
+     * @brief Launcher para solicitar múltiples permisos de la aplicación.
+     * Si los permisos se conceden (específicamente ACCESS_FINE_LOCATION), inicia el servicio de rastreo.
+     */
     private final ActivityResultLauncher<String[]> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(),
             permissions -> {
@@ -57,6 +102,11 @@ public class SesionSensorActivity extends AppCompatActivity {
     // --- Fin Permisos --------------------------------------------------------------------------------------------------------
 
     // --- Inicio onCreate --------------------------------------------------------------------------------------------------------
+    /**
+     * @brief Método llamado al crear la actividad.
+     * Inicializa la interfaz de usuario, obtiene el ID del sensor, configura los listeners y los observadores.
+     * @param savedInstanceState Si la actividad se está recreando, este Bundle contiene los datos de estado.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +146,10 @@ public class SesionSensorActivity extends AppCompatActivity {
 
 
         // Listener para el botón de cerrar sesión
+        /**
+         * @brief Listener para el botón de cerrar sesión.
+         * Detiene el servicio de rastreo y navega de vuelta a la actividad principal.
+         */
         cerrarSesionButton.setOnClickListener(v -> {
             stopTrackingService();
             Intent intent = new Intent(SesionSensorActivity.this, MainActivity.class);
@@ -103,7 +157,10 @@ public class SesionSensorActivity extends AppCompatActivity {
             finish();
         });
 
-        // Listener para el botón de reportar incidencia
+        /**
+         * @brief Listener para el botón de reportar incidencia.
+         * Inicia \ref EnvioIncidenciasActivity, pasando los datos de contexto (sensor, ubicación, última conexión).
+         */
         reportarIncidenciaTextView.setOnClickListener(v -> {
             Intent intent = new Intent(SesionSensorActivity.this, EnvioIncidenciasActivity.class);
             
@@ -134,6 +191,11 @@ public class SesionSensorActivity extends AppCompatActivity {
 
     // Funcion para inicializar los Observers que van a estar observando los cambios en los datos del sensor y del usuario
     //Cambios en ubicacion, ultimaConexion, bateria, ozono, temperatura, co2, alerta, incidencia, estado
+    /**
+     * @brief Inicializa los observadores de LiveData (\ref TrackingDataHolder).
+     * Cada observador actualiza el TextView o la ProgressBar correspondiente con los datos más recientes del sensor.
+     * También implementa la lógica de rangos de color y visibilidad.
+     */
     private void setupObservers() {
 
         // Ubicacion del dispositivo -----------------------------------
@@ -228,7 +290,11 @@ public class SesionSensorActivity extends AppCompatActivity {
 
     // --- Fin setupObservers --------------------------------------------------------------------------------------------------
 
-    // metodo pedir los permisos necesarios de bluetooth y ubicacion para empezar el servicio de TRACKING
+
+    /**
+     * @brief Verifica si todos los permisos necesarios (Ubicación, Bluetooth) están concedidos.
+     * Si no, lanza la solicitud de permisos; si sí, inicia el servicio de rastreo.
+     */
     private void checkPermissionsAndStartService() {
         String[] permissionsToRequest = {
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -253,6 +319,10 @@ public class SesionSensorActivity extends AppCompatActivity {
     }
 
     // Metodo para empezar el servicio de tracking --------------------------
+    /**
+     * @brief Inicia el servicio de rastreo (\ref SensorTrackingService) como un servicio en primer plano.
+     * Pasa el \p sensorId al servicio para que pueda establecer su DocumentReference en Firestore.
+     */
     private void startTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
         if (sensorId != null) {
@@ -262,6 +332,9 @@ public class SesionSensorActivity extends AppCompatActivity {
     }
 
     // Metodo para parar el servicio de tracking --------------------------
+    /**
+     * @brief Detiene el servicio de rastreo (\ref SensorTrackingService).
+     */
     private void stopTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
         stopService(serviceIntent);

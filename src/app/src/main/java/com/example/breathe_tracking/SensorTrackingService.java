@@ -1,3 +1,8 @@
+/**
+ * @file SensorTrackingService.java
+ * @brief Implementa el servicio principal en segundo plano (Foreground Service) para el seguimiento del sensor.
+ * @package com.example.breathe_tracking
+ */
 package com.example.breathe_tracking;
 
 import android.Manifest;
@@ -14,7 +19,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
-import android.util.SparseArray;
 
 // Imports de Bluetooth
 import android.bluetooth.BluetoothAdapter;
@@ -48,64 +52,90 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Clase para gestionar el servicio principal en segundo plano (Foreground Service).
- * Esta clase es el motor de la aplicación y tiene múltiples responsabilidades:
- * 1.  **Escaneo Bluetooth (BLE):** Inicializa y mantiene un escaneo constante para el dispositivo beacon ("rocio").
- * 2.  **Decodificación de Trama:** Parsea la trama de datos personalizada del beacon para extraer mediciones (O3, Temperatura, CO2, Batería).
- * 3.  **Seguimiento de Ubicación:** Obtiene la ubicación GPS actual del teléfono usando FusedLocationProviderClient.
- * 4.  **Publicación de Datos (LiveData):** Actualiza el TrackingDataHolder (el "tablón de anuncios") con los nuevos datos de ubicación y mediciones para que la SesionSensorActivity pueda mostrarlos en tiempo real.
- * 5.  **Lógica de Alertas:** Compara las mediciones recibidas con umbrales predefinidos (ej. CO2 > 1200) y envía notificaciones de alta prioridad al usuario si se superan.
- * 6.  **Vigilante de Conexión (Watchdog):** Mantiene un temporizador que se reinicia con cada beacon recibido. Si pasan 3 minutos sin datos, asume que el sensor está desconectado y notifica al usuario.
- * 7.  **Subida de datos en tiempo real a Firebase
+ * @class SensorTrackingService
+ * @brief Servicio de Android que se ejecuta en primer plano para monitorizar un sensor BLE ("rocio").
+ *
+ * Este servicio centraliza las funcionalidades clave de la aplicación:
+ * 1.  **Escaneo Bluetooth (BLE):** Búsqueda y recepción constante de la trama de datos del sensor.
+ * 2.  **Decodificación de Trama:** Extracción de mediciones (O3, Temperatura, CO2, Batería) del payload del beacon.
+ * 3.  **Seguimiento de Ubicación:** Obtención de coordenadas GPS y conversión a dirección legible.
+ * 4.  **Publicación de Datos (LiveData):** Actualización del estado global de la aplicación a través de \ref TrackingDataHolder.
+ * 5.  **Lógica de Alertas:** Envío de notificaciones de alta prioridad basadas en umbrales de medición (ej. CO2 > 1200).
+ * 6.  **Vigilante de Conexión (Watchdog):** Mecanismo de temporizador para detectar la pérdida de conexión con el sensor.
+ * 7.  **Subida de datos:** Sincronización de mediciones e historial con **Firebase Firestore**.
+ *
+ * @extends Service
  */
 
 public class SensorTrackingService extends Service {
 
     // --- Constantes de Configuración ---
+    /** @brief Etiqueta utilizada para los logs de Android. */
     private static final String ETIQUETA_LOG = "SensorService";
+    /** @brief ID del canal de notificación para el servicio en primer plano (baja prioridad). */
     private static final String CHANNEL_ID = "SensorTrackingChannel";
+    /** @brief ID del canal de notificación para las alertas (alta prioridad). */
     private static final String ALERT_CHANNEL_ID = "AlertChannel";
-
+    /** @brief ID para la notificación del servicio en primer plano. */
     private static final int NOTIFICATION_ID = 1;
 
     // IDs únicos para cada tipo de alerta
+    /** @brief ID para la notificación de alerta de CO2. */
     private static final int CO2_ALERT_ID = 101;
+    /** @brief ID para la notificación de alerta de Ozono. */
     private static final int OZONE_ALERT_ID = 102;
+    /** @brief ID para la notificación de alerta de Temperatura. */
     private static final int TEMP_ALERT_ID = 103;
+    /** @brief ID para la notificación de alerta de Batería. */
     private static final int BATTERY_ALERT_ID = 104;
+    /** @brief ID para la notificación de alerta de Conexión perdida. */
     private static final int CONNECTION_ALERT_ID = 105;
 
     // --- Módulos Principales ---
-    private FusedLocationProviderClient fusedLocationClient; // Cliente para servicios de ubicación de Google
-    private LocationCallback locationCallback; // "Oyente" para cuando llega una nueva ubicación
-    private BluetoothLeScanner elEscanner; // Objeto de Android para escanear Bluetooth LE
-    private ScanCallback callbackDelEscaneo; // "Oyente" para cuando se detecta un beacon
-    private TrackingDataHolder dataHolder; // Nuestro "tablón de anuncios" (Singleton) para comunicar con la UI
+    /** @brief Cliente para obtener actualizaciones de ubicación. */
+    private FusedLocationProviderClient fusedLocationClient;
+    /** @brief Callback que se activa al recibir una nueva ubicación. */
+    private LocationCallback locationCallback;
+    /** @brief Escáner de Bluetooth Low Energy (BLE). */
+    private BluetoothLeScanner elEscanner;
+    /** @brief Callback que se activa al recibir un resultado de escaneo (un beacon). */
+    private ScanCallback callbackDelEscaneo;
+    /** @brief Singleton que contiene el estado de los datos (LiveData) para la comunicación con la UI. */
+    private TrackingDataHolder dataHolder;
 
     // Vigilante de Conexión
-    private Handler watchdogHandler = new Handler(Looper.getMainLooper()); // Handler para programar tareas
-    private Runnable watchdogRunnable; // La tarea (Runnable) que se ejecutará si se pierde la conexión
-    private static final long WATCHDOG_DELAY_MS = 1 * 60 * 1000; // 3 minutos
+    /** @brief Handler para programar la tarea del watchdog. */
+    private Handler watchdogHandler = new Handler(Looper.getMainLooper());
+    /** @brief Runnable que se ejecuta si no se reciben datos del sensor en el tiempo de espera. */
+    private Runnable watchdogRunnable;
+    /** @brief Retraso en milisegundos para el watchdog (3 minutos). */
+    private static final long WATCHDOG_DELAY_MS = 1 * 60 * 1000; // 1 minuto
 
     // Memoria para los últimos valores que hemos recibido para evitar actualizaciones innecesarias si no ha cambiado el valor
+    /** @brief Almacena la última temperatura recibida. */
     private float lastUpdatedTemp = -999.0f;
+    /** @brief Almacena el último valor de ozono recibido. */
     private float lastUpdatedOzono = -999.0f;
+    /** @brief Almacena el último valor de CO2 recibido. */
     private int lastUpdatedCo2 = -999;
 
     // Conexión y referncias de firebase
+    /** @brief Instancia principal de Firebase Firestore. */
     private FirebaseFirestore db;
+    /** @brief Código único del sensor que se está rastreando. */
     private String sensorCode;
+    /** @brief Referencia al documento del sensor en Firestore. */
     private DocumentReference sensorDocRef;
-    private static final String SENSOR_DOCUMENT_ID = "12345";
 
 
     // --- onCreate --------------------------------------------------------------------------------------
+    /**
+     * @brief Se llama al crear el servicio. Inicializa clientes, canales de notificación y callbacks.
+     */
     @Override
     public void onCreate() {
         super.onCreate();
@@ -118,7 +148,10 @@ public class SensorTrackingService extends Service {
         // Incializamos la base de datos de firebase
         db = FirebaseFirestore.getInstance();
 
-
+        /**
+         * @brief Callback que maneja los resultados de las actualizaciones de ubicación.
+         * Convierte Lat/Lon a una dirección legible y actualiza el DataHolder.
+         */
         //Mostrar nueva ubicacion si cambia
         locationCallback = new LocationCallback() {
             @Override
@@ -132,6 +165,10 @@ public class SensorTrackingService extends Service {
         };
 
         //Tareas que ejecuta el observador cuando se desactiva o se pierde la conexión
+        /**
+         * @brief Runnable que se ejecuta cuando el watchdog expira (pérdida de conexión).
+         * Actualiza el estado a "Desconectado" y notifica la incidencia a Firebase y al usuario.
+         */
         watchdogRunnable = () -> {
             Log.e(ETIQUETA_LOG, "¡No se han recibido datos del sensor en 3 minutos!");
             // Mostrar que el sensor se ha desconectado
@@ -162,15 +199,22 @@ public class SensorTrackingService extends Service {
 
     // --- onStarCommand ---------------------------------------------------------------------------------
     //Se llama cada vez que la Activity (SesionSensorActivity) llama a startForegroundService().
+    /**
+     * @brief Se llama cada vez que el servicio es iniciado.
+     * Gestiona la obtención del ID del sensor, inicia el servicio en primer plano (notificación) y arranca la monitorización.
+     * @param intent El Intent utilizado para iniciar el servicio, debe contener el ID del sensor.
+     * @param flags Información adicional sobre cómo se inició el servicio.
+     * @param startId Un ID único que representa esta solicitud de inicio.
+     * @return START_STICKY para que el sistema intente recrear el servicio si se destruye.
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // --- LÓGICA DE RECUPERACIÓN DEL SENSOR ID (AÑADIR) ---
+        // --- LÓGICA DE RECUPERACIÓN DEL SENSOR ID ---
         if (intent != null && intent.hasExtra("SENSOR_ID_KEY")) {
             // Obtiene el ID que fue enviado desde SesionSensorActivity
             sensorCode = intent.getStringExtra("SENSOR_ID_KEY");
 
             // Inicializa la referencia de Firestore usando el ID DINÁMICO
-            // EJ: sensores/ABC-123
             sensorDocRef = db.collection("sensores").document(sensorCode);
 
             Log.d(ETIQUETA_LOG, "Servicio iniciado para sensor: " + sensorCode);
@@ -217,6 +261,10 @@ public class SensorTrackingService extends Service {
 
     //--- onDestory ------------------------------------------------------------------------------------
     // Se llama cuando la Activity (SesionSensorActivity) se destruye
+    /**
+     * @brief Se llama al destruir el servicio.
+     * Libera recursos: detiene las actualizaciones de ubicación, el escaneo BLE y el watchdog.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -230,6 +278,10 @@ public class SensorTrackingService extends Service {
      * Metodos para recibir, filtrar y decodificar el  Beacon
      */
     // --- Escaneo beacon ------------------------------------------------------------------------------
+    /**
+     * @brief Inicializa el escáner BLE y comienza la búsqueda de dispositivos.
+     * Configura el ScanCallback para procesar los resultados de escaneo.
+     */
     private void inicializarYComenzarEscaneoBeacon() {
         BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
         if (bta == null || !bta.isEnabled()) {
@@ -257,6 +309,9 @@ public class SensorTrackingService extends Service {
     // --- fin escaneo beacon -------------------------------------------------------------------------
 
     // --- detener escaner de beacon ------------------------------------------------------------------
+    /**
+     * @brief Detiene el escaneo BLE si está activo.
+     */
     private void detenerEscaneoBeacon() {
         if (elEscanner != null && callbackDelEscaneo != null && ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
             this.elEscanner.stopScan(this.callbackDelEscaneo);
@@ -267,6 +322,11 @@ public class SensorTrackingService extends Service {
 
 
     // --- mostrar la informacion del beacon -----------------------------------------------------------
+    /**
+     * @brief Procesa el resultado del escaneo BLE, filtra el dispositivo "rocio" y decodifica el payload.
+     * Actualiza el estado del DataHolder, verifica alertas y sube los datos a Firebase.
+     * @param resultado El objeto ScanResult devuelto por el escáner BLE.
+     */
     private void mostrarInformacionDispositivoBTLE(ScanResult resultado) {
         // Comprobamos que el dispositivo es el correcto
         BluetoothDevice device = resultado.getDevice();
@@ -329,6 +389,13 @@ public class SensorTrackingService extends Service {
 
 
     //--- Alertas sobre medidas -----------------------------------------------------------------------
+    /**
+     * @brief Compara las mediciones recibidas con umbrales predefinidos y genera alertas (notificaciones y LiveData).
+     * @param co2 Concentración de CO2 en ppm.
+     * @param ozono Concentración de Ozono en ppm.
+     * @param temperatura Temperatura en grados Celsius.
+     * @param bateria Porcentaje de batería.
+     */
     private void checkAlerts(int co2, float ozono, float temperatura, int bateria) {
         List<String> currentAlertMessages = new ArrayList<>();
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
@@ -385,6 +452,12 @@ public class SensorTrackingService extends Service {
 
     // --- Notificaciones -------------------------------------------------------------------------------
     // Crea una notificacion de alerta
+    /**
+     * @brief Muestra una notificación de alerta de alta prioridad.
+     * @param title Título de la notificación.
+     * @param message Cuerpo del mensaje de la notificación.
+     * @param notificationId ID único para esta alerta, permite cancelarla posteriormente.
+     */
     private void sendAlertNotification(String title, String message, int notificationId) {
         Intent notificationIntent = new Intent(this, SesionSensorActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
@@ -400,11 +473,18 @@ public class SensorTrackingService extends Service {
     }
 
     // Elimina una notificacion si ya no existe
+    /**
+     * @brief Cancela una notificación de alerta específica.
+     * @param notificationId ID de la notificación a cancelar.
+     */
     private void cancelAlertNotification(int notificationId) {
         getSystemService(NotificationManager.class).cancel(notificationId);
     }
 
     // Crea los canales de notificaciones
+    /**
+     * @brief Crea los canales de notificación requeridos para el servicio y las alertas.
+     */
     private void createNotificationChannels() {
         NotificationChannel serviceChannel = new NotificationChannel(CHANNEL_ID, "Sensor Tracking", NotificationManager.IMPORTANCE_LOW);
         getSystemService(NotificationManager.class).createNotificationChannel(serviceChannel);
@@ -416,6 +496,9 @@ public class SensorTrackingService extends Service {
 
     //--- metodos localizacion --------------------------------------------------------------------------
     // Obtiene la ubicación actual del teléfono
+    /**
+     * @brief Solicita actualizaciones periódicas de ubicación GPS al sistema.
+     */
     private void startLocationUpdates() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -427,6 +510,10 @@ public class SensorTrackingService extends Service {
     }
 
     // Convierte las coordenadas (Lat/Lon) en una dirección (Calle, Ciudad)
+    /**
+     * @brief Convierte una coordenada Location (Latitud/Longitud) a una dirección legible (Calle, Ciudad) usando Geocoder.
+     * @param location Objeto Location con las coordenadas GPS.
+     */
     private void getAddressFromLocation(android.location.Location location) {
         try {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -446,6 +533,10 @@ public class SensorTrackingService extends Service {
     // --- Vigilante de Conexión -----------------------------------------------------------------------
     // cuenta 3 minutos para saber si el sensor está desconectado, si recibe datos lo reinicia para volver a contar los 3 minutos
     // SI no recibe los datos en 3 minutos se muestra una alerta y se reinicia el watchdog
+    /**
+     * @brief Reinicia el temporizador del watchdog de conexión.
+     * Si el servicio estaba en estado "Desconectado", al recibir datos lo cambia a "Conectado" y cancela la alerta.
+     */
     private void resetWatchdog() {
         watchdogHandler.removeCallbacks(watchdogRunnable);
         watchdogHandler.postDelayed(watchdogRunnable, WATCHDOG_DELAY_MS);
@@ -458,6 +549,9 @@ public class SensorTrackingService extends Service {
         dataHolder.estadoData.postValue("Conectado");
     }
     // --- fin vigilante de conexión -------------------------------------------------------------------
+    /**
+     * @brief Método requerido para servicios enlazados. No se usa, devuelve null.
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -465,6 +559,16 @@ public class SensorTrackingService extends Service {
 
 
     // --- Inicio subirDatosFirebase --------------------------------------------------------------------------------------------------
+    /**
+     * @brief Sube las mediciones y el estado de contexto (ubicación, conexión) a Firebase Firestore.
+     * Realiza dos operaciones: guardar un registro en la colección 'mediciones' (historial) y actualizar los campos directos del documento del sensor (última lectura).
+     * @param o3_ppm Concentración de Ozono.
+     * @param temp_c Temperatura.
+     * @param co2_ppm Concentración de CO2.
+     * @param bat_porc Porcentaje de batería.
+     * @param ubicacion Dirección legible de la ubicación.
+     * @param estado Estado de conexión del sensor.
+     */
     public void subirDatosAFirebase(Float o3_ppm, Float temp_c, Integer co2_ppm, Integer bat_porc, String ubicacion, String estado) {
 
         // Verficar que esten todos los datos necesarios para subir a la bbdd
@@ -508,6 +612,5 @@ public class SensorTrackingService extends Service {
     }
 
     // --- Fin subirDatosFirebase --------------------------------------------------------------------------------------------------
-
 
 }
