@@ -171,7 +171,7 @@ public class SesionSensorActivity extends AppCompatActivity {
             Intent intent = new Intent(SesionSensorActivity.this, EnvioIncidenciasActivity.class);
             
             // Recopilamos los datos necesarios de los TextViews
-            String sensorName = nombreSensorTextView.getText().toString();
+            String sensorName = sensorId;
             String ubicacion = ubicacionTextView.getText().toString();
             String ultimaConexion = ultimaConexionTextView.getText().toString();
 

@@ -68,9 +68,9 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
 
         // --- Lógica para rellenar los campos de texto ---
         // rellenamos automaticamente el asunto y el mensaje
-        String titulo = String.format("AVISO:'%s' Desconectado", sensorName);
+        String titulo = String.format("AVISO: sensor '%s' Desconectado", sensorName);
         String mensaje = String.format(Locale.getDefault(),
-                "El '%s' de la zona '%s' ha dejado de funcionar. La última lectura se recibió a las %s. Por favor, compruebe la conexión o si existe algún problema con el sensor.",
+                "El sensor '%s' de la zona '%s' ha dejado de funcionar. La última lectura se recibió a las %s. Por favor, compruebe la conexión o si existe algún problema con el sensor.",
                 sensorName, ubicacion, ultimaConexion);
 
         tituloEditText.setText(titulo);
@@ -114,7 +114,7 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
             // Sube el documento a la colección 'incidencias'
             db.collection("incidencias").add(incidencia)
                     .addOnSuccessListener(documentReference -> {
-                        // ... (Manejo del éxito)
+                        //
                         new AlertDialog.Builder(this)
                                 .setTitle("Enviado")
                                 .setMessage("Mensaje enviado correctamente al administrador")
@@ -124,7 +124,7 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
                                 .show();
                     })
                     .addOnFailureListener(e -> {
-                        // ... (Manejo del fallo)
+                        // fallo
                         new AlertDialog.Builder(this)
                                 .setTitle("Error de Envío")
                                 .setMessage("No se pudo enviar la incidencia. Compruebe su conexión a Internet. Error: " + e.getMessage())
