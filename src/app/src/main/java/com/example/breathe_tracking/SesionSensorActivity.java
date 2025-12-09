@@ -74,6 +74,8 @@ public class SesionSensorActivity extends AppCompatActivity {
     private TextView nombreSensorTextView;
     /** @brief Botón para ir a la pantalla de gráficas de información. */
     private TextView verGraficasTextView;
+    /** @brief Icono para mostrar la intensidad de la señal (RSSI). */
+    private ImageView imgSignal;
 
     //Variables para dibujar con colores las medidas
     /** @brief Barra de progreso visual para el nivel de CO2. */
@@ -133,6 +135,7 @@ public class SesionSensorActivity extends AppCompatActivity {
         reportarIncidenciaTextView = findViewById(R.id.textView_reportar_incidencia);
         nombreSensorTextView = findViewById(R.id.textView_nombreSensor);
         verGraficasTextView = findViewById(R.id.textView_graficas);
+        imgSignal = findViewById(R.id.img_signal);
         ImageView cerrarSesionButton = findViewById(R.id.imageView_cerrarSesion);
 
         dataHolder = TrackingDataHolder.getInstance();
@@ -274,6 +277,24 @@ public class SesionSensorActivity extends AppCompatActivity {
             }
         });
 
+        // RSSI (Señal) ------------------------------------------------
+        // Actualizamos el icono de la señal según el valor RSSI (dBm)
+        dataHolder.rssiData.observe(this, rssi -> {
+            if (rssi != null) {
+                if (rssi >= -60) {
+                    imgSignal.setImageResource(R.drawable.ic_signal_bars_4); // Excelente
+                } else if (rssi >= -70) {
+                    imgSignal.setImageResource(R.drawable.ic_signal_bars_3); // Buena
+                } else if (rssi >= -80) {
+                    imgSignal.setImageResource(R.drawable.ic_signal_bars_2); // Regular
+                } else if (rssi >= -90) {
+                    imgSignal.setImageResource(R.drawable.ic_signal_bars_1); // Mala
+                } else {
+                    imgSignal.setImageResource(R.drawable.ic_signal_bars_0); // Muy mala/Sin señal
+                }
+            }
+        });
+
         // Alertas ----------------------------------------------------
         dataHolder.alertData.observe(this, alert -> {
             if(alert != null) alertaTextView.setText(alert); // si no es null muestra el texto de alerta
@@ -296,6 +317,7 @@ public class SesionSensorActivity extends AppCompatActivity {
                 } else {
                     estadoTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_red));
                     reportarIncidenciaTextView.setVisibility(View.VISIBLE);
+                    imgSignal.setImageResource(R.drawable.ic_signal_bars_0); // Si desconectado, señal 0
                 }
             }
         });

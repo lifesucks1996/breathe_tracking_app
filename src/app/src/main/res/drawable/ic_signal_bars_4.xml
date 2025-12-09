@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Barra 1 - Llena (Azul) -->
+    <path android:pathData="M2,20 L6,20 L6,16 L2,16 Z" android:strokeColor="#000000" android:strokeWidth="0.5" android:fillColor="#0E344C"/>
+    <!-- Barra 2 - Llena (Azul) -->
+    <path android:pathData="M8,20 L12,20 L12,12 L8,12 Z" android:strokeColor="#000000" android:strokeWidth="0.5" android:fillColor="#0E344C"/>
+    <!-- Barra 3 - Llena (Azul) -->
+    <path android:pathData="M14,20 L18,20 L18,8 L14,8 Z" android:strokeColor="#000000" android:strokeWidth="0.5" android:fillColor="#0E344C"/>
+    <!-- Barra 4 - Llena (Azul) -->
+    <path android:pathData="M20,20 L24,20 L24,4 L20,4 Z" android:strokeColor="#000000" android:strokeWidth="0.5" android:fillColor="#0E344C"/>
+</vector>

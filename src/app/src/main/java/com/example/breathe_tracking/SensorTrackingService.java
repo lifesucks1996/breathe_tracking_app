@@ -124,6 +124,12 @@ public class SensorTrackingService extends Service {
     private float lastUpdatedOzono = -999.0f;
     /** @brief Almacena el último valor de CO2 recibido. */
     private int lastUpdatedCo2 = -999;
+    
+    // --- NUEVO: Memoria para RSSI (Media Ponderada) ---
+    /** @brief Almacena el RSSI suavizado para evitar fluctuaciones bruscas. Inicialmente -999 (sin señal). */
+    private float smoothedRssi = -999.0f;
+    /** @brief Factor de suavizado para el filtro (0.0 - 1.0). Un valor bajo (ej: 0.1) hace que la barra se mueva lentamente. */
+    private static final float ALPHA_RSSI = 0.2f;
 
     // Conexión y referncias de firebase
     /** @brief Instancia principal de Firebase Firestore. */
@@ -175,6 +181,10 @@ public class SensorTrackingService extends Service {
             Log.e(ETIQUETA_LOG, "¡No se han recibido datos del sensor en 3 minutos!");
             // Mostrar que el sensor se ha desconectado
             dataHolder.estadoData.postValue("Desconectado");
+            // Reseteamos RSSI a muy bajo para indicar desconexión visualmente
+            dataHolder.rssiData.postValue(-999);
+            smoothedRssi = -999.0f; // Resetear el filtro también
+            
             //Guardamos la hora de desconexion para mostrar la alerta
             String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
             String message = currentTime + " - El sensor no está funcionando correctamente";
@@ -343,6 +353,19 @@ public class SensorTrackingService extends Service {
 
         // Reiniciamos el watchdog
         resetWatchdog();
+        
+        // --- NUEVO: Actualizamos RSSI (Media Ponderada) ---
+        int rawRssi = resultado.getRssi();
+        
+        if (smoothedRssi == -999.0f) {
+            smoothedRssi = rawRssi; // Primer valor, inicializamos
+        } else {
+            // Fórmula: NuevoPromedio = (alpha * NuevoValor) + ((1 - alpha) * PromedioAnterior)
+            smoothedRssi = (ALPHA_RSSI * rawRssi) + ((1.0f - ALPHA_RSSI) * smoothedRssi);
+        }
+        
+        dataHolder.rssiData.postValue((int) smoothedRssi);
+        // ----------------------------------------
 
         // Parseamos la trama
         ScanRecord scanRecord = resultado.getScanRecord();

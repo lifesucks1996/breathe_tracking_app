@@ -124,6 +124,16 @@
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toTopOf="@+id/textView8" />
 
+    <ImageView
+        android:id="@+id/img_signal"
+        android:layout_width="64dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_signal_0"
+        app:layout_constraintBottom_toBottomOf="@+id/view4"
+        app:layout_constraintEnd_toEndOf="@+id/view4" />
+
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
@@ -338,11 +348,10 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/drawable_bordes_botones"
         android:paddingLeft="25dp"
-        android:paddingTop="5dp"
+        android:paddingTop="10dp"
         android:paddingRight="25dp"
-        android:paddingBottom="5dp"
+        android:paddingBottom="10dp"
         android:text="Reportar incidencia"
-        android:textColor="@color/colorOnPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/view6"
         app:layout_constraintEnd_toEndOf="@+id/textView_incidencia"
@@ -357,6 +366,5 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView12"
         app:layout_constraintEnd_toEndOf="@+id/textView_co2"
         app:layout_constraintTop_toTopOf="@+id/textView12" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

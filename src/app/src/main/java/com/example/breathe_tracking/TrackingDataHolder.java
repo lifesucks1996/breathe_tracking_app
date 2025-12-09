@@ -36,6 +36,8 @@ public class TrackingDataHolder {
     public final MutableLiveData<Integer> co2Data = new MutableLiveData<>();
     /** @brief Contiene el porcentaje de batería del sensor. */
     public final MutableLiveData<Integer> bateriaData = new MutableLiveData<>();
+    /** @brief Contiene la intensidad de la señal recibida (RSSI) en dBm. */
+    public final MutableLiveData<Integer> rssiData = new MutableLiveData<>();
 
     // LiveData para el estado de conexión
     /** @brief Contiene el estado de conexión del sensor ("Conectado" o "Desconectado"). */
