@@ -11,6 +11,8 @@ import androidx.lifecycle.MutableLiveData;
  * @class TrackingDataHolder
  * @brief "Tablón de Anuncios" de la aplicación implementado como patrón Singleton.
  *
+ * Copyrigth © 2025
+ *
  * Su función principal es servir de puente seguro y reactivo para la comunicación de datos
  * entre el servicio de fondo (\ref SensorTrackingService) y la interfaz de usuario (\ref SesionSensorActivity).
  *

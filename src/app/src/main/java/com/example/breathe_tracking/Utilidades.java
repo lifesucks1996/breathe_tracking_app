@@ -15,6 +15,7 @@ import java.util.UUID;
 /**
  * @class Utilidades
  * @brief Colección de métodos utilitarios estáticos para conversiones de tipos de bajo nivel.
+ * Copyrigth © 2025
  */
 public class Utilidades {
 
@@ -22,6 +23,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte una cadena de texto en un array de bytes.
+     * (text:String) -> stringToBytes() -> bytes[]
      * @param texto La cadena de entrada.
      * @return El array de bytes que representa la cadena, usando la codificación por defecto del sistema.
      */
@@ -34,6 +36,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte una cadena de 16 caracteres en un objeto UUID.
+     * (uuid:String) -> stringToUUID() -> UUID
      * @note La cadena se divide en dos partes de 8 caracteres (Más Significativo y Menos Significativo).
      * @param uuid La cadena de 16 caracteres a convertir.
      * @return El objeto UUID resultante.
@@ -56,6 +59,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte un objeto UUID en una cadena de caracteres.
+     * (uuid:UUID) -> uuidToString() -> String
      * @param uuid El objeto UUID de entrada.
      * @return La cadena de caracteres resultante de concatenar los bytes del UUID.
      */
@@ -67,6 +71,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte un objeto UUID en una cadena hexadecimal (formato con ':').
+     * (uuid:UUID) -> uuidToHexString() -> String
      * @param uuid El objeto UUID de entrada.
      * @return La cadena hexadecimal que representa el UUID.
      */
@@ -78,6 +83,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte un array de bytes en una cadena de texto.
+     * (bytes:byte[]) -> bytesToString() -> String
      * @param bytes El array de bytes de entrada.
      * @return La cadena de texto resultante, tratando cada byte como un carácter.
      */
@@ -97,6 +103,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Combina dos valores 'long' (más significativos y menos significativos) en un único array de 16 bytes.
+     * (masSignificativos:long, menosSignificativos:long) -> dosLongToBytes() -> byte[]
      * @param masSignificativos El valor long que representa la parte superior (8 bytes).
      * @param menosSignificativos El valor long que representa la parte inferior (8 bytes).
      * @return Un array de bytes de 16 posiciones.
@@ -112,6 +119,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte un array de bytes en un valor entero (int) usando BigInteger.
+     * (bytes:byte[]) -> bytesToInt() -> int
      * @note Este método utiliza BigInteger para manejar la conversión, lo cual no es ideal para
      * lecturas de bajo nivel byte a byte o manejo de endianness específico.
      * @param bytes El array de bytes de entrada (máximo 4 bytes).
@@ -125,6 +133,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte un array de bytes en un valor long usando BigInteger.
+     * (bytes:byte[]) -> bytesToLong() -> long
      * @note Similar a \ref bytesToInt, utiliza BigInteger para la conversión.
      * @param bytes El array de bytes de entrada (máximo 8 bytes).
      * @return El valor long resultante.
@@ -137,6 +146,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte un array de bytes en un valor entero (int) con lógica de desplazamiento de bits y manejo de signo (complemento a 2).
+     * (bytes:byte[]) -> bytesToIntOK() -> int
      * @note Este método implementa una conversión byte a byte con desplazamiento (Big Endian)
      * y una lógica de manejo de signo que parece ser una adaptación manual para enteros con signo.
      * @param bytes El array de bytes de entrada (máximo 4 bytes).
@@ -171,6 +181,7 @@ public class Utilidades {
     // -------------------------------------------------------------------------------
     /**
      * @brief Convierte un array de bytes en una cadena hexadecimal, con los bytes separados por dos puntos (':').
+     * (bytes:byte[]) -> bytesToHexString() -> String
      * @param bytes El array de bytes de entrada.
      * @return La cadena hexadecimal formateada (ej: "aa:bb:cc:dd:").
      */

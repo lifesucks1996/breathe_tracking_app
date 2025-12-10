@@ -44,14 +44,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 
 
 /**
- * @class MainActivity
- * @brief Actividad principal de la aplicación.
  *
  * CLASE MAIN ACTIVITY - LOG IN
- * - Logica fake log in
- * - Lector QR
  *
  * Copyrigth © 2025
+ *
  * Fecha, autor, aportacion: Sandra Moll Cots, Permisos bluetooh, ubicacion y  comportamiento login
  * - Logica fake log in (30/10/25 - Sandra)
  * - Lector QR (16/11/25 - Rocio)
@@ -109,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     // --- Metodo Principal (onCreate) ----------------------------------------------------------------
     /**
      * @brief Método llamado al crear la actividad.
+     * (savedInstanceState:Bundle) -> onCreate() -> ()
      * @param savedInstanceState Si la actividad se está recreando, este Bundle contiene los datos de estado.
      */
     @Override
@@ -196,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
     // --- Intent para abrir la camara ------------------------------------------------------------------------------------
     /**
      * @brief Inicializa y lanza la actividad del escáner QR.
+     * () -> openCamera() -> ()
      */
     private void openCamera() {
         IntentIntegrator integrator = new IntentIntegrator(this);
@@ -217,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @brief Muestra el diálogo de autenticación biométrica (huella dactilar).
      * Si la autenticación es exitosa, intenta recuperar el último ID de sensor guardado para iniciar la sesión rápida.
+     * () -> mostrarAutenticacionBiometrica() -> ()
      */
     private void mostrarAutenticacionBiometrica() {
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @brief Guarda el código del sensor en SharedPreferences e inicia la \ref SesionSensorActivity.
      * Esta función se llama tras un login exitoso (manual o biométrico).
+     * (code:String) -> iniciarSesionExitosa() -> ()
      * @param code El código de sensor verificado.
      */
     private void iniciarSesionExitosa(String code) {
@@ -283,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * @brief Verifica asíncronamente si el código del sensor existe como documento en la colección 'sensores' de Firebase Firestore.
+     * (sensorCode:String) -> checkSensorCodeInDatabase() -> ()
      * @param sensorCode El código de sensor ingresado por el usuario.
      */
     private void checkSensorCodeInDatabase(String sensorCode) {

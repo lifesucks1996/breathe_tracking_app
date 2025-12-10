@@ -12,6 +12,8 @@ import java.util.Date;
  * @class LecturaSensor
  * @brief Clase modelo para subir las lecturas de los sensores a Firebase Firestore.
  *
+ * Copyrigth © 2025
+ *
  * Esta clase define la estructura de datos que se guarda como documento dentro de la subcolección
  * "mediciones" de cada sensor en Firestore, utilizada para mantener un historial de datos.
  *
@@ -46,6 +48,7 @@ public class LecturaSensor {
 
     /**
      * @brief Constructor con todos los campos de datos y contexto.
+     * (O3:float, temperatura:float, co2:int, bateria:int, ubicacion:String, estado:String) -> LecturaSensor() -> ()
      * @param O3 Nivel de ozono.
      * @param temperatura Nivel de temperatura.
      * @param co2 Nivel de dióxido de carbono.

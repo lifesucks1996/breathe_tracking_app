@@ -59,15 +59,16 @@ import java.util.Map;
  * @class SensorTrackingService
  * @brief Servicio de Android que se ejecuta en primer plano para monitorizar un sensor BLE ("rocio").
  *
- * - Muestra datos, incidencias, alertas, ubicacion, bateria baja
+ * Copyrigth © 2025
+ *
  * Este servicio centraliza las funcionalidades clave de la aplicación:
- * 1.  **Escaneo Bluetooth (BLE):** Búsqueda y recepción constante de la trama de datos del sensor.
- * 2.  **Decodificación de Trama:** Extracción de mediciones (O3, Temperatura, CO2, Batería) del payload del beacon.
- * 3.  **Seguimiento de Ubicación:** Obtención de coordenadas GPS y conversión a dirección legible.
- * 4.  **Publicación de Datos (LiveData):** Actualización del estado global de la aplicación a través de \ref TrackingDataHolder.
- * 5.  **Lógica de Alertas:** Envío de notificaciones de alta prioridad basadas en umbrales de medición (ej. CO2 > 1200).
- * 6.  **Vigilante de Conexión (Watchdog):** Mecanismo de temporizador para detectar la pérdida de conexión con el sensor.
- * 7.  **Subida de datos:** Sincronización de mediciones e historial con **Firebase Firestore**.
+ * 1.  **Escaneo Bluetooth (BLE):** Búsqueda y recepción constante de la trama de datos del sensor. (22/10-Rocio)
+ * 2.  **Decodificación de Trama:** Extracción de mediciones (O3, Temperatura, CO2, Batería) del payload del beacon.(29/10-Rocio)
+ * 3.  **Seguimiento de Ubicación:** Obtención de coordenadas GPS y conversión a dirección legible.(27/10-Sandra)
+ * 4.  **Publicación de Datos (LiveData):** Actualización del estado global de la aplicación a través de \ref TrackingDataHolder.(29/10-Sandra)
+ * 5.  **Lógica de Alertas:** Envío de notificaciones de alta prioridad basadas en umbrales de medición (ej. CO2 > 1200).(04/11-Sandra)
+ * 6.  **Vigilante de Conexión (Watchdog):** Mecanismo de temporizador para detectar la pérdida de conexión con el sensor.(06/11-Sandra)
+ * 7.  **Subida de datos:** Sincronización de mediciones e historial con **Firebase Firestore**.(17/11-Sandra)
  *
  * @extends Service
  */
@@ -213,6 +214,9 @@ public class SensorTrackingService extends Service {
     /**
      * @brief Se llama cada vez que el servicio es iniciado.
      * Gestiona la obtención del ID del sensor, inicia el servicio en primer plano (notificación) y arranca la monitorización.
+     *
+     * (intent:Intent, flags:int, startId:int) -> onStartCommand() -> START_STICKY
+     *
      * @param intent El Intent utilizado para iniciar el servicio, debe contener el ID del sensor.
      * @param flags Información adicional sobre cómo se inició el servicio.
      * @param startId Un ID único que representa esta solicitud de inicio.
@@ -275,6 +279,7 @@ public class SensorTrackingService extends Service {
     /**
      * @brief Se llama al destruir el servicio.
      * Libera recursos: detiene las actualizaciones de ubicación, el escaneo BLE y el watchdog.
+     * () -> onDestroy() -> ()
      */
     @Override
     public void onDestroy() {
@@ -292,6 +297,7 @@ public class SensorTrackingService extends Service {
     /**
      * @brief Inicializa el escáner BLE y comienza la búsqueda de dispositivos.
      * Configura el ScanCallback para procesar los resultados de escaneo.
+     * () -> inicializarYComenzarEscaneoBeacon() -> ()
      */
     private void inicializarYComenzarEscaneoBeacon() {
         BluetoothAdapter bta = BluetoothAdapter.getDefaultAdapter();
@@ -322,6 +328,7 @@ public class SensorTrackingService extends Service {
     // --- detener escaner de beacon ------------------------------------------------------------------
     /**
      * @brief Detiene el escaneo BLE si está activo.
+     * () -> detenerEscaneoBeacon() -> ()
      */
     private void detenerEscaneoBeacon() {
         if (elEscanner != null && callbackDelEscaneo != null && ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED) {
@@ -336,6 +343,7 @@ public class SensorTrackingService extends Service {
     /**
      * @brief Procesa el resultado del escaneo BLE, filtra el dispositivo "rocio" y decodifica el payload.
      * Actualiza el estado del DataHolder, verifica alertas y sube los datos a Firebase.
+     * (resultado:ScanResult) -> mostrarInformacionDispositivoBTLE() -> ()
      * @param resultado El objeto ScanResult devuelto por el escáner BLE.
      */
     private void mostrarInformacionDispositivoBTLE(ScanResult resultado) {
@@ -415,6 +423,7 @@ public class SensorTrackingService extends Service {
     //--- Alertas sobre medidas -----------------------------------------------------------------------
     /**
      * @brief Compara las mediciones recibidas con umbrales predefinidos y genera alertas (notificaciones y LiveData).
+     * (co2:int, ozono:float, temperatura:float, bateria:int) -> checkAlerts() -> ()
      * @param co2 Concentración de CO2 en ppm.
      * @param ozono Concentración de Ozono en ppm.
      * @param temperatura Temperatura en grados Celsius.
@@ -478,6 +487,7 @@ public class SensorTrackingService extends Service {
     // Crea una notificacion de alerta
     /**
      * @brief Muestra una notificación de alerta de alta prioridad.
+     * (title:String, message:String, notificationId:int) -> sendAlertNotification() -> ()
      * @param title Título de la notificación.
      * @param message Cuerpo del mensaje de la notificación.
      * @param notificationId ID único para esta alerta, permite cancelarla posteriormente.
@@ -499,6 +509,7 @@ public class SensorTrackingService extends Service {
     // Elimina una notificacion si ya no existe
     /**
      * @brief Cancela una notificación de alerta específica.
+     * (notificationId:int) -> cancelAlertNotification() -> ()
      * @param notificationId ID de la notificación a cancelar.
      */
     private void cancelAlertNotification(int notificationId) {
@@ -508,6 +519,7 @@ public class SensorTrackingService extends Service {
     // Crea los canales de notificaciones
     /**
      * @brief Crea los canales de notificación requeridos para el servicio y las alertas.
+     * () -> createNotificationChannels() -> ()
      */
     private void createNotificationChannels() {
         NotificationChannel serviceChannel = new NotificationChannel(CHANNEL_ID, "Sensor Tracking", NotificationManager.IMPORTANCE_LOW);
@@ -522,6 +534,7 @@ public class SensorTrackingService extends Service {
     // Obtiene la ubicación actual del teléfono
     /**
      * @brief Solicita actualizaciones periódicas de ubicación GPS al sistema.
+     * () -> startLocationUpdates() -> ()
      */
     private void startLocationUpdates() {
         LocationRequest locationRequest = LocationRequest.create();
@@ -536,6 +549,7 @@ public class SensorTrackingService extends Service {
     // Convierte las coordenadas (Lat/Lon) en una dirección (Calle, Ciudad)
     /**
      * @brief Convierte una coordenada Location (Latitud/Longitud) a una dirección legible (Calle, Ciudad) usando Geocoder.
+     * (location:android.location.Location) -> getAddressFromLocation() -> ()
      * @param location Objeto Location con las coordenadas GPS.
      */
     private void getAddressFromLocation(android.location.Location location) {
@@ -560,6 +574,7 @@ public class SensorTrackingService extends Service {
     /**
      * @brief Reinicia el temporizador del watchdog de conexión.
      * Si el servicio estaba en estado "Desconectado", al recibir datos lo cambia a "Conectado" y cancela la alerta.
+     * () -> resetWatchdog() -> ()
      */
     private void resetWatchdog() {
         watchdogHandler.removeCallbacks(watchdogRunnable);
@@ -575,6 +590,7 @@ public class SensorTrackingService extends Service {
     // --- fin vigilante de conexión -------------------------------------------------------------------
     /**
      * @brief Método requerido para servicios enlazados. No se usa, devuelve null.
+     * () -> onBind() -> ()
      */
     @Override
     public IBinder onBind(Intent intent) {
@@ -586,6 +602,7 @@ public class SensorTrackingService extends Service {
     /**
      * @brief Sube las mediciones y el estado de contexto (ubicación, conexión) a Firebase Firestore.
      * Realiza dos operaciones: guardar un registro en la colección 'mediciones' (historial) y actualizar los campos directos del documento del sensor (última lectura).
+     * (o3_ppm:Float, temp_c:Float, co2_ppm:Integer, bat_porc:Integer, ubicacion:String, estado:String) -> subirDatosAFirebase() -> ()
      * @param o3_ppm Concentración de Ozono.
      * @param temp_c Temperatura.
      * @param co2_ppm Concentración de CO2.

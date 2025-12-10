@@ -23,8 +23,13 @@ import java.util.Map;
  * @class EnvioIncidenciasActivity
  * @brief Activity responsable de la interfaz y lógica para reportar una incidencia a través de Firebase Firestore.
  *
+ * Copyrigth © 2025
+ *
  * Esta actividad precarga el formulario con información contextual sobre el sensor desconectado
  * (nombre, ubicación, última conexión) y gestiona la subida de la incidencia a la colección 'incidencias' de Firebase.
+ * 30/10 - Sandra: creacion clase y autocomplete
+ * 25/11 - Rocio: subida a firebase
+ *
  *
  * @extends AppCompatActivity
  */

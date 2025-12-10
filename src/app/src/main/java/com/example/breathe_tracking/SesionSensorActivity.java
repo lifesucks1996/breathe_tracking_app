@@ -30,6 +30,8 @@ import java.util.Locale;
  * @class SesionSensorActivity
  * @brief Clase que representa la actividad de la sesión del sensor.
  *
+ * Copyrigth © 2025
+ *
  * Se encarga de:
  * - Mostrar datos en tiempo real (CO2, Ozono, Temp, Batería, Ubicación) obtenidos del \ref SensorTrackingService.
  * - Utilizar \ref TrackingDataHolder (LiveData) para observar los cambios en las mediciones.
@@ -42,7 +44,6 @@ import java.util.Locale;
 
 /**
  * Clase que representa la actividad de la sesión del sensor.
- * Copyrigth © 2025
  * - Muestra datos, incidencias, alertas, ubicacion, bateria baja (11/11/25 - Sandra)
  * - Conexión con base de datos (19/11/25 - Rocio)
  */
@@ -110,6 +111,7 @@ public class SesionSensorActivity extends AppCompatActivity {
     /**
      * @brief Método llamado al crear la actividad.
      * Inicializa la interfaz de usuario, obtiene el ID del sensor, configura los listeners y los observadores.
+     * (savedInstanceState:Bundle) -> onCreate() -> ()
      * @param savedInstanceState Si la actividad se está recreando, este Bundle contiene los datos de estado.
      */
     @Override
@@ -211,6 +213,7 @@ public class SesionSensorActivity extends AppCompatActivity {
      * @brief Inicializa los observadores de LiveData (\ref TrackingDataHolder).
      * Cada observador actualiza el TextView o la ProgressBar correspondiente con los datos más recientes del sensor.
      * También implementa la lógica de rangos de color y visibilidad.
+     * () -> setupObservers() -> ()
      */
     private void setupObservers() {
 
@@ -329,6 +332,7 @@ public class SesionSensorActivity extends AppCompatActivity {
     /**
      * @brief Verifica si todos los permisos necesarios (Ubicación, Bluetooth) están concedidos.
      * Si no, lanza la solicitud de permisos; si sí, inicia el servicio de rastreo.
+     * () -> checkPermissionsAndStartService() -> ()
      */
     private void checkPermissionsAndStartService() {
         String[] permissionsToRequest = {
@@ -357,6 +361,7 @@ public class SesionSensorActivity extends AppCompatActivity {
     /**
      * @brief Inicia el servicio de rastreo (\ref SensorTrackingService) como un servicio en primer plano.
      * Pasa el \p sensorId al servicio para que pueda establecer su DocumentReference en Firestore.
+     * () -> startTrackingService() -> ()
      */
     private void startTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
@@ -367,8 +372,10 @@ public class SesionSensorActivity extends AppCompatActivity {
     }
 
     // Metodo para parar el servicio de tracking --------------------------
+
     /**
      * @brief Detiene el servicio de rastreo (\ref SensorTrackingService).
+     * () -> stopTrackingService() -> ()
      */
     private void stopTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
