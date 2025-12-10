@@ -26,6 +26,17 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @class Información Activity
+ * @brief Actividad sobre información resumen sobre la exposicion diaria a los gases
+ *
+ *
+ * Copyrigth © 2025
+ * Fecha, autor, aportacion:
+ * - Sandra Moll Cots (27-11-2025) Funcionamiento básico graficas, spiner con gases y evaluacion del aire
+ * - Rocio Piquer (27-11-2025) Conexion base de datos para mostrar datos en grafica
+ *
+ */
 public class InformacionActivity extends AppCompatActivity {
 
     private LineChart chart;

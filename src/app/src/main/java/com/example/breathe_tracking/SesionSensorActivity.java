@@ -42,7 +42,8 @@ import java.util.Locale;
 
 /**
  * Clase que representa la actividad de la sesión del sensor.
- * - Muestra datos, incidencias, alertas, ubicacion, bateria baja
+ * Copyrigth © 2025
+ * - Muestra datos, incidencias, alertas, ubicacion, bateria baja (11/11/25 - Sandra)
  * - Conexión con base de datos (19/11/25 - Rocio)
  */
 

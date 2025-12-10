@@ -59,6 +59,7 @@ import java.util.Map;
  * @class SensorTrackingService
  * @brief Servicio de Android que se ejecuta en primer plano para monitorizar un sensor BLE ("rocio").
  *
+ * - Muestra datos, incidencias, alertas, ubicacion, bateria baja
  * Este servicio centraliza las funcionalidades clave de la aplicación:
  * 1.  **Escaneo Bluetooth (BLE):** Búsqueda y recepción constante de la trama de datos del sensor.
  * 2.  **Decodificación de Trama:** Extracción de mediciones (O3, Temperatura, CO2, Batería) del payload del beacon.

@@ -44,7 +44,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 
 
 /**
- * Nombre: Sandra Moll Cots
+ * @class MainActivity
+ * @brief Actividad principal de la aplicación.
  *
  * CLASE MAIN ACTIVITY - LOG IN
  * - Logica fake log in
