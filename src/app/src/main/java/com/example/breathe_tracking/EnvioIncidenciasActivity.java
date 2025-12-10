@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -68,9 +70,9 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
 
         // --- Lógica para rellenar los campos de texto ---
         // rellenamos automaticamente el asunto y el mensaje
-        String titulo = String.format("AVISO:'%s' Desconectado", sensorName);
+        String titulo = String.format("AVISO: Sensor %s  Desconectado", sensorName);
         String mensaje = String.format(Locale.getDefault(),
-                "El '%s' de la zona '%s' ha dejado de funcionar. La última lectura se recibió a las %s. Por favor, compruebe la conexión o si existe algún problema con el sensor.",
+                "El sensor %s de la zona %s ha dejado de funcionar. La última lectura se recibió a las %s. Por favor, compruebe la conexión o si existe algún problema con el sensor.",
                 sensorName, ubicacion, ultimaConexion);
 
         tituloEditText.setText(titulo);
@@ -92,10 +94,32 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
             String tituloIncidencia = tituloEditText.getText().toString();
             String mensajeIncidencia = mensajeEditText.getText().toString();
 
-            // ------ Implemetnacion Firebase ---------------------------
+            // 0. Validación básica antes de enviar nada
+            if (tituloIncidencia.isEmpty() || mensajeIncidencia.isEmpty()) {
+                Toast.makeText(this, "Por favor, rellena título y mensaje", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // ------ Implementación Envío de Correo (JavaMail) -----------------
+            /** @brief Dirección de correo del administrador que recibirá la alerta. */
+            String emailDestino = "sandralovesel@gmail.com";
+
+            /** @brief Asunto del correo concatenando el prefijo fijo y el título del usuario. */
+            String asuntoCorreo = tituloIncidencia;
+
+            /** @brief Instancia de la clase asíncrona encargada de la conexión SMTP con el 'Robot'. */
+            JavaMailAPI mailSender = new JavaMailAPI(this, emailDestino, asuntoCorreo, mensajeIncidencia);
+
+            /** @brief Ejecuta el envío del correo electrónico en segundo plano. */
+            mailSender.execute();
+            // ------------------------------------------------------------------
+
+
+            // ------ Implementación Firebase ---------------------------
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             Map<String, Object> incidencia = new HashMap<>();
-            /** @brief Código o nombre del sensor afectado. */
+
+            /** @brief Código o nombre del sensor afectado (asegúrate de tener esta variable definida). */
             incidencia.put("sensor_id", sensorName);
             /** @brief Título de la incidencia (manual o precargado). */
             incidencia.put("titulo", tituloIncidencia);
@@ -107,27 +131,30 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
             incidencia.put("estado", "PENDIENTE");
             /** @brief Indicador de si la incidencia ha sido resuelta. */
             incidencia.put("resuelta", false);
-            /** @brief Timestamp del servidor para registrar la fecha de envío. */
-            incidencia.put("fecha", FieldValue.serverTimestamp());
+            /** @brief Timestamp del servidor para registrar la fecha de envío exacta. */
+            incidencia.put("fecha", com.google.firebase.firestore.FieldValue.serverTimestamp());
             // ------------------------------------------
 
             // Sube el documento a la colección 'incidencias'
             db.collection("incidencias").add(incidencia)
                     .addOnSuccessListener(documentReference -> {
-                        // ... (Manejo del éxito)
-                        new AlertDialog.Builder(this)
+                        //PARA EL CAMBIO DE BOTON DE INCIDENCIAS
+                        setResult(RESULT_OK);
+                        /** @brief Muestra un diálogo de éxito y cierra la actividad al aceptar. */
+                        new androidx.appcompat.app.AlertDialog.Builder(this)
                                 .setTitle("Enviado")
-                                .setMessage("Mensaje enviado correctamente al administrador")
+                                .setMessage("Incidencia registrada en el sistema y correo enviado al administrador.")
                                 .setPositiveButton("Aceptar", (dialog, which) -> {
                                     finish();
                                 })
+                                .setCancelable(false)
                                 .show();
                     })
                     .addOnFailureListener(e -> {
-                        // ... (Manejo del fallo)
-                        new AlertDialog.Builder(this)
+                        /** @brief Manejo de errores en caso de fallo de conexión con Firebase. */
+                        new androidx.appcompat.app.AlertDialog.Builder(this)
                                 .setTitle("Error de Envío")
-                                .setMessage("No se pudo enviar la incidencia. Compruebe su conexión a Internet. Error: " + e.getMessage())
+                                .setMessage("No se pudo guardar la incidencia en la base de datos. Error: " + e.getMessage())
                                 .setPositiveButton("Aceptar", null)
                                 .show();
                     });

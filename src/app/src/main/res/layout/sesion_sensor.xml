@@ -352,6 +352,7 @@
         android:paddingRight="25dp"
         android:paddingBottom="10dp"
         android:text="Reportar incidencia"
+        android:textColor="@color/colorOnPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/view6"
         app:layout_constraintEnd_toEndOf="@+id/textView_incidencia"
