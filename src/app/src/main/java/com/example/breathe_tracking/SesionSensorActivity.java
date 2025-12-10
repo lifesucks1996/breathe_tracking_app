@@ -6,6 +6,7 @@
 package com.example.breathe_tracking;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -91,6 +92,34 @@ public class SesionSensorActivity extends AppCompatActivity {
     private String sensorId;
 
 
+    /**
+     * @brief Lanzador de actividad para gestionar el resultado del reporte de incidencias.
+     *
+     * Registra un callback para la actividad de envío de incidencias (\ref EnvioIncidenciasActivity).
+     * Escucha el código de resultado (resultCode) al finalizar dicha actividad.
+     *
+     * Si el resultado es Activity.RESULT_OK:
+     * - Actualiza el texto del botón a "Incidencia reportada".
+     * - Cambia el color del texto a gris para indicar visualmente que está deshabilitado.
+     * - Desactiva la interacción (setClickable(false) y setEnabled(false)) para prevenir envíos duplicados.
+     * - Muestra un mensaje Toast de confirmación al usuario.
+     */
+    private final ActivityResultLauncher<Intent> reportarIncidenciaLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    // Aquí cambiamos el aspecto del botón cuando volvemos
+                    reportarIncidenciaTextView.setText("Incidencia reportada");
+                    reportarIncidenciaTextView.setTextColor(Color.LTGRAY);
+                    reportarIncidenciaTextView.setClickable(false);
+                    reportarIncidenciaTextView.setEnabled(false);
+
+                    Toast.makeText(this, "Incidencia registrada correctamente", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
+
+
     // --- Permisos ------------------------------------------------------------------------------------------------------------
     /**
      * @brief Launcher para solicitar múltiples permisos de la aplicación.
@@ -174,7 +203,7 @@ public class SesionSensorActivity extends AppCompatActivity {
             Intent intent = new Intent(SesionSensorActivity.this, EnvioIncidenciasActivity.class);
             
             // Recopilamos los datos necesarios de los TextViews
-            String sensorName = nombreSensorTextView.getText().toString();
+            String sensorName = sensorId;
             String ubicacion = ubicacionTextView.getText().toString();
             String ultimaConexion = ultimaConexionTextView.getText().toString();
 
@@ -182,8 +211,8 @@ public class SesionSensorActivity extends AppCompatActivity {
             intent.putExtra("SENSOR_NAME", sensorName);
             intent.putExtra("UBICACION", ubicacion);
             intent.putExtra("ULTIMA_CONEXION", ultimaConexion);
-            
-            startActivity(intent);
+
+            reportarIncidenciaLauncher.launch(intent);
         });
 
         /**
