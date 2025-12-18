@@ -1,7 +1,9 @@
 /**
  * @file EnvioIncidenciasActivity.java
- * @brief Actividad para permitir al usuario reportar incidencias relativas a la desconexión de un sensor.
+ * @brief Actividad para el reporte de incidencias de sensores IoT.
  * @package com.example.breathe_tracking
+ *
+ * @copyright Copyright © 2025
  */
 package com.example.breathe_tracking;
 
@@ -23,22 +25,34 @@ import java.util.Map;
 
 /**
  * @class EnvioIncidenciasActivity
- * @brief Activity responsable de la interfaz y lógica para reportar una incidencia a través de Firebase Firestore.
- *
- * Copyrigth © 2025
- *
- * Esta actividad precarga el formulario con información contextual sobre el sensor desconectado
- * (nombre, ubicación, última conexión) y gestiona la subida de la incidencia a la colección 'incidencias' de Firebase.
- * 30/10 - Sandra: creacion clase y autocomplete
- * 25/11 - Rocio: subida a firebase
- *
- *
+ * @brief Gestiona la interfaz y lógica para reportar incidencias de desconexión.
  * @extends AppCompatActivity
+ *
+ * @details
+ * Esta actividad se encarga de:
+ * 1. Recibir datos del sensor fallido via Intent.
+ * 2. Pre-cargar un formulario con un mensaje y título sugerido.
+ * 3. Enviar un correo electrónico al administrador usando @ref JavaMailAPI.
+ * 4. Registrar la incidencia en la colección 'incidencias' de Firebase Firestore.
+ *
+ * @author Sandra (Creación y autocomplete)
+ * @author Rocio (Subida a Firebase)
+ * @date 30/10/2024 (Creación)
+ * @date 25/11/2024 (Integración Firebase)
+ *
+ * @see JavaMailAPI
  */
 public class EnvioIncidenciasActivity extends AppCompatActivity {
     /**
-     * @brief Método llamado al crear la actividad.
-     * @param savedInstanceState Si la actividad se está recreando, este Bundle contiene los datos de estado más recientes.
+     * @brief Método de inicialización de la actividad.
+     *
+     * Se encarga de:
+     * - Vincular las vistas del layout.
+     * - Recuperar datos del Intent (SENSOR_NAME, UBICACION, ULTIMA_CONEXION).
+     * - Autocompletar los campos de texto con un mensaje preformateado.
+     * - Configurar los listeners para los botones de Aceptar y Cancelar.
+     *
+     * @param savedInstanceState Estado guardado de la aplicación (si existe).
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +60,22 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
         setContentView(R.layout.envio_incidencias);
 
         // Encontrar las vistas
-        /** @brief Campo de texto para el título de la incidencia. */
+        // Campo de texto para el título de la incidencia.
         EditText tituloEditText = findViewById(R.id.editText_tituloIncidencia);
-        /** @brief Campo de texto para el mensaje detallado de la incidencia. */
+        // Campo de texto para el mensaje detallado de la incidencia.
         EditText mensajeEditText = findViewById(R.id.editText_mensaje);
-        /** @brief Botón para enviar la incidencia. */
+        // Botón para enviar la incidencia.
         Button acceptButton = findViewById(R.id.button_aceptar);
-        /** @brief Botón para cancelar y cerrar la actividad. */
+        // Botón para cancelar y cerrar la actividad.
         Button cancelButton = findViewById(R.id.button_cancelar);
 
         // --- Lógica para rellenar los datos automáticamente ---
         Intent intent = getIntent();
-        /** @brief Nombre o código del sensor recibido de la actividad anterior. */
+        // Nombre o código del sensor recibido de la actividad anterior.
         String sensorName = intent.getStringExtra("SENSOR_NAME");
-        /** @brief Ubicación actual del sensor (coordenadas convertidas a dirección). */
+        // Ubicación actual del sensor (coordenadas convertidas a dirección).
         String ubicacion = intent.getStringExtra("UBICACION");
-        /** @brief Cadena de texto que indica la hora de la última conexión. */
+        // Cadena de texto que indica la hora de la última conexión.
         String ultimaConexion = intent.getStringExtra("ULTIMA_CONEXION");
 
         if (ultimaConexion != null) {
@@ -69,7 +83,7 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
         }
 
         // --- Lógica para rellenar los campos de texto ---
-        // rellenamos automaticamente el asunto y el mensaje
+        // Rellenamos automaticamente el asunto y el mensaje
         String titulo = String.format("AVISO: Sensor %s  Desconectado", sensorName);
         String mensaje = String.format(Locale.getDefault(),
                 "El sensor %s de la zona %s ha dejado de funcionar. La última lectura se recibió a las %s. Por favor, compruebe la conexión o si existe algún problema con el sensor.",
@@ -79,17 +93,13 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
         mensajeEditText.setText(mensaje);
 
         // --- Lógica de los botones ---
-        /**
-         * @brief Listener para el botón Cancelar. Cierra la actividad.
-         */
+        // Listener para el botón Cancelar. Cierra la actividad.
         cancelButton.setOnClickListener(v -> {
             finish();
         });
 
-        /**
-         * @brief Listener para el botón Aceptar (Enviar).
-         * Recoge los datos, crea un mapa de incidencia y lo sube a Firebase Firestore.
-         */
+        //Listener para el botón Aceptar (Enviar).
+        // Recoge los datos, crea un mapa de incidencia y lo sube a Firebase Firestore
         acceptButton.setOnClickListener(v -> {
             String tituloIncidencia = tituloEditText.getText().toString();
             String mensajeIncidencia = mensajeEditText.getText().toString();
@@ -101,16 +111,16 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
             }
 
             // ------ Implementación Envío de Correo (JavaMail) -----------------
-            /** @brief Dirección de correo del administrador que recibirá la alerta. */
+            // Dirección de correo del administrador que recibirá la alerta. */
             String emailDestino = "sandralovesel@gmail.com";
 
-            /** @brief Asunto del correo concatenando el prefijo fijo y el título del usuario. */
+            // Asunto del correo concatenando el prefijo fijo y el título del usuario. */
             String asuntoCorreo = tituloIncidencia;
 
-            /** @brief Instancia de la clase asíncrona encargada de la conexión SMTP con el 'Robot'. */
+            // Instancia de la clase asíncrona encargada de la conexión SMTP con el 'Robot'. */
             JavaMailAPI mailSender = new JavaMailAPI(this, emailDestino, asuntoCorreo, mensajeIncidencia);
 
-            /** @brief Ejecuta el envío del correo electrónico en segundo plano. */
+            // Ejecuta el envío del correo electrónico en segundo plano. */
             mailSender.execute();
             // ------------------------------------------------------------------
 
@@ -119,19 +129,19 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             Map<String, Object> incidencia = new HashMap<>();
 
-            /** @brief Código o nombre del sensor afectado (asegúrate de tener esta variable definida). */
+            // Código o nombre del sensor afectado (asegúrate de tener esta variable definida). */
             incidencia.put("sensor_id", sensorName);
-            /** @brief Título de la incidencia (manual o precargado). */
+            // Título de la incidencia (manual o precargado). */
             incidencia.put("titulo", tituloIncidencia);
-            /** @brief Contenido detallado de la incidencia (manual o precargado). */
+            // Contenido detallado de la incidencia (manual o precargado). */
             incidencia.put("mensaje", mensajeIncidencia);
-            /** @brief Ubicación registrada del sensor en el momento de la incidencia. */
+            // Ubicación registrada del sensor en el momento de la incidencia. */
             incidencia.put("ubicacion", ubicacion);
-            /** @brief Estado inicial de la incidencia. */
+            // Estado inicial de la incidencia. */
             incidencia.put("estado", "PENDIENTE");
-            /** @brief Indicador de si la incidencia ha sido resuelta. */
+            // Indicador de si la incidencia ha sido resuelta. */
             incidencia.put("resuelta", false);
-            /** @brief Timestamp del servidor para registrar la fecha de envío exacta. */
+            // Timestamp del servidor para registrar la fecha de envío exacta. */
             incidencia.put("fecha", com.google.firebase.firestore.FieldValue.serverTimestamp());
             // ------------------------------------------
 
@@ -140,7 +150,7 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
                     .addOnSuccessListener(documentReference -> {
                         //PARA EL CAMBIO DE BOTON DE INCIDENCIAS
                         setResult(RESULT_OK);
-                        /** @brief Muestra un diálogo de éxito y cierra la actividad al aceptar. */
+                        // Muestra un diálogo de éxito y cierra la actividad al aceptar. */
                         new androidx.appcompat.app.AlertDialog.Builder(this)
                                 .setTitle("Enviado")
                                 .setMessage("Incidencia registrada en el sistema y correo enviado al administrador.")
@@ -151,7 +161,7 @@ public class EnvioIncidenciasActivity extends AppCompatActivity {
                                 .show();
                     })
                     .addOnFailureListener(e -> {
-                        /** @brief Manejo de errores en caso de fallo de conexión con Firebase. */
+                        // Manejo de errores en caso de fallo de conexión con Firebase. */
                         new androidx.appcompat.app.AlertDialog.Builder(this)
                                 .setTitle("Error de Envío")
                                 .setMessage("No se pudo guardar la incidencia en la base de datos. Error: " + e.getMessage())

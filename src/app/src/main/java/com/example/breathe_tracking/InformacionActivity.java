@@ -1,3 +1,10 @@
+/**
+ * @file InformacionActivity.java
+ * @brief Actividad para la visualización gráfica de datos históricos de contaminantes.
+ * @package com.example.breathe_tracking
+ * @copyright Copyright © 2025
+ */
+
 package com.example.breathe_tracking;
 
 import android.content.Intent;
@@ -35,16 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-/**
- * Copyrigth © 2025
- *
- * Esta actividad carga los datos de firebase para mostrar la evolución de cada contaminante en un periodo de 24h
- * recogiendo los datos de la colección "datos_grafico".
- * 27/11 - Sandra: creacion actividad y xml
- * 06/12 - Rocio: conexión con base de datos
- */
-
 
 /**
  * @class GasData
@@ -110,28 +107,42 @@ class DecimalValueFormatter extends ValueFormatter {
 
 /**
  * @class InformacionActivity
- * @brief Muestra el gráfico de datos históricos (CO2 y O3) vinculados al sensor
- * que inició la sesión, leídos de Firebase Firestore.
+ * @brief Muestra el gráfico de datos históricos (CO2, O3, etc.) leídos de Firebase Firestore.
+ * @extends AppCompatActivity
  *
- * Copyrigth © 2025
+ * @details
+ * Esta actividad gestiona la visualización de la evolución de contaminantes en un periodo de 24 horas.
+ * Su funcionamiento se divide en:
+ * 1. Conexión a Firebase Firestore para recuperar la colección 'datos_grafico'.
+ * 2. Procesamiento de arrays de datos (un array por contaminante) en una lista de objetos @ref GasData.
+ * 3. Renderizado de un gráfico de líneas interactivo usando la librería MPAndroidChart.
+ * 4. Evaluación dinámica del riesgo (lógica de "semáforo" y carita) según los umbrales de cada gas.
  *
+ * @author Sandra (Creación actividad y XML)
+ * @author Rocio (Conexión con Base de Datos y lógica gráfica)
+ * @date 27/11/2024 (Inicio)
+ * @date 06/12/2024 (Integración Firebase)
  */
 public class InformacionActivity extends AppCompatActivity {
 
     // --- VARIABLES DE FIREBASE ---
     private FirebaseFirestore db;
-    private String sensorId;
+
+    // Lista que almacena los ddatos procesados
     private List<GasData> historicalData = new ArrayList<>();
     // -----------------------------
-
-    // ALMACENA EL TIMESTAMP DE MEDIANOCHE DE HOY
-    private long midnightTimestamp;
 
     private LineChart chart;
     private Spinner spinner;
     private ImageView imgCarita;
     private ImageView imgBackArrow;
     private TextView txtExplicacion;
+
+    /**
+     * @brief Método de creación de la actividad.
+     * Inicializa las vistas, configura el Spinner de selección de gas y lanza la carga de datos.
+     * @param savedInstanceState Estado guardado de la instancia.
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +190,11 @@ public class InformacionActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief Consulta Firestore para obtener los datos históricos del sensor actual
+     * @brief Consulta Firestore para obtener los arrays de datos históricos.
+     *
+     * Lee la colección 'datos_grafico', donde cada documento representa un gas
+     * y contiene un array 'valor' con 24 mediciones.
+     * Transforma estos arrays horizontales en una lista vertical de objetos @ref GasData.
      */
     private void cargarDatosDeFirebase() {
 
@@ -252,6 +267,10 @@ public class InformacionActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * @brief Configuración general de estilo para el componente LineChart.
+     * Habilita zoom, touch y configura ejes básicos.
+     */
 
     private void configurarEstiloGrafico() {
         chart.getDescription().setEnabled(false);
@@ -273,7 +292,7 @@ public class InformacionActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief Configura el Eje X para mostrar 24 horas completas (0 a 23).
+     * @brief Configura el Eje X para mostrar específicamente 24 horas (00:00 - 23:00).
      */
     private void configurarEjeXDemo() {
         XAxis xAxis = chart.getXAxis();
@@ -292,7 +311,15 @@ public class InformacionActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief Carga y dibuja los datos del gas seleccionado.
+     * @brief Carga y dibuja los datos del gas seleccionado en el Spinner.
+     *
+     * Este método se encarga de:
+     * - Extraer los valores correspondientes de `historicalData`.
+     * - Definir colores, unidades y límites de seguridad específicos para cada gas.
+     * - Dibujar las líneas límite (LimitLines) en el gráfico.
+     * - Llamar a @ref evaluarExposicion para actualizar la interfaz.
+     *
+     * @param position Índice del gas seleccionado en el Spinner (0=O3, 1=CO, etc).
      */
     private void cargarDatosGas(int position) {
 
@@ -410,6 +437,20 @@ public class InformacionActivity extends AppCompatActivity {
         evaluarExposicion(entries, limiteSeguro, limitePeligro);
     }
 
+    /**
+     * @brief Evalúa los datos mostrados y actualiza el icono y texto de estado.
+     *
+     * Lógica de clasificación:
+     * - **Crítico (Face Sad):** 4 o más puntos superan el límite de peligro.
+     * - **Advertencia (Face Neutral):** Al menos 1 punto supera el límite de peligro (pico aislado).
+     * - **Alerta Moderada (Face Neutral):** 10 o más puntos superan el límite seguro.
+     * - **Aceptable (Face Happy):** Algunos puntos (1-9) superan el límite seguro.
+     * - **Óptimo (Face Happy):** Todos los valores están por debajo del límite seguro.
+     *
+     * @param datos Lista de entradas (puntos) del gráfico actual.
+     * @param limiteSeguro Valor umbral de seguridad.
+     * @param limitePeligro Valor umbral de peligro.
+     */
     private void evaluarExposicion(List<Entry> datos, float limiteSeguro, float limitePeligro) {
         int contadorPeligroso = 0;
         int contadorRiesgo = 0;
