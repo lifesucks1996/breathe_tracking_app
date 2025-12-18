@@ -1,7 +1,8 @@
 /**
  * @file LecturaSensor.java
- * @brief Modelo de datos (POJO) para almacenar una lectura individual del sensor en la colección de historial de Firebase Firestore.
+ * @brief Modelo de datos (POJO) para la persistencia de lecturas en el historial.
  * @package com.example.breathe_tracking
+ * @copyright Copyright © 2025
  */
 package com.example.breathe_tracking;
 
@@ -12,10 +13,12 @@ import java.util.Date;
  * @class LecturaSensor
  * @brief Clase modelo para subir las lecturas de los sensores a Firebase Firestore.
  *
- * Copyrigth © 2025
- *
  * Esta clase define la estructura de datos que se guarda como documento dentro de la subcolección
  * "mediciones" de cada sensor en Firestore, utilizada para mantener un historial de datos.
+ *
+ * @details
+ * Esta clase actúa como un Data Transfer Object (DTO). Define la estructura exacta de los documentos
+ * que se almacenan en la subcolección `mediciones` de cada sensor.
  *
  * @note El campo 'fecha' está anotado con @ServerTimestamp para asegurar que el servidor de Firebase
  * registre la hora exacta de la subida, garantizando precisión en el historial.
@@ -36,13 +39,20 @@ public class LecturaSensor {
 
     /**
      * @brief Timestamp del servidor que registra la hora exacta en la que la lectura fue subida a Firestore.
+     *
+     * @note La anotación `@ServerTimestamp` indica a Firestore que debe rellenar este campo
+     * con la hora del servidor en el momento de la escritura, garantizando cronología exacta
+     * independiente de la hora del dispositivo móvil.
+     *
      * @see com.google.firebase.firestore.ServerTimestamp
      */
     @ServerTimestamp
     public Date fecha;
 
     /**
-     * @brief Constructor vacío requerido por Firebase para la deserialización automática.
+     * @brief Constructor vacío.
+     * @warning Este constructor es **obligatorio** para que Firebase Firestore pueda
+     * deserializar los documentos de la base de datos en objetos de Java automáticamente.
      */
     public LecturaSensor() {}
 

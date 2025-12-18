@@ -1,8 +1,10 @@
 /**
  * @file SensorTrackingService.java
- * @brief Implementa el servicio principal en segundo plano (Foreground Service) para el seguimiento del sensor.
+ * @brief Implementa el servicio en primer plano para la gestión del ciclo de vida del rastreo del sensor.
  * @package com.example.breathe_tracking
+ * @copyright Copyright © 2025
  */
+
 package com.example.breathe_tracking;
 
 import android.Manifest;
@@ -57,20 +59,24 @@ import java.util.Map;
 
 /**
  * @class SensorTrackingService
- * @brief Servicio de Android que se ejecuta en primer plano para monitorizar un sensor BLE ("rocio").
- *
- * Copyrigth © 2025
- *
- * Este servicio centraliza las funcionalidades clave de la aplicación:
- * 1.  **Escaneo Bluetooth (BLE):** Búsqueda y recepción constante de la trama de datos del sensor. (22/10-Rocio)
- * 2.  **Decodificación de Trama:** Extracción de mediciones (O3, Temperatura, CO2, Batería) del payload del beacon.(29/10-Rocio)
- * 3.  **Seguimiento de Ubicación:** Obtención de coordenadas GPS y conversión a dirección legible.(27/10-Sandra)
- * 4.  **Publicación de Datos (LiveData):** Actualización del estado global de la aplicación a través de \ref TrackingDataHolder.(29/10-Sandra)
- * 5.  **Lógica de Alertas:** Envío de notificaciones de alta prioridad basadas en umbrales de medición (ej. CO2 > 1200).(04/11-Sandra)
- * 6.  **Vigilante de Conexión (Watchdog):** Mecanismo de temporizador para detectar la pérdida de conexión con el sensor.(06/11-Sandra)
- * 7.  **Subida de datos:** Sincronización de mediciones e historial con **Firebase Firestore**.(17/11-Sandra)
- *
+ * @brief Servicio en primer plano (Foreground Service) que actúa como el núcleo de procesamiento de datos.
  * @extends Service
+ *
+ * @details
+ * Este servicio es el componente central de la aplicación. Se ejecuta independientemente de la UI
+ * para garantizar que la recolección de datos no se detenga si el usuario minimiza la app.
+ *
+ *
+ *
+ * **Responsabilidades:**
+ * 1.  **Orquestación BLE:** Escanea y filtra dispositivos con nombre "rocio". Decodifica la trama de bytes (byte shifting).
+ * 2.  **Contexto Geoespacial:** Enriquece los datos del sensor con coordenadas GPS y dirección postal (Geocoding).
+ * 3.  **Lógica de Negocio:** Aplica umbrales de seguridad para generar alertas (ej: CO2 > 1200 ppm).
+ * 4.  **Persistencia:** Sincroniza el estado actual y el historial de mediciones con Firebase Firestore.
+ * 5.  **Watchdog:** Monitoriza la "salud" de la conexión. Si no llegan paquetes en 3 minutos, marca el sensor como desconectado.
+ *
+ * @author Rocio (Lógica BLE, Decodificación - 22/10, 29/10)
+ * @author Sandra (Ubicación, LiveData, Alertas, Watchdog, Firebase - 27/10, 29/10, 04/11, 06/11, 17/11)
  */
 
 public class SensorTrackingService extends Service {
@@ -125,7 +131,7 @@ public class SensorTrackingService extends Service {
     /** @brief Almacena el último valor de CO2 recibido. */
     private int lastUpdatedCo2 = -999;
     
-    // --- NUEVO: Memoria para RSSI (Media Ponderada) ---
+    // --- Memoria para RSSI (Media Ponderada) ---
     /** @brief Almacena el RSSI suavizado para evitar fluctuaciones bruscas. Inicialmente -999 (sin señal). */
     private float smoothedRssi = -999.0f;
     /** @brief Factor de suavizado para el filtro (0.0 - 1.0). Un valor bajo (ej: 0.1) hace que la barra se mueva lentamente. */
@@ -142,7 +148,12 @@ public class SensorTrackingService extends Service {
 
     // --- onCreate --------------------------------------------------------------------------------------
     /**
-     * @brief Se llama al crear el servicio. Inicializa clientes, canales de notificación y callbacks.
+     * @brief Inicialización del servicio.
+     * Configura:
+     * - Cliente de ubicación y su callback.
+     * - Canales de notificación.
+     * - Referencia a la base de datos.
+     * - Lógica del Watchdog (Runnable) para manejar desconexiones.
      */
     @Override
     public void onCreate() {
@@ -216,6 +227,10 @@ public class SensorTrackingService extends Service {
      * Gestiona la obtención del ID del sensor, inicia el servicio en primer plano (notificación) y arranca la monitorización.
      *
      * (intent:Intent, flags:int, startId:int) -> onStartCommand() -> START_STICKY
+     *
+     * 1. Recupera el `SENSOR_ID_KEY` del Intent.
+     * 2. Configura la notificación persistente para elevar el servicio a Foreground.
+     * 3. Inicia la escucha de ubicación y el escáner BLE.
      *
      * @param intent El Intent utilizado para iniciar el servicio, debe contener el ID del sensor.
      * @param flags Información adicional sobre cómo se inició el servicio.
@@ -344,6 +359,17 @@ public class SensorTrackingService extends Service {
      * @brief Procesa el resultado del escaneo BLE, filtra el dispositivo "rocio" y decodifica el payload.
      * Actualiza el estado del DataHolder, verifica alertas y sube los datos a Firebase.
      * (resultado:ScanResult) -> mostrarInformacionDispositivoBTLE() -> ()
+     *
+     * @details
+     * **Proceso de Decodificación:**
+     * 1. Filtra por nombre de dispositivo ("rocio").
+     * 2. Calcula RSSI suavizado usando Media Móvil Exponencial:
+     * \f$ RSSI_{smooth} = \alpha \cdot RSSI_{raw} + (1-\alpha) \cdot RSSI_{prev} \f$
+     * 3. Extrae Manufacturer Data (ID 0x004C).
+     * 4. Interpreta bytes mediante Bit Shifting para reconstruir enteros y floats.
+     * 5. Actualiza DataHolder y Firebase si los valores han cambiado.
+     *
+     *
      * @param resultado El objeto ScanResult devuelto por el escáner BLE.
      */
     private void mostrarInformacionDispositivoBTLE(ScanResult resultado) {
@@ -424,6 +450,12 @@ public class SensorTrackingService extends Service {
     /**
      * @brief Compara las mediciones recibidas con umbrales predefinidos y genera alertas (notificaciones y LiveData).
      * (co2:int, ozono:float, temperatura:float, bateria:int) -> checkAlerts() -> ()
+     *
+     * - CO2 >= 1200 ppm -> Alerta.
+     * - O3 >= 0.9 ppm -> Alerta.
+     * - Temp > 35ºC -> Alerta.
+     * - Bat <= 15% -> Notificación de Batería Baja.
+     *
      * @param co2 Concentración de CO2 en ppm.
      * @param ozono Concentración de Ozono en ppm.
      * @param temperatura Temperatura en grados Celsius.
@@ -603,6 +635,11 @@ public class SensorTrackingService extends Service {
      * @brief Sube las mediciones y el estado de contexto (ubicación, conexión) a Firebase Firestore.
      * Realiza dos operaciones: guardar un registro en la colección 'mediciones' (historial) y actualizar los campos directos del documento del sensor (última lectura).
      * (o3_ppm:Float, temp_c:Float, co2_ppm:Integer, bat_porc:Integer, ubicacion:String, estado:String) -> subirDatosAFirebase() -> ()
+     *
+     * Realiza una **doble escritura**:
+     * 1. **Histórico:** Añade un nuevo documento a la subcolección `mediciones`.
+     * 2. **Estado Actual:** Actualiza los campos del documento principal del sensor con `SetOptions.merge()`.
+     *
      * @param o3_ppm Concentración de Ozono.
      * @param temp_c Temperatura.
      * @param co2_ppm Concentración de CO2.

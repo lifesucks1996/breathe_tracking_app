@@ -1,3 +1,10 @@
+/**
+ * @file JavaMailAPI.java
+ * @brief Implementación de tarea asíncrona para el envío de correos electrónicos SMTP.
+ * @package com.example.breathe_tracking
+ * @copyright Copyright © 2025
+ */
+
 package com.example.breathe_tracking;
 
 import android.content.Context;
@@ -14,13 +21,18 @@ import javax.mail.internet.MimeMessage;
 
 /**
  * @class JavaMailAPI
- * @brief Clase asíncrona encargada de gestionar el envío de correos electrónicos en segundo plano.
- *
- * Esta clase extiende de AsyncTask para realizar operaciones de red (SMTP) sin bloquear
- * el hilo principal de la interfaz de usuario (UI Thread). Utiliza la librería JavaMail
- * para conectar con el servidor SMTP de Gmail.
- *
+ * @brief Gestiona el envío de correos electrónicos en segundo plano.
  * @extends AsyncTask<Void, Void, Void>
+ *
+ * @details
+ * Esta clase evita el bloqueo del hilo principal (Main Thread) al realizar operaciones de red.
+ * Utiliza la biblioteca **JavaMail** para conectar con el servidor SMTP de Gmail.
+ *
+ * **Características principales:**
+ * - Autenticación segura mediante "Contraseña de Aplicación" de Google.
+ * - Construcción de mensajes MIME multipartes (soporte HTML).
+ * - Inyección de estilos CSS para correos corporativos/profesionales.
+ * - Notificación visual (Toast) al finalizar el envío.
  */
 public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
 
@@ -30,6 +42,7 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
 
     /** @brief Contraseña de aplicación (App Password) generada por Google para autenticación segura. */
     private String PASSWORD_ROBOT = "qksu kdas eluz wofs";
+
     // -------------------------------
 
     /** @brief Contexto de la aplicación, necesario para mostrar mensajes Toast en la UI. */
@@ -52,6 +65,7 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
      *
      * Inicializa los datos necesarios para componer y enviar el correo.
      *
+     *
      * @param context Contexto de la actividad o aplicación.
      * @param emailDestino Dirección de email a la que se enviará la alerta.
      * @param asunto Título del correo.
@@ -65,13 +79,16 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
     }
 
     /**
-     * @brief Ejecuta la tarea de envío de correo en un hilo secundario.
+     * @brief Lógica de conexión y envío en hilo secundario.
      *
-     * Configura las propiedades del servidor SMTP de Gmail (Host, Puerto 465, SSL),
-     * realiza la autenticación, construye el mensaje MIME con formato HTML y máscara
-     * de remitente, y finalmente envía el correo.
+     * 1. Configura las propiedades (`Properties`) para TLS/SSL en el puerto 465 de Gmail.
+     * 2. Inicia sesión (`Session`) con las credenciales del robot.
+     * 3. Crea el objeto `MimeMessage`.
+     * 4. Asigna un alias ("⚠️ Alertas Breathe Tracking") al remitente.
+     * 5. Genera el contenido HTML llamando a @ref construirHTML.
+     * 6. Envía el mensaje mediante `Transport.send()`.
      *
-     * @param params Parámetros de entrada (no utilizados en esta implementación).
+     * @param params Void (no se usan parámetros variables).
      * @return null
      */
     @Override
@@ -115,8 +132,8 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
 
     /**
      * @brief Se ejecuta en el hilo principal (UI Thread) al finalizar el envío.
-     *
      * Muestra una notificación Toast al usuario indicando que la incidencia se ha enviado.
+     * (result:Void) -> onPostExecute() -> ()
      *
      * @param result Resultado de doInBackground (siempre null en este caso).
      */
@@ -133,6 +150,7 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
      *
      * Crea un diseño visual profesional con cabecera corporativa, contenedor de datos
      * y pie de página, insertando dinámicamente el título y el mensaje.
+     * (titulo:String, mensaje:String) -> construirHTML() -> String (HTML)
      *
      * @param titulo El título de la incidencia.
      * @param mensaje El mensaje descriptivo de la incidencia.

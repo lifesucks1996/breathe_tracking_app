@@ -1,8 +1,8 @@
 /**
  * @file Utilidades.java
- * @brief Clase que proporciona métodos estáticos para la manipulación y conversión entre diferentes tipos de datos,
- * especialmente para la conversión entre cadenas, arrays de bytes, enteros, longs y UUIDs.
+ * @brief Clase de utilidades estáticas para manipulación y conversión de datos.
  * @package com.example.breathe_tracking
+ * @copyright Copyright © 2025
  */
 package com.example.breathe_tracking;
 
@@ -14,8 +14,11 @@ import java.util.UUID;
 // -----------------------------------------------------------------------------------
 /**
  * @class Utilidades
- * @brief Colección de métodos utilitarios estáticos para conversiones de tipos de bajo nivel.
- * Copyrigth © 2025
+ * @brief Colección de métodos estáticos para conversiones de bajo nivel.
+ *
+ * Proporciona herramientas para transformar tipos de datos primitivos (int, long)
+ * y objetos complejos (UUID, String) en arrays de bytes y viceversa.
+ * Útil para la comunicación con dispositivos BLE o protocolos binarios.
  */
 public class Utilidades {
 
@@ -37,7 +40,11 @@ public class Utilidades {
     /**
      * @brief Convierte una cadena de 16 caracteres en un objeto UUID.
      * (uuid:String) -> stringToUUID() -> UUID
-     * @note La cadena se divide en dos partes de 8 caracteres (Más Significativo y Menos Significativo).
+     *
+     * @details
+     *      * La cadena se divide en dos partes de 8 caracteres. Cada parte se convierte
+     *      * en un valor 'long' (8 bytes) para formar los bits más y menos significativos del UUID.
+     *
      * @param uuid La cadena de 16 caracteres a convertir.
      * @return El objeto UUID resultante.
      * @throws Error Si la cadena no tiene exactamente 16 caracteres.
@@ -147,6 +154,13 @@ public class Utilidades {
     /**
      * @brief Convierte un array de bytes en un valor entero (int) con lógica de desplazamiento de bits y manejo de signo (complemento a 2).
      * (bytes:byte[]) -> bytesToIntOK() -> int
+     *
+     * @details
+     * Realiza un desplazamiento de bits (Bit shifting) para reconstruir el entero.
+     * Incluye una lógica manual para manejar el complemento a 2 si se detecta un bit de signo específico.
+     *
+     *
+     *
      * @note Este método implementa una conversión byte a byte con desplazamiento (Big Endian)
      * y una lógica de manejo de signo que parece ser una adaptación manual para enteros con signo.
      * @param bytes El array de bytes de entrada (máximo 4 bytes).

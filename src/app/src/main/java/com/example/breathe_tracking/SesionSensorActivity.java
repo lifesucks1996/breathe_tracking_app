@@ -1,7 +1,8 @@
 /**
  * @file SesionSensorActivity.java
- * @brief Actividad principal que muestra en tiempo real los datos recibidos del sensor y el estado del servicio de rastreo.
+ * @brief Actividad principal de monitorización en tiempo real.
  * @package com.example.breathe_tracking
+ * @copyright Copyright © 2025
  */
 package com.example.breathe_tracking;
 
@@ -26,27 +27,27 @@ import androidx.core.content.ContextCompat;
 
 import java.util.Locale;
 
-
 /**
  * @class SesionSensorActivity
- * @brief Clase que representa la actividad de la sesión del sensor.
- *
- * Copyrigth © 2025
- *
- * Se encarga de:
- * - Mostrar datos en tiempo real (CO2, Ozono, Temp, Batería, Ubicación) obtenidos del \ref SensorTrackingService.
- * - Utilizar \ref TrackingDataHolder (LiveData) para observar los cambios en las mediciones.
- * - Gestionar la solicitud de permisos (Ubicación, Bluetooth).
- * - Iniciar y detener el \ref SensorTrackingService.
- * - Ofrecer la funcionalidad para reportar incidencias.
- *
+ * @brief Actividad principal que muestra la interfaz de usuario con los datos del sensor en tiempo real.
  * @extends AppCompatActivity
- */
-
-/**
- * Clase que representa la actividad de la sesión del sensor.
- * - Muestra datos, incidencias, alertas, ubicacion, bateria baja (11/11/25 - Sandra)
- * - Conexión con base de datos (19/11/25 - Rocio)
+ *
+ * @details
+ * Esta clase actúa como el "Dashboard" principal de la aplicación. Su arquitectura se basa en el patrón Observer
+ * a través de la clase Singleton @ref TrackingDataHolder.
+ *
+ *
+ *
+ * **Funcionalidades principales:**
+ * 1. **Visualización de Datos:** Muestra CO2, Ozono, Temperatura, Batería y Ubicación actualizándose automáticamente.
+ * 2. **Gestión de Servicios:** Inicia y detiene el @ref SensorTrackingService (Foreground Service).
+ * 3. **Feedback Visual:** Cambia el color de las barras de progreso según umbrales de seguridad definidos.
+ * 4. **Gestión de Incidencias:** Permite reportar problemas de conexión o hardware.
+ *
+ * @author Sandra (UI, Lógica de visualización y alertas - 11/11/2025)
+ * @author Rocio (Conexión con base de datos y lógica de servicio - 19/11/2025)
+ * @see SensorTrackingService
+ * @see TrackingDataHolder
  */
 
 public class SesionSensorActivity extends AppCompatActivity {
@@ -138,10 +139,15 @@ public class SesionSensorActivity extends AppCompatActivity {
 
     // --- Inicio onCreate --------------------------------------------------------------------------------------------------------
     /**
-     * @brief Método llamado al crear la actividad.
-     * Inicializa la interfaz de usuario, obtiene el ID del sensor, configura los listeners y los observadores.
-     * (savedInstanceState:Bundle) -> onCreate() -> ()
-     * @param savedInstanceState Si la actividad se está recreando, este Bundle contiene los datos de estado.
+     * @brief Inicialización de la actividad.
+     *
+     * 1. Vincula todas las vistas del layout.
+     * 2. Recupera el SENSOR_CODE del Intent.
+     * 3. Configura los listeners de los botones (Cerrar sesión, Reportar, Ver Gráficas).
+     * 4. Inicializa los observadores de datos.
+     * 5. Verifica permisos e inicia el servicio.
+     *
+     * @param savedInstanceState Estado guardado de la aplicación.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,10 +245,25 @@ public class SesionSensorActivity extends AppCompatActivity {
     // Funcion para inicializar los Observers que van a estar observando los cambios en los datos del sensor y del usuario
     //Cambios en ubicacion, ultimaConexion, bateria, ozono, temperatura, co2, alerta, incidencia, estado
     /**
-     * @brief Inicializa los observadores de LiveData (\ref TrackingDataHolder).
-     * Cada observador actualiza el TextView o la ProgressBar correspondiente con los datos más recientes del sensor.
-     * También implementa la lógica de rangos de color y visibilidad.
+     * @brief Configura los observadores LiveData para actualizar la UI en tiempo real.
+     *
      * () -> setupObservers() -> ()
+     *
+     * Define la lógica de colores y umbrales para los indicadores visuales:
+     * - **Batería:** Rojo si <= 15%.
+     * - **Ozono (ppm):**
+     * - Verde: < 0.6
+     * - Naranja: 0.6 - 0.9
+     * - Rojo: >= 0.9
+     * - **Temperatura (ºC):**
+     * - Azul: <= 20
+     * - Naranja: 20 - 28
+     * - Rojo: > 28
+     * - **CO2 (ppm):**
+     * - Verde: < 800
+     * - Naranja: 800 - 1200
+     * - Rojo: >= 1200
+     * - **RSSI:** Actualiza el icono de barras según la potencia (dBm).
      */
     private void setupObservers() {
 
@@ -360,8 +381,12 @@ public class SesionSensorActivity extends AppCompatActivity {
 
     /**
      * @brief Verifica si todos los permisos necesarios (Ubicación, Bluetooth) están concedidos.
-     * Si no, lanza la solicitud de permisos; si sí, inicia el servicio de rastreo.
+     * Si no, solicita al usuario.
      * () -> checkPermissionsAndStartService() -> ()
+     *
+     * Si faltan permisos, utiliza @ref requestPermissionLauncher para solicitarlos.
+     * Si están concedidos, llama inmediatamente a @ref startTrackingService.
+     *
      */
     private void checkPermissionsAndStartService() {
         String[] permissionsToRequest = {
@@ -403,7 +428,7 @@ public class SesionSensorActivity extends AppCompatActivity {
     // Metodo para parar el servicio de tracking --------------------------
 
     /**
-     * @brief Detiene el servicio de rastreo (\ref SensorTrackingService).
+     * @brief Detiene el servicio de rastreo @ref SensorTrackingService
      * () -> stopTrackingService() -> ()
      */
     private void stopTrackingService() {
