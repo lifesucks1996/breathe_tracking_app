@@ -654,4 +654,23 @@ public class SensorTrackingService extends Service {
 
     // --- Fin subirDatosFirebase --------------------------------------------------------------------------------------------------
 
+
+    //Métodos para test.
+
+    public static boolean esCo2Peligroso(int co2) {
+        return co2 >= 1200;
+    }
+
+    public static boolean esOzonoPeligroso(float ozono) {
+        return ozono >= 0.9f;
+    }
+
+    public static boolean esTemperaturaPeligrosa(float temperatura) {
+        return temperatura > 35.0f;
+    }
+
+    public static boolean esBateriaCritica(int bateria) {
+        return bateria <= 15;
+    }
+
 }
