@@ -281,7 +281,6 @@ public class SensorTrackingService extends Service {
     }
     // --- Fin onStarCommand -----------------------------------------------------------------------------
 
-
     //--- onDestory ------------------------------------------------------------------------------------
     // Se llama cuando la Activity (SesionSensorActivity) se destruye
     /**
@@ -345,7 +344,6 @@ public class SensorTrackingService extends Service {
     }
 
     // --- fin detener escaner de beacon --------------------------------------------------------------
-
 
     // --- mostrar la informacion del beacon -----------------------------------------------------------
     /**
@@ -427,7 +425,6 @@ public class SensorTrackingService extends Service {
     }
     //--- fin mostrar la informacion del beacon -------------------------------------------------------
 
-
     //--- Alertas sobre medidas -----------------------------------------------------------------------
     /**
      * @brief Compara las mediciones recibidas con umbrales predefinidos y genera alertas (notificaciones y LiveData).
@@ -453,9 +450,9 @@ public class SensorTrackingService extends Service {
         }
 
         if (ozono >= 0.9) {
-            String message = currentTime + " - Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.2f ppm", ozono);
+            String message = currentTime + " - Nivel de O3 elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono);
             if (addAlert(message)) {
-                sendAlertNotification("Alerta de Ozono", "Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.2f ppm", ozono), OZONE_ALERT_ID);
+                sendAlertNotification("Alerta de O3", "Nivel de O3 elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono), OZONE_ALERT_ID);
                 newAlert = true;
             }
         } else {
@@ -515,7 +512,6 @@ public class SensorTrackingService extends Service {
 
     // --- fin alertas sobre medidas ---------------------------------------------------------------------------------
 
-
     // --- Notificaciones -------------------------------------------------------------------------------
     // Crea una notificacion de alerta
     /**
@@ -526,7 +522,7 @@ public class SensorTrackingService extends Service {
      * @param notificationId ID único para esta alerta, permite cancelarla posteriormente.
      */
     private void sendAlertNotification(String title, String message, int notificationId) {
-        Intent notificationIntent = new Intent(this, SesionSensorActivity.class);
+        Intent notificationIntent = new Intent(this, IncidenciasActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Notification n = new NotificationCompat.Builder(this, ALERT_CHANNEL_ID)
@@ -600,7 +596,6 @@ public class SensorTrackingService extends Service {
     }
     // --- fin localizacion ----------------------------------------------------------------------------
 
-
     // --- Vigilante de Conexión -----------------------------------------------------------------------
     // cuenta 3 minutos para saber si el sensor está desconectado, si recibe datos lo reinicia para volver a contar los 3 minutos
     // SI no recibe los datos en 3 minutos se muestra una alerta y se reinicia el watchdog
@@ -629,7 +624,6 @@ public class SensorTrackingService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
 
     // --- Inicio subirDatosFirebase --------------------------------------------------------------------------------------------------
     /**
@@ -661,7 +655,6 @@ public class SensorTrackingService extends Service {
                     Log.e("Firestore", "Error al escribir en el historial", e);
                 });
 
-
         // Subida a Campos Directos (Última Lectura)
 
         Map<String, Object> camposDirectos = new HashMap<>();
@@ -686,7 +679,6 @@ public class SensorTrackingService extends Service {
     }
 
     // --- Fin subirDatosFirebase --------------------------------------------------------------------------------------------------
-
 
     //Métodos para test.
 
