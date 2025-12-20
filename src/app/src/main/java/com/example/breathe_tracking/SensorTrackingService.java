@@ -453,9 +453,9 @@ public class SensorTrackingService extends Service {
         }
 
         if (ozono >= 0.9) {
-            String message = currentTime + " - Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono);
+            String message = currentTime + " - Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.2f ppm", ozono);
             if (addAlert(message)) {
-                sendAlertNotification("Alerta de Ozono", "Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono), OZONE_ALERT_ID);
+                sendAlertNotification("Alerta de Ozono", "Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.2f ppm", ozono), OZONE_ALERT_ID);
                 newAlert = true;
             }
         } else {
