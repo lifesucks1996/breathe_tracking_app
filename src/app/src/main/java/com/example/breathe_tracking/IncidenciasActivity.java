@@ -28,14 +28,22 @@ public class IncidenciasActivity extends AppCompatActivity {
     private ImageView backArrow;
     private TrackingDataHolder dataHolder;
 
-    /** @brief Lista que almacena las últimas 4 alertas de mediciones recibidas. */
+    /** @brief Lista que almacena las últimas 4 alertas de mediciones para mostrar en la UI. */
     private final List<String> ultimasCuatroAlertas = new ArrayList<>();
-    /** @brief Constante que define el número máximo de alertas a mostrar. */
-    private static final int MAX_ALERTS = 4;
+    /** @brief Constante que define el número máximo de alertas a mostrar en la UI. */
+    private static final int MAX_ALERTS_IN_UI = 4;
+
+    // --- IDs de Notificaciones y Canal ---
     /** @brief ID para el canal de notificaciones de alertas. */
     private static final String CHANNEL_ID = "alert_channel";
-    /** @brief Contador para asegurar que cada notificación tenga un ID único. */
-    private int notificationIdCounter = 0;
+    /** @brief ID de notificación para alertas de CO2. */
+    private static final int CO2_NOTIFICATION_ID = 1001;
+    /** @brief ID de notificación para alertas de Ozono. */
+    private static final int OZONE_NOTIFICATION_ID = 1002;
+    /** @brief ID de notificación para alertas de Temperatura. */
+    private static final int TEMP_NOTIFICATION_ID = 1003;
+    /** @brief ID por defecto para otras alertas. */
+    private static final int DEFAULT_NOTIFICATION_ID = 1;
 
 
     @Override
@@ -52,68 +60,54 @@ public class IncidenciasActivity extends AppCompatActivity {
         // Botón para volver a la pantalla anterior
         backArrow.setOnClickListener(v -> finish());
 
-        // Crea el canal de notificaciones al iniciar la actividad
         createNotificationChannel();
-        // Observadores para actualizar los datos en tiempo real
         setupObservers();
     }
 
     /**
      * @brief Configura los observadores para los datos de alertas e incidencias.
-     *        La lógica de alertas ahora gestiona una lista persistente de hasta 4 mensajes,
-     *        lanza una notificación por cada nueva alerta y reemplaza las más antiguas.
+     *        - UI: Mantiene una lista de las últimas 4 alertas.
+     *        - Notificaciones: Lanza una notificación por CADA TIPO de medida, reemplazándola si ya existe una de ese tipo.
      */
     private void setupObservers() {
-        // Observa las nuevas alertas de mediciones que llegan desde el servicio
         dataHolder.alertData.observe(this, newAlerts -> {
             if (newAlerts != null && !newAlerts.isEmpty()) {
                 boolean listChanged = false;
-                // Itera sobre las nuevas alertas recibidas
                 for (String alert : newAlerts) {
-                    // Si la alerta no está ya en nuestra lista, la procesa como nueva
                     if (!ultimasCuatroAlertas.contains(alert)) {
-                        // Lanza una notificación para la nueva alerta
+                        // Envía una notificación específica para el tipo de alerta
                         sendNotification("Nueva Alerta de Medición", alert);
 
-                        // Añade la nueva alerta al principio de la lista
+                        // --- Lógica para la UI ---
                         ultimasCuatroAlertas.add(0, alert);
                         listChanged = true;
-                        // Si la lista supera el tamaño máximo, elimina la alerta más antigua (la última de la lista)
-                        if (ultimasCuatroAlertas.size() > MAX_ALERTS) {
-                            ultimasCuatroAlertas.remove(MAX_ALERTS);
+                        if (ultimasCuatroAlertas.size() > MAX_ALERTS_IN_UI) {
+                            ultimasCuatroAlertas.remove(MAX_ALERTS_IN_UI);
                         }
                     }
                 }
-                // Si la lista ha cambiado, actualiza la interfaz
                 if (listChanged) {
                     actualizarTextoAlertas();
                 }
             }
-            // Importante: Si newAlerts es null o está vacía, no hacemos nada.
-            // Esto preserva las alertas antiguas en pantalla aunque la condición que las generó ya no se cumpla.
         });
 
-        // Observa y muestra las incidencias de conexión
         dataHolder.incidenciaData.observe(this, incidencia -> {
             if (incidencia != null) {
                 incidenciasEnviadasTextView.setText(incidencia);
             }
         });
 
-        // Carga inicial del texto de alertas al crear la actividad
         actualizarTextoAlertas();
     }
 
     /**
      * @brief Actualiza el TextView de alertas con el contenido de la lista.
-     *        Muestra "No hay alertas" si la lista está vacía, o formatea
-     *        las alertas con saltos de línea si hay contenido.
      */
     private void actualizarTextoAlertas() {
         if (ultimasCuatroAlertas.isEmpty()) {
             ultimasAlertasTextView.setText("No hay alertas");
         } else {
-            // Une las alertas de la lista con dobles saltos de línea para mejorar la legibilidad
             String textoAlertas = TextUtils.join("\n\n", ultimasCuatroAlertas);
             ultimasAlertasTextView.setText(textoAlertas);
         }
@@ -121,7 +115,6 @@ public class IncidenciasActivity extends AppCompatActivity {
 
     /**
      * @brief Crea el canal de notificaciones necesario para Android 8.0 (API 26) y superior.
-     *        Si el canal ya existe, la operación no hace nada, por lo que es seguro llamarlo múltiples veces.
      */
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -130,44 +123,53 @@ public class IncidenciasActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            getSystemService(NotificationManager.class).createNotificationChannel(channel);
         }
     }
 
     /**
-     * @brief Crea y muestra una notificación en el dispositivo para una nueva alerta.
+     * @brief Obtiene un ID de notificación único basado en el tipo de alerta.
+     * @param alertMessage El mensaje de la alerta.
+     * @return Un ID entero para la notificación.
+     */
+    private int getNotificationIdForAlert(String alertMessage) {
+        if (alertMessage.contains("CO2")) {
+            return CO2_NOTIFICATION_ID;
+        } else if (alertMessage.contains("Ozono")) {
+            return OZONE_NOTIFICATION_ID;
+        } else if (alertMessage.contains("Temperatura")) {
+            return TEMP_NOTIFICATION_ID;
+        } else {
+            return DEFAULT_NOTIFICATION_ID;
+        }
+    }
+
+    /**
+     * @brief Crea y muestra una notificación, usando un ID específico para cada tipo de medida.
      * @param title El título de la notificación.
      * @param message El cuerpo del mensaje de la notificación.
-     *
-     * La notificación, al ser pulsada, abrirá esta misma actividad (IncidenciasActivity).
-     * NOTA: Es necesario añadir y solicitar el permiso POST_NOTIFICATIONS en Android 13+.
      */
     private void sendNotification(String title, String message) {
-        // Intent para abrir la app al pulsar la notificación
         Intent intent = new Intent(this, IncidenciasActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_notifications) // Icono de la notificación
+                .setSmallIcon(R.drawable.ic_notifications)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent) // Acción al pulsar
-                .setAutoCancel(true); // La notificación se cierra al pulsarla
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-        // Comprobación de permiso (necesario para Android 13+)
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // Si no se tiene el permiso, no se puede enviar la notificación.
-            // Aquí se debería incluir la lógica para solicitar el permiso al usuario.
-            // Por ejemplo: ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE);
-            return;
+            return; // El permiso se pide en la actividad principal
         }
-        // Se usa un ID único para que cada notificación nueva aparezca por separado.
-        notificationManager.notify(notificationIdCounter++, builder.build());
+
+        // Usa un ID específico para cada tipo de alerta para que se reemplacen por tipo
+        int notificationId = getNotificationIdForAlert(message);
+        notificationManager.notify(notificationId, builder.build());
     }
 }
