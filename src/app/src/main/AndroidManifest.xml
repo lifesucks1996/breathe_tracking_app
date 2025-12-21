@@ -72,7 +72,7 @@
         <activity android:name=".EnvioIncidenciasActivity" />
         <activity android:name=".InformacionActivity" />
         <activity android:name=".IncidenciasActivity" />
-
+        <activity android:name=".ManualUsuarioActivity" />
 
 
     </application>

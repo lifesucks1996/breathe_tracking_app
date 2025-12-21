@@ -63,6 +63,7 @@ public class SesionSensorActivity extends AppCompatActivity {
     private TextView nombreSensorTextView;
     private TextView verGraficasTextView;
     private ImageView imgSignal;
+    private TextView manualUsuarioTextView;
     private ImageView notificacionesButton;
     private ProgressBar co2ProgressBar;
     private ProgressBar ozonoProgressBar;
@@ -151,9 +152,11 @@ public class SesionSensorActivity extends AppCompatActivity {
         notificacionesButton = findViewById(R.id.imageView_notificaciones);
         layoutOverlayDesconexion = findViewById(R.id.layout_overlay_desconexion);
         btnReportarOverlay = findViewById(R.id.btn_reportar_overlay);
+        manualUsuarioTextView = findViewById(R.id.textView_manualUsuario);
 
-        // Añadir subrayado al texto "Saber más..."
+        // Añadir subrayado a los textos
         verGraficasTextView.setPaintFlags(verGraficasTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        manualUsuarioTextView.setPaintFlags(manualUsuarioTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     /**
@@ -185,6 +188,11 @@ public class SesionSensorActivity extends AppCompatActivity {
 
         verGraficasTextView.setOnClickListener(v -> {
             Intent intent = new Intent(SesionSensorActivity.this, InformacionActivity.class);
+            startActivity(intent);
+        });
+
+        manualUsuarioTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(SesionSensorActivity.this, ManualUsuarioActivity.class);
             startActivity(intent);
         });
     }

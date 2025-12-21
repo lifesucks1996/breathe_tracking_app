@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:fitsSystemWindows="true">
+
+    <View
+        android:id="@+id/view_header_faq"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_back_faq"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/abc_ic_ab_back_material"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_faq"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_faq"
+        app:tint="@android:color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manual de Usuario"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_faq"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_faq" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_header_faq">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/header_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_secure" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="1. Inicio de Sesión y Acceso" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_login" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/arrow_down_float" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Para garantizar la seguridad de los datos, el acceso a la aplicación está restringido a usuarios autorizados con un sensor asignado." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="Asignación del Equipo:" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="El administrador del sistema le entregará un sensor de calidad del aire personal. Este dispositivo tiene un código único de identificación." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="Métodos de Acceso:" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="• Escaneo QR: Pulse 'Acceder con QR' en la pantalla inicial y enfoque el código QR pegado en la carcasa del sensor.\n• Entrada Manual: Introduzca manualmente el código alfanumérico facilitado por el administrador.\n• Acceso Biométrico: Para su comodidad, una vez haya iniciado sesión con éxito por primera vez, la aplicación habilitará el acceso mediante huella dactilar." android:lineSpacingExtra="4dp" android:layout_marginBottom="8dp"/>
+
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="NOTA: Si el acceso falla, verifique que tiene conexión a internet para validar las credenciales con el servidor." android:textStyle="italic" android:textSize="12sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/header_panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_compass" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="2. Panel y Estado del Sensor" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_panel" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/arrow_down_float" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Una vez dentro, verá el Panel de Control en Tiempo Real con la salud actual de su entorno." android:layout_marginBottom="12dp"/>
+
+                        <TextView android:text="📡 Conectividad" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="• Conectado (Verde): La App recibe datos correctamente.\n• Desconectado (Rojo): Verifique la cercanía.\n• Última Conexión: Hora exacta del último dato recibido. Vital para saber cuánto tiempo lleva sin señal." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="📶 Cobertura" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Las barras indican la intensidad de la señal Bluetooth. Si ve una 'X' o 0 barras, acérquese al dispositivo (radio de 2 a 10 metros)." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="🔋 Batería" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="El porcentaje se actualiza en tiempo real.\nALERTA CRÍTICA: Si desciende al 15% o menos, el indicador se volverá ROJO. Cargue el sensor inmediatamente." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="🏃 Distancia Recorrida" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="La app usa el GPS del móvil para calcular los metros totales recorridos durante la sesión activa, permitiendo correlacionar actividad física con exposición."/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/header_contaminantes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_info_details" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="3. Guía de Referencia (Gases)" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_contaminantes" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/arrow_down_float" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_contaminantes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:text="Ozono (O3)" android:textColor="@color/colorPrimary" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Reacción de emisiones bajo luz solar. Irritante respiratorio." android:textSize="12sp" android:layout_marginBottom="2dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="🟢 Seguro: ≤ 0.061 ppm\n🟠 Riesgo: 0.061 - 0.092 ppm\n🔴 Peligroso: > 0.122 ppm" android:textSize="12sp" android:layout_marginBottom="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                        <TextView android:text="Monóxido de Carbono (CO)" android:textColor="@color/colorPrimary" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Combustión incompleta (coches). Impide transporte de oxígeno." android:textSize="12sp" android:layout_marginBottom="2dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="🟢 Seguro: ≤ 10 mg/m³\n🟠 Riesgo: 10 - 30 mg/m³\n🔴 Peligroso: > 30 mg/m³" android:textSize="12sp" android:layout_marginBottom="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                        <TextView android:text="Dióxido de Nitrógeno (NO2)" android:textColor="@color/colorPrimary" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Motores diésel e industria. Aumenta infecciones pulmonares." android:textSize="12sp" android:layout_marginBottom="2dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="🟢 Seguro: ≤ 200 µg/m³\n🟠 Riesgo: 200 - 400 µg/m³\n🔴 Peligroso: > 400 µg/m³" android:textSize="12sp" android:layout_marginBottom="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                        <TextView android:text="Dióxido de Azufre (SO2)" android:textColor="@color/colorPrimary" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Quema de combustibles fósiles. Muy irritante para asmáticos." android:textSize="12sp" android:layout_marginBottom="2dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="🟢 Seguro: ≤ 350 µg/m³\n🟠 Riesgo: 350 - 500 µg/m³\n🔴 Peligroso: > 500 µg/m³" android:textSize="12sp" android:layout_marginBottom="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                        <TextView android:text="Dióxido de Carbono (CO2)" android:textColor="@color/colorPrimary" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="Indicador de ventilación. Altas dosis causan fatiga." android:textSize="12sp" android:layout_marginBottom="2dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="🟢 Óptimo: ≤ 800 ppm\n🟠 Inadecuado: 800 - 5000 ppm\n🔴 Peligroso: > 5000 ppm" android:textSize="12sp" android:layout_marginBottom="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                        <TextView android:text="* NOTA: El sistema alertará si la temperatura ambiental supera los 35ºC." android:textStyle="italic" android:textSize="12sp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/header_graficas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_sort_by_size" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="4. Análisis Histórico y Gráficas" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_graficas" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/arrow_down_float" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_graficas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Para un análisis profundo, pulse 'Saber más...' en la pantalla principal." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="📊 Uso del Gráfico Interactivo" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="• Selector: Use el desplegable para elegir qué gas analizar (O3, CO, NO2, SO2 o CO2).\n• Visualización: Curva de evolución de las últimas 24 horas.\n• Colores: El gráfico se pinta dinámicamente según el riesgo (Verde/Naranja/Rojo)." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="🙂 Interpretación (Caritas)" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="🙂 Cara Feliz (Verde): ¡ÓPTIMO! Calidad excelente o aceptable.\n😐 Cara Neutra (Naranja): ALERTA MODERADA. Picos aislados de riesgo.\n☹️ Cara Triste (Rojo): ¡PELIGRO CRÍTICO! Exposición prolongada (4+ horas) a niveles tóxicos."/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/header_alertas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_popup_reminder" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="5. Sistema de Alertas" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_alertas" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/arrow_down_float" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_alertas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Para proteger su salud, la aplicación trabaja en segundo plano. Es imperativo conceder permisos de Ubicación, Bluetooth y Notificaciones." android:layout_marginBottom="8dp"/>
+
+                        <TextView android:text="Tipos de Notificaciones:" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="• Servicio Activo: Notificación permanente que indica que Breathe Tracking está monitorizando (evita cierre por ahorro batería).\n• Alertas de Riesgo: Aviso inmediato si entra en una zona con niveles altos de gas.\n• Alerta de Desconexión: Le avisará si el sensor deja de enviar datos."/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/header_incidencias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/stat_notify_error" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="6. Resolución de Problemas" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_incidencias" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/arrow_down_float" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_incidencias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:text="¿Qué hago si el sensor no se conecta?" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Si la desconexión persiste (3 min), se activará el Protocolo de Bloqueo:\n\n1. Pantalla de Bloqueo: Aparecerá un aviso sobre los datos.\n2. Reporte Automático: Pulse 'Reportar Incidencia'. Se enviará un correo con su ubicación y hora de fallo.\n3. Espera: El botón cambiará a 'Reportada'. Espere a que el administrador resuelva la incidencia en la nube. Al hacerlo, la app se desbloqueará sola." android:layout_marginBottom="12dp"/>
+
+                        <TextView android:text="Reporte Manual y Archivo" android:textStyle="bold" android:textColor="@color/colorPrimary" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Pulse la Campana (Notificaciones) para ver:\n• Historial de Alertas: Últimas 6 veces que superó el umbral de riesgo.\n• Incidencias Enviadas: Registro de reportes anteriores.\n• Botón Reportar: Para incidencias no automáticas (ej: daños físicos)."/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/header_faq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_help" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="7. Preguntas Frecuentes (FAQ)" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_faq" android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/arrow_down_float" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_faq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:text="P: ¿Por qué pide ubicación para medir gas?" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="R: Android requiere permiso de ubicación para escanear dispositivos Bluetooth cercanos. Además, se usa para registrar dónde ocurren las alertas y calcular la distancia." android:layout_marginBottom="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                        <TextView android:text="P: El sensor parpadea pero la App dice 'Desconectado'." android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="R: Verifique que el Bluetooth esté encendido. Si persiste, compruebe interferencias. Si la batería es menor al 15%, la señal puede ser inestable." android:layout_marginBottom="8dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+                        <TextView android:text="P: ¿Puedo cerrar la aplicación mientras camino?" android:textStyle="bold" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                        <TextView android:text="R: No la cierre completamente (matar proceso). Puede minimizarla o bloquear el móvil; el servicio seguirá registrando datos y enviando alertas." android:layout_width="match_parent" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
