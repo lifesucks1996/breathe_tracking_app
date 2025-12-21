@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.StringJoiner;
+import java.util.Objects;
 
 // Imports de Firebase
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -124,6 +124,8 @@ public class SensorTrackingService extends Service {
     private float lastUpdatedOzono = -999.0f;
     /** @brief Almacena el último valor de CO2 recibido. */
     private int lastUpdatedCo2 = -999;
+    /** @brief Flag para controlar el envío único de la notificación de batería baja. */
+    private boolean batteryAlertSent = false;
     
     // --- NUEVO: Memoria para RSSI (Media Ponderada) ---
     /** @brief Almacena el RSSI suavizado para evitar fluctuaciones bruscas. Inicialmente -999 (sin señal). */
@@ -138,6 +140,12 @@ public class SensorTrackingService extends Service {
     private String sensorCode;
     /** @brief Referencia al documento del sensor en Firestore. */
     private DocumentReference sensorDocRef;
+
+    // Lista para gestionar las alertas
+    /** @brief Lista que almacena las últimas 4 alertas. */
+    private final List<String> alertList = new ArrayList<>();
+    /** @brief Número máximo de alertas que se almacenarán. */
+    private static final int MAX_ALERTS = 4;
 
 
     // --- onCreate --------------------------------------------------------------------------------------
@@ -261,8 +269,8 @@ public class SensorTrackingService extends Service {
         startForeground(NOTIFICATION_ID, notification);
         startLocationUpdates();
         inicializarYComenzarEscaneoBeacon();
-        // Inicializamos al vigilante de conexión
-        resetWatchdog();
+        // Inicializamos el temporizador del vigilante de conexión, pero no forzamos el estado a "Conectado".
+        resetWatchdogTimer();
 
         // Asignar el código de sensor fijo
         //sensorCode = SENSOR_DOCUMENT_ID;
@@ -351,8 +359,11 @@ public class SensorTrackingService extends Service {
         BluetoothDevice device = resultado.getDevice();
         if (device == null || device.getName() == null || !device.getName().equals("rocio")) return;
 
-        // Reiniciamos el watchdog
-        resetWatchdog();
+        // Se ha recibido un paquete del sensor.
+        // 1. Marcar el estado como "Conectado" (si no lo estaba ya) y limpiar la alerta de desconexión.
+        handleSensorReconnected();
+        // 2. Reiniciar el temporizador que detecta la próxima desconexión.
+        resetWatchdogTimer();
         
         // --- NUEVO: Actualizamos RSSI (Media Ponderada) ---
         int rawRssi = resultado.getRssi();
@@ -430,56 +441,81 @@ public class SensorTrackingService extends Service {
      * @param bateria Porcentaje de batería.
      */
     private void checkAlerts(int co2, float ozono, float temperatura, int bateria) {
-        List<String> currentAlertMessages = new ArrayList<>();
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+        boolean newAlert = false;
 
-        // SI las medidas entran en un rango determinado se mostrara una alerta en el tablón de alertas y en notificaciones
+        // Generar mensajes de alerta basados en umbrales
         if (co2 >= 1200) {
             String message = currentTime + " - Nivel de CO2 elevado: " + co2 + " ppm";
-            currentAlertMessages.add(message);
-            sendAlertNotification("Alerta de CO2", "Nivel de CO2 elevado: " + co2 + " ppm", CO2_ALERT_ID);
+            if (addAlert(message)) {
+                sendAlertNotification("Alerta de CO2", "Nivel de CO2 elevado: " + co2 + " ppm", CO2_ALERT_ID);
+                newAlert = true;
+            }
         } else {
             cancelAlertNotification(CO2_ALERT_ID);
         }
 
         if (ozono >= 0.9) {
-            String message = currentTime + " - Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono);
-            currentAlertMessages.add(message);
-            sendAlertNotification("Alerta de Ozono", "Nivel de Ozono elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono), OZONE_ALERT_ID);
+            String message = currentTime + " - Nivel de O3 elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono);
+            if (addAlert(message)) {
+                sendAlertNotification("Alerta de O3", "Nivel de O3 elevado: " + String.format(Locale.getDefault(), "%.3f ppm", ozono), OZONE_ALERT_ID);
+                newAlert = true;
+            }
         } else {
             cancelAlertNotification(OZONE_ALERT_ID);
         }
 
         if (temperatura > 35) {
             String message = currentTime + " - Temperatura elevada: " + String.format(Locale.getDefault(), "%.1f ºC", temperatura);
-            currentAlertMessages.add(message);
-            sendAlertNotification("Alerta de Temperatura", "Temperatura elevada: " + String.format(Locale.getDefault(), "%.1f ºC", temperatura), TEMP_ALERT_ID);
+            if (addAlert(message)) {
+                sendAlertNotification("Alerta de Temperatura", "Temperatura elevada: " + String.format(Locale.getDefault(), "%.1f ºC", temperatura), TEMP_ALERT_ID);
+                newAlert = true;
+            }
         } else {
             cancelAlertNotification(TEMP_ALERT_ID);
         }
 
-        // Si la bateria es baja solo se muestra la notificacion, no la alerta
+        // Si la bateria es baja solo se muestra la notificacion, no se añade a la lista de alertas.
         if (bateria <= 15) {
-            sendAlertNotification("Alerta de Batería", "Nivel de batería bajo: " + bateria + "%", BATTERY_ALERT_ID);
-        } else {
-            cancelAlertNotification(BATTERY_ALERT_ID);
-        }
-
-        // Si no hay alertas ni incidencias mostramos: Sin alertas/incidencias
-        if (currentAlertMessages.isEmpty()) {
-            dataHolder.alertData.postValue("Sin alertas");
-        } else {
-            StringJoiner joiner = new StringJoiner("\n\n");
-            for (String msg : currentAlertMessages) {
-                joiner.add(msg);
+            // Solo enviar la notificación una vez
+            if (!batteryAlertSent) {
+                sendAlertNotification("Alerta de Batería", "Nivel de batería bajo: " + bateria + "%", BATTERY_ALERT_ID);
+                batteryAlertSent = true;
             }
-            dataHolder.alertData.postValue(joiner.toString());
+        } else {
+            // Si la batería se recupera, se cancela la notificación y se resetea el flag
+            cancelAlertNotification(BATTERY_ALERT_ID);
+            batteryAlertSent = false;
         }
 
-        if ("Conectado".equals(dataHolder.estadoData.getValue())) {
-            dataHolder.incidenciaData.postValue("Sin incidencias");
+        // Actualizar LiveData solo si hay una nueva alerta
+        if (newAlert) {
+            dataHolder.alertData.postValue(new ArrayList<>(alertList));
         }
     }
+
+    /**
+     * @brief Añade una nueva alerta a la lista, gestionando el tamaño máximo.
+     * @param alertMessage Mensaje de la alerta.
+     * @return true si la alerta es nueva y se ha añadido; false en caso contrario.
+     */
+    private boolean addAlert(String alertMessage) {
+        // Evitar duplicados
+        if (alertList.contains(alertMessage)) {
+            return false;
+        }
+
+        // Añadir la nueva alerta al principio de la lista
+        alertList.add(0, alertMessage);
+
+        // Si la lista supera el tamaño máximo, eliminar la más antigua
+        if (alertList.size() > MAX_ALERTS) {
+            alertList.remove(alertList.size() - 1);
+        }
+
+        return true;
+    }
+
     // --- fin alertas sobre medidas ---------------------------------------------------------------------------------
 
 
@@ -493,8 +529,24 @@ public class SensorTrackingService extends Service {
      * @param notificationId ID único para esta alerta, permite cancelarla posteriormente.
      */
     private void sendAlertNotification(String title, String message, int notificationId) {
-        Intent notificationIntent = new Intent(this, SesionSensorActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+        Intent notificationIntent;
+
+        // Si es la alerta de conexión, redirige a la pantalla principal del sensor.
+        if (notificationId == CONNECTION_ALERT_ID) {
+            notificationIntent = new Intent(this, SesionSensorActivity.class);
+            // Es crucial pasar el ID del sensor para que la actividad sepa qué mostrar.
+            if (sensorCode != null) {
+                notificationIntent.putExtra("SENSOR_CODE", sensorCode);
+            }
+        } else {
+            // Para el resto de las alertas (mediciones), redirige a la pantalla de incidencias.
+            notificationIntent = new Intent(this, IncidenciasActivity.class);
+        }
+
+        // Usamos FLAG_UPDATE_CURRENT para asegurar que el Intent se actualiza correctamente,
+        // especialmente si la actividad destino o sus extras cambian. El requestCode puede ser
+        // el ID de la notificación para asegurar que cada una tenga un PendingIntent único.
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
         Notification n = new NotificationCompat.Builder(this, ALERT_CHANNEL_ID)
                 .setContentTitle(title)
@@ -502,9 +554,11 @@ public class SensorTrackingService extends Service {
                 .setSmallIcon(R.drawable.logo_app)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true) // La notificación se cierra al pulsarla
                 .build();
         getSystemService(NotificationManager.class).notify(notificationId, n);
     }
+
 
     // Elimina una notificacion si ya no existe
     /**
@@ -569,23 +623,26 @@ public class SensorTrackingService extends Service {
 
 
     // --- Vigilante de Conexión -----------------------------------------------------------------------
-    // cuenta 3 minutos para saber si el sensor está desconectado, si recibe datos lo reinicia para volver a contar los 3 minutos
-    // SI no recibe los datos en 3 minutos se muestra una alerta y se reinicia el watchdog
     /**
-     * @brief Reinicia el temporizador del watchdog de conexión.
-     * Si el servicio estaba en estado "Desconectado", al recibir datos lo cambia a "Conectado" y cancela la alerta.
-     * () -> resetWatchdog() -> ()
+     * @brief Reinicia el temporizador del watchdog. Se llama al iniciar el servicio y al recibir datos.
      */
-    private void resetWatchdog() {
+    private void resetWatchdogTimer() {
         watchdogHandler.removeCallbacks(watchdogRunnable);
         watchdogHandler.postDelayed(watchdogRunnable, WATCHDOG_DELAY_MS);
+    }
 
+    /**
+     * @brief Gestiona el estado de reconexión. Si el sensor estaba desconectado, lo marca como
+     * "Conectado" y limpia las alertas visuales correspondientes.
+     */
+    private void handleSensorReconnected() {
+        // Solo actuar si el estado anterior NO era "Conectado"
         if (!"Conectado".equals(dataHolder.estadoData.getValue())) {
             Log.i(ETIQUETA_LOG, "¡Reconexión con el sensor detectada!");
             cancelAlertNotification(CONNECTION_ALERT_ID);
             dataHolder.incidenciaData.postValue("Sin incidencias");
+            dataHolder.estadoData.postValue("Conectado");
         }
-        dataHolder.estadoData.postValue("Conectado");
     }
     // --- fin vigilante de conexión -------------------------------------------------------------------
     /**
@@ -653,5 +710,24 @@ public class SensorTrackingService extends Service {
     }
 
     // --- Fin subirDatosFirebase --------------------------------------------------------------------------------------------------
+
+
+    //Métodos para test.
+
+    public static boolean esCo2Peligroso(int co2) {
+        return co2 >= 1200;
+    }
+
+    public static boolean esOzonoPeligroso(float ozono) {
+        return ozono >= 0.9f;
+    }
+
+    public static boolean esTemperaturaPeligrosa(float temperatura) {
+        return temperatura > 35.0f;
+    }
+
+    public static boolean esBateriaCritica(int bateria) {
+        return bateria <= 15;
+    }
 
 }

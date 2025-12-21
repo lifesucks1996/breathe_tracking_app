@@ -7,6 +7,9 @@ package com.example.breathe_tracking;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @class TrackingDataHolder
  * @brief "Tablón de Anuncios" de la aplicación implementado como patrón Singleton.
@@ -44,10 +47,14 @@ public class TrackingDataHolder {
     public final MutableLiveData<String> estadoData = new MutableLiveData<>();
 
     // LiveData para Alertas e Incidencias
-    /** @brief Contiene una cadena con los mensajes de alertas de mediciones (CO2, O3, Temp) que superan umbrales. */
-    public final MutableLiveData<String> alertData = new MutableLiveData<>();
+    /** @brief Contiene una lista con un máximo de 5 mensajes de alerta. */
+    public final MutableLiveData<List<String>> alertData = new MutableLiveData<>(new ArrayList<>());
+
     /** @brief Contiene un mensaje sobre incidencias (principalmente la pérdida de conexión del sensor). */
     public final MutableLiveData<String> incidenciaData = new MutableLiveData<>();
+
+    /** @brief Nuevo: Contiene el historial de las últimas 4 incidencias enviadas. */
+    public final MutableLiveData<List<String>> incidenciasEnviadasData = new MutableLiveData<>(new ArrayList<>());
 
     /**
      * @brief Constructor privado para forzar el patrón Singleton.
