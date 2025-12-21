@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <!-- Cabecera (Fondo Azul) -->
+    <View
+        android:id="@+id/view_header_bg"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Flecha de volver -->
+    <ImageView
+        android:id="@+id/img_back_arrow"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/abc_ic_ab_back_material"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_bg"
+        app:tint="@android:color/white" />
+
+    <!-- Logo centrado -->
+    <ImageView
+        android:id="@+id/img_logo_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logobreathetracking"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_bg" />
+
+    <!-- Contenedor de Alertas -->
+    <View
+        android:id="@+id/view_alertas"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/drawable_bordes_incidencias"
+        app:layout_constraintBottom_toTopOf="@+id/view_incidencias"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_header_bg" />
+
+    <!-- Contenido de Alertas -->
+    <TextView
+        android:id="@+id/TextView_TituloAlertas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Últimas alertas"
+        android:textColor="#6B0404"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/view_alertas"
+        app:layout_constraintStart_toStartOf="@+id/view_alertas"
+        app:layout_constraintTop_toTopOf="@+id/view_alertas" />
+
+    <TextView
+        android:id="@+id/textView_ultimasAlertas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="--"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/view_alertas"
+        app:layout_constraintStart_toStartOf="@+id/view_alertas"
+        app:layout_constraintTop_toBottomOf="@+id/TextView_TituloAlertas" />
+
+
+    <!-- Contenedor de Incidencias -->
+    <View
+        android:id="@+id/view_incidencias"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/drawable_bordes_incidencias"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view_alertas"
+        app:layout_constraintStart_toStartOf="@+id/view_alertas"
+        app:layout_constraintTop_toBottomOf="@+id/view_alertas" />
+
+    <!-- Contenido de Incidencias -->
+    <TextView
+        android:id="@+id/textView_TituloIncidencias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Incidencias enviadas"
+        android:textColor="#6B0404"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/view_incidencias"
+        app:layout_constraintStart_toStartOf="@+id/view_incidencias"
+        app:layout_constraintTop_toTopOf="@+id/view_incidencias" />
+
+    <TextView
+        android:id="@+id/textView_incidenciasEnviadas"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="--"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/view_incidencias"
+        app:layout_constraintStart_toStartOf="@+id/view_incidencias"
+        app:layout_constraintTop_toBottomOf="@+id/textView_TituloIncidencias" />
+
+    <Button
+        android:id="@+id/button_incidenciasManuales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Reportar incidencia"
+        app:layout_constraintBottom_toBottomOf="@+id/view_incidencias"
+        app:layout_constraintEnd_toEndOf="@+id/view_incidencias"
+        app:layout_constraintStart_toStartOf="@+id/view_incidencias" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

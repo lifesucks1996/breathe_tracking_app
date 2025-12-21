@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView_nombreSensor" />
 
     <View
-        android:id="@+id/view5"
+        android:id="@+id/view5_mediciones"
         android:layout_width="0dp"
         android:layout_height="164dp"
         android:layout_marginTop="16dp"
@@ -56,9 +56,9 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/drawable_bordes_linea"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/view5"
-        app:layout_constraintStart_toStartOf="@+id/view5"
-        app:layout_constraintTop_toBottomOf="@+id/view5" />
+        app:layout_constraintEnd_toEndOf="@+id/view5_mediciones"
+        app:layout_constraintStart_toStartOf="@+id/view5_mediciones"
+        app:layout_constraintTop_toBottomOf="@+id/view5_mediciones" />
 
     <TextView
         android:id="@+id/textView_nombreSensor"
@@ -167,8 +167,8 @@
         android:text="Mediciones"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/view5"
-        app:layout_constraintTop_toTopOf="@+id/view5" />
+        app:layout_constraintStart_toStartOf="@+id/view5_mediciones"
+        app:layout_constraintTop_toTopOf="@+id/view5_mediciones" />
 
     <TextView
         android:id="@+id/textView14"
@@ -201,7 +201,7 @@
         android:text="-.--- ppm"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/progressBar_ozono"
-        app:layout_constraintEnd_toEndOf="@+id/view5"
+        app:layout_constraintEnd_toEndOf="@+id/view5_mediciones"
         app:layout_constraintTop_toTopOf="@+id/progressBar_ozono" />
 
     <TextView
@@ -239,41 +239,15 @@
         app:layout_constraintEnd_toEndOf="@+id/textView_ozono"
         app:layout_constraintTop_toTopOf="@+id/progressBar_temperatura" />
 
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="ALERTAS"
-        android:textColor="#6B0404"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toTopOf="@+id/view6" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="ALERTAS"
-        android:textColor="#6B0404"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/view6"
-        app:layout_constraintTop_toTopOf="@+id/view6" />
-
-    <TextView
-        android:id="@+id/textView_alerta"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+    <ImageView
+        android:id="@+id/imageView_notificaciones"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginEnd="16dp"
-        android:text="--"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/view6"
-        app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/imageView_cerrarSesion"
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        app:srcCompat="@drawable/ic_notifications" />
 
     <ImageView
         android:id="@+id/imageView_cerrarSesion"
@@ -319,47 +293,6 @@
         app:layout_constraintTop_toTopOf="@+id/textView15" />
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="INCIDENCIAS"
-        android:textColor="#6B0404"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/textView19"
-        app:layout_constraintTop_toBottomOf="@+id/textView_alerta" />
-
-    <TextView
-        android:id="@+id/textView_incidencia"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="--"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView_alerta"
-        app:layout_constraintStart_toStartOf="@+id/textView_alerta"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/textView_reportar_incidencia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/drawable_bordes_botones"
-        android:paddingLeft="25dp"
-        android:paddingTop="10dp"
-        android:paddingRight="25dp"
-        android:paddingBottom="10dp"
-        android:text="Reportar incidencia"
-        android:textColor="@color/colorOnPrimary"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view6"
-        app:layout_constraintEnd_toEndOf="@+id/textView_incidencia"
-        app:layout_constraintStart_toStartOf="@+id/textView_incidencia"
-        app:layout_constraintTop_toBottomOf="@+id/textView_incidencia" />
-
-    <TextView
         android:id="@+id/textView_graficas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -367,5 +300,45 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView12"
         app:layout_constraintEnd_toEndOf="@+id/textView_co2"
         app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_overlay_desconexion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#E6FFFFFF"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/view5_mediciones"
+        app:layout_constraintEnd_toEndOf="@+id/view5_mediciones"
+        app:layout_constraintStart_toStartOf="@+id/view5_mediciones"
+        app:layout_constraintTop_toTopOf="@+id/view5_mediciones"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/textView_overlay_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="No ha sido posible conectarse con el sensor"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_reportar_overlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Button
+            android:id="@+id/btn_reportar_overlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Reportar Incidencia"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_overlay_text" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
