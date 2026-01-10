@@ -1,0 +1,28 @@
+var classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity =
+[
+    [ "checkPermissionsAndStartService", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a8bb38b7d40d97ef4892d4a02aa6a1e38", null ],
+    [ "onCreate", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a8d1e80a1b6b857e96a12e1d73419817e", null ],
+    [ "setupObservers", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a2fc9953ddaccc2190e5e20be6bbd3932", null ],
+    [ "startTrackingService", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a828addef0fed5bc5f6754f42d4f7c097", null ],
+    [ "stopTrackingService", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#abca5dece64e2b83075ac28627658f6d2", null ],
+    [ "alertaTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a06d5645291ae87968ff1e394019d3240", null ],
+    [ "bateriaTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a548c0cd32ec7534a6174d3414faee1fe", null ],
+    [ "co2ProgressBar", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a84ea0d4a0fc32a6df279730675130f9b", null ],
+    [ "co2TextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#aec0b4f594c45986ea39e2efad8003678", null ],
+    [ "dataHolder", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a703e8b9a6614b39f0548cfb4b0d1aa4f", null ],
+    [ "estadoTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a017711ddfadb765705e6c9cb17d687c7", null ],
+    [ "imgSignal", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a32e4bd93ebd9043e8964a2276be1f552", null ],
+    [ "incidenciaTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#ab24e1a4750eb87f05b6be85ada1d2633", null ],
+    [ "nombreSensorTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a0d97b1601fcfd6509275d7fbd97db100", null ],
+    [ "ozonoProgressBar", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#ac8d47772dfae04c85ee0e265f9862f3c", null ],
+    [ "ozonoTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a1acfbca4cc082c2725d576c583c295a9", null ],
+    [ "reportarIncidenciaLauncher", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#abc2d4d4182e104a61111a0bbe873658b", null ],
+    [ "reportarIncidenciaTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a94d59e65412efbe5035e218b892ea893", null ],
+    [ "requestPermissionLauncher", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a7d3405f571cc28014679435636a970fc", null ],
+    [ "sensorId", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#aac82a5fae923d86dcbb772a72c6546d4", null ],
+    [ "temperaturaProgressBar", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a59b00d55623ea9e9d43392365bfcea0d", null ],
+    [ "temperaturaTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#abd01f7b84f09174e057960d24ae1f143", null ],
+    [ "ubicacionTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#ac1e3fcdf9cc5c99301d76dfe1e566f2f", null ],
+    [ "ultimaConexionTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#ab048e290f49b0493e7314388e610b235", null ],
+    [ "verGraficasTextView", "classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity.html#a58033396e2958de254b5cfaf4ee4df3b", null ]
+];
