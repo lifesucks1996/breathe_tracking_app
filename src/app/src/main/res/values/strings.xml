@@ -1,3 +1,78 @@
 <resources>
     <string name="app_name">Breathe Traking</string>
+
+
+    <string name="manual_login_content">
+        Para garantizar la seguridad de los datos, el acceso a la aplicación está restringido a usuarios autorizados con un sensor asignado.\n\n
+        <b>Asignación del Equipo:</b> El administrador del sistema le entregará un sensor de calidad del aire personal. Este dispositivo tiene un código único de identificación.\n\n
+        <b><u>Métodos de Acceso:</u></b>\n
+        • <b>Escaneo QR:</b> Pulse "Acceder con QR" en la pantalla inicial y enfoque el código QR pegado en la carcasa del sensor.\n
+        • <b>Entrada Manual:</b> Introduzca manualmente el código alfanumérico facilitado por el administrador.\n
+        • <b>Acceso Biométrico (Huella Digital):</b> Para su comodidad, una vez haya iniciado sesión con éxito por primera vez, la aplicación habilitará el acceso mediante huella dactilar.\n\n
+        <i>Nota: Si el acceso falla, verifique que tiene conexión a internet.</i>
+    </string>
+
+        <string name="manual_panel_content">
+        Una vez dentro, verá el Panel de Control en Tiempo Real. Aquí se muestra la salud actual de su entorno inmediato.\n\n
+        <b><u>Conectividad y Batería</u></b>\n\n
+        <b>Estado de Conexión:</b>\n
+        • Conectado: El texto aparecerá en verde. La App recibe datos.\n
+        • Desconectado: El texto aparecerá en rojo. Verifique la cercanía.\n\n
+        <b>Cobertura (Icono de Señal):</b> Las barras indican la intensidad de la señal Bluetooth (RSSI). Si ve 0 barras, acérquese al dispositivo (radio de 0 a 10 metros máximo).\n\n
+        <b>Batería:</b>\n
+        El porcentaje se actualiza en tiempo real.\n
+        Alerta Crítica: Si la batería desciende al 15% o menos, el indicador se volverá ROJO. Cargue el sensor inmediatamente.\n\n
+        <b><u>Distancia Recorrida</u></b>\n\n
+        La aplicación utiliza el GPS de su móvil para calcular los metros totales recorridos durante la sesión activa.
+    </string>
+
+        <string name="manual_contaminantes_intro">
+        La aplicación monitorea 5 gases críticos. A continuación, se detalla su origen y los umbrales de seguridad según la normativa vigente:
+    </string>
+        <string name="manual_contaminantes_nota">
+        <i>Nota: Adicionalmente, el sistema alertará si la temperatura ambiental supera los 35ºC, ya que el calor extremo potencia la toxicidad de ciertos gases.</i>
+    </string>
+
+        <string name="manual_graficas_content">
+        Para un análisis profundo, pulse el enlace "Saber más..." en la pantalla principal. Accederá al Histórico de Exposición.\n\n
+        <b><u>Uso del Gráfico Interactivo</u></b>\n
+        Selector de Contaminante: Use el desplegable superior para elegir qué gas desea analizar.\n\n
+        <b>Visualización:</b> Se mostrará una curva de evolución de las últimas 24 horas pintada según el riesgo: Verde (Seguro), Naranja (Precaución) y Rojo (Peligro).\n\n
+        <b><u>Interpretación de la "Evaluación Inteligente"</u></b>\n\n
+        <b>🙂 Cara Feliz (Verde - Óptimo):</b> "¡ÓPTIMO! Calidad del aire excelente y segura."\n
+        <b>😐 Cara Neutra (Naranja - Riesgo):</b> "ALERTA MODERADA: La calidad del aire es mala."\n
+        <b>☹️ Cara Triste (Rojo - Crítico):</b> "¡PELIGRO CRÍTICO! Exposición prolongada. Evite la zona."
+    </string>
+
+        <string name="manual_alertas_content">
+        Para proteger su salud, es imperativo conceder los siguientes permisos al instalarla:\n\n
+        • <b>Ubicación:</b> Necesaria para detectar el sensor Bluetooth y geolocalizar incidencias.\n
+        • <b>Bluetooth:</b> Para recibir los datos del sensor.\n
+        • <b>Notificaciones:</b> Para recibir alertas urgentes.\n\n
+        <b><u>Tipos de Notificaciones</u></b>\n\n
+        • <b>Servicio Activo:</b> Notificación permanente que indica que "Breathe Tracking está monitorizando".\n
+        • <b>Alertas de Riesgo:</b> Si entra en una zona con niveles altos de gas.\n
+        • <b>Alerta de Desconexión:</b> Le avisará si el sensor deja de enviar datos.
+    </string>
+
+        <string name="manual_incidencias_content">
+        <b><u>¿Qué hago si el sensor no se conecta?</u></b>\n
+        Si el sensor pierde conexión por 3 minutos, se activará el Protocolo de Bloqueo:\n\n
+        • <b>Pantalla de Bloqueo:</b> Aparecerá un aviso sobreponiéndose a los datos.\n
+        • <b>Reporte Automático:</b> Pulse el botón "Reportar Incidencia" para enviar un correo urgente al administrador.\n
+        • <b>Desbloqueo Remoto:</b> Cuando el administrador resuelva la incidencia, su aplicación se desbloqueará automáticamente.\n\n
+        <b><u>Reporte Manual</u></b>\n
+        Acceda pulsando el icono de la Campana para ver el historial de alertas o reportar daños físicos manualmente.
+    </string>
+
+        <string name="manual_faq_content">
+        <b>P: ¿Por qué la aplicación me pide ubicación si solo quiero medir CO2?</b>\n
+        R: Android requiere el permiso de ubicación para poder escanear dispositivos Bluetooth cercanos.\n\n
+        <b>P: El sensor parpadea pero la App dice "Desconectado".</b>\n
+        R: Verifique que el Bluetooth de su móvil esté encendido y la batería del sensor tenga carga.\n\n
+        <b>P: ¿Puedo cerrar la aplicación mientras camino?</b>\n
+        R: No la cierre completamente (matar el proceso). Puede minimizarla o bloquear el móvil; el servicio seguirá registrando datos en segundo plano.
+    </string>
+
+
 </resources>

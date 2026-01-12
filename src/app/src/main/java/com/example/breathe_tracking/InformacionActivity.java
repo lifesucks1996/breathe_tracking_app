@@ -44,6 +44,16 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
+ * Copyrigth © 2025
+ *
+ * Esta actividad carga los datos de firebase para mostrar la evolución de cada contaminante en un periodo de 24h
+ * recogiendo los datos de la colección "datos_grafico".
+ * 27/11 - Sandra: creacion actividad y xml
+ * 06/12 - Rocio: conexión con base de datos
+ */
+
+
+/**
  * @class GasData
  * @brief Modelo de datos unificado para almacenar las 5 concentraciones por una hora.
  */
@@ -127,10 +137,12 @@ public class InformacionActivity extends AppCompatActivity {
 
     // --- VARIABLES DE FIREBASE ---
     private FirebaseFirestore db;
-
-    // Lista que almacena los ddatos procesados
+    private String sensorId;
     private List<GasData> historicalData = new ArrayList<>();
     // -----------------------------
+
+    // ALMACENA EL TIMESTAMP DE MEDIANOCHE DE HOY
+    private long midnightTimestamp;
 
     private LineChart chart;
     private Spinner spinner;
@@ -143,7 +155,6 @@ public class InformacionActivity extends AppCompatActivity {
      * Inicializa las vistas, configura el Spinner de selección de gas y lanza la carga de datos.
      * @param savedInstanceState Estado guardado de la instancia.
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,11 +201,7 @@ public class InformacionActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief Consulta Firestore para obtener los arrays de datos históricos.
-     *
-     * Lee la colección 'datos_grafico', donde cada documento representa un gas
-     * y contiene un array 'valor' con 24 mediciones.
-     * Transforma estos arrays horizontales en una lista vertical de objetos @ref GasData.
+     * @brief Consulta Firestore para obtener los datos históricos del sensor actual
      */
     private void cargarDatosDeFirebase() {
 
@@ -267,10 +274,6 @@ public class InformacionActivity extends AppCompatActivity {
                 });
     }
 
-    /**
-     * @brief Configuración general de estilo para el componente LineChart.
-     * Habilita zoom, touch y configura ejes básicos.
-     */
 
     private void configurarEstiloGrafico() {
         chart.getDescription().setEnabled(false);
@@ -292,7 +295,7 @@ public class InformacionActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief Configura el Eje X para mostrar específicamente 24 horas (00:00 - 23:00).
+     * @brief Configura el Eje X para mostrar 24 horas completas (0 a 23).
      */
     private void configurarEjeXDemo() {
         XAxis xAxis = chart.getXAxis();
@@ -318,6 +321,8 @@ public class InformacionActivity extends AppCompatActivity {
      * - Definir colores, unidades y límites de seguridad específicos para cada gas.
      * - Dibujar las líneas límite (LimitLines) en el gráfico.
      * - Llamar a @ref evaluarExposicion para actualizar la interfaz.
+     *
+     * (position:int) -> cargarDatosGas() -> ()
      *
      * @param position Índice del gas seleccionado en el Spinner (0=O3, 1=CO, etc).
      */
@@ -446,6 +451,8 @@ public class InformacionActivity extends AppCompatActivity {
      * - **Alerta Moderada (Face Neutral):** 10 o más puntos superan el límite seguro.
      * - **Aceptable (Face Happy):** Algunos puntos (1-9) superan el límite seguro.
      * - **Óptimo (Face Happy):** Todos los valores están por debajo del límite seguro.
+     *
+     * (datos:List<Entry>, limiteSeguro:float, limitePeligro:float) -> evaluarExposicion() -> ()
      *
      * @param datos Lista de entradas (puntos) del gráfico actual.
      * @param limiteSeguro Valor umbral de seguridad.

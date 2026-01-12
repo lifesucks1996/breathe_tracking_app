@@ -11,10 +11,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
-
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,130 +25,136 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import java.util.Locale;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 /**
  * @class SesionSensorActivity
- * @brief Actividad principal que muestra la interfaz de usuario con los datos del sensor en tiempo real.
+ * @brief Dashboard principal que visualiza los datos del sensor y gestiona el estado de la conexión.
  * @extends AppCompatActivity
  *
  * @details
- * Esta clase actúa como el "Dashboard" principal de la aplicación. Su arquitectura se basa en el patrón Observer
- * a través de la clase Singleton @ref TrackingDataHolder.
+ * Esta actividad actúa como la vista principal (View) en la arquitectura de la aplicación.
+ * Se suscribe a los cambios de datos emitidos por @ref TrackingDataHolder (ViewModel/Repository)
+ * para actualizar la interfaz de usuario en tiempo real sin bloquear el hilo principal.
  *
  *
  *
- * **Funcionalidades principales:**
- * 1. **Visualización de Datos:** Muestra CO2, Ozono, Temperatura, Batería y Ubicación actualizándose automáticamente.
- * 2. **Gestión de Servicios:** Inicia y detiene el @ref SensorTrackingService (Foreground Service).
- * 3. **Feedback Visual:** Cambia el color de las barras de progreso según umbrales de seguridad definidos.
- * 4. **Gestión de Incidencias:** Permite reportar problemas de conexión o hardware.
+ * **Funcionalidades Clave:**
+ * 1. **Monitorización en Tiempo Real:** Visualización de O3, CO2, Temperatura y Batería.
+ * 2. **Feedback Visual Semántico:**
+ * - Barras de progreso con código de colores (Verde/Naranja/Rojo) según umbrales de peligro.
+ * 3. **Gestión de Ciclo de Vida del Servicio:** Inicia el @ref SensorTrackingService garantizando los permisos necesarios.
+ * 4. **Gestión de Incidencias:**
+ * - Bloqueo de UI mediante Overlay cuando hay desconexión.
+ * - Escucha activa en Firestore para desbloquear la UI automáticamente si la incidencia se resuelve remotamente.
  *
  * @author Sandra (UI, Lógica de visualización y alertas - 11/11/2025)
  * @author Rocio (Conexión con base de datos y lógica de servicio - 19/11/2025)
  * @see SensorTrackingService
  * @see TrackingDataHolder
  */
-
 public class SesionSensorActivity extends AppCompatActivity {
 
-    /** @brief Muestra la ubicación actual del dispositivo. */
+    // --- Elementos de la UI ---
+    /** @brief Muestra la dirección o coordenadas actuales del dispositivo. */
     private TextView ubicacionTextView;
-    /** @brief Muestra la hora de la última conexión/recepción de datos del sensor. */
+    /** @brief Muestra la hora del último paquete de datos recibido. */
     private TextView ultimaConexionTextView;
     /** @brief Muestra el porcentaje de batería del sensor. */
     private TextView bateriaTextView;
-    /** @brief Muestra el nivel de ozono. */
+    /** @brief Muestra el valor numérico de Ozono. */
     private TextView ozonoTextView;
-    /** @brief Muestra la temperatura. */
+    /** @brief Muestra el valor numérico de Temperatura. */
     private TextView temperaturaTextView;
-    /** @brief Muestra la concentración de CO2. */
+    /** @brief Muestra el valor numérico de CO2. */
     private TextView co2TextView;
-    /** @brief Muestra las alertas de mediciones fuera de rango. */
+    /** @brief Muestra mensajes de texto si se superan los límites de seguridad. */
     private TextView alertaTextView;
-    /** @brief Muestra el estado de incidencias o de desconexión. */
+    /** @brief Muestra el estado de incidencias o desconexión. */
     private TextView incidenciaTextView;
-    /** @brief Muestra el estado de conexión del sensor ("Conectado"/"Desconectado"). */
+    /** @brief Muestra "Conectado" (Verde) o "Desconectado" (Rojo). */
     private TextView estadoTextView;
-    /** @brief Botón o enlace para iniciar la actividad de reportar incidencia. */
+    /** @brief Botón para navegar a la actividad de reporte. */
     private TextView reportarIncidenciaTextView;
-    /** @brief Muestra el código o nombre del sensor que se está rastreando. */
+    /** @brief Muestra el ID del sensor vinculado. */
     private TextView nombreSensorTextView;
-    /** @brief Botón para ir a la pantalla de gráficas de información. */
+    /** @brief Enlace a la actividad de gráficas históricas. */
     private TextView verGraficasTextView;
-    /** @brief Icono para mostrar la intensidad de la señal (RSSI). */
+    /** @brief Icono dinámico para la intensidad de señal (RSSI). */
     private ImageView imgSignal;
 
-    //Variables para dibujar con colores las medidas
-    /** @brief Barra de progreso visual para el nivel de CO2. */
+    // --- Barras de Progreso ---
+    /** @brief Indicador visual para CO2. */
     private ProgressBar co2ProgressBar;
-    /** @brief Barra de progreso visual para el nivel de Ozono. */
+    /** @brief Indicador visual para Ozono. */
     private ProgressBar ozonoProgressBar;
-    /** @brief Barra de progreso visual para el nivel de Temperatura. */
+    /** @brief Indicador visual para Temperatura. */
     private ProgressBar temperaturaProgressBar;
+    /**@brief Enlace a la actividad de manual de usuario. */
+    private TextView manualUsuarioTextView;
+    /**@ brief Enlace a la actividad de notificaciones. */
+    private ImageView notificacionesButton;
+    /** @brief Overlay para reportar incidencias. */
+    private ConstraintLayout layoutOverlayDesconexion;
+    /** @brief Botón para reportar incidencias. */
+    private Button btnReportarOverlay;
 
-    /** @brief Instancia Singleton para acceder a los datos observados (LiveData). */
+    // --- Lógica de Datos y backend ---
+    /** @brief Instancia Singleton que contiene los LiveData observables. */
     private TrackingDataHolder dataHolder;
-    /** @brief Código único del sensor que se está monitorizando. */
+    /** @brief Identificador único del sensor recibido por Intent. */
     private String sensorId;
+    /** @brief Instancia de Firestore para operaciones con la base de datos. */
+    private FirebaseFirestore db;
+    /** @brief Listener para la resolución de incidencias. */
+    private ListenerRegistration incidenciaListener;
+
 
 
     /**
-     * @brief Lanzador de actividad para gestionar el resultado del reporte de incidencias.
-     *
-     * Registra un callback para la actividad de envío de incidencias (\ref EnvioIncidenciasActivity).
-     * Escucha el código de resultado (resultCode) al finalizar dicha actividad.
-     *
-     * Si el resultado es Activity.RESULT_OK:
-     * - Actualiza el texto del botón a "Incidencia reportada".
-     * - Cambia el color del texto a gris para indicar visualmente que está deshabilitado.
-     * - Desactiva la interacción (setClickable(false) y setEnabled(false)) para prevenir envíos duplicados.
-     * - Muestra un mensaje Toast de confirmación al usuario.
+     * @brief Gestiona el retorno de la actividad de reporte de incidencias.
+     * Si el reporte es exitoso, actualiza el botón del overlay para evitar duplicados
+     * y activa la escucha de resolución en Firestore.
      */
     private final ActivityResultLauncher<Intent> reportarIncidenciaLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    // Aquí cambiamos el aspecto del botón cuando volvemos
-                    reportarIncidenciaTextView.setText("Incidencia reportada");
-                    reportarIncidenciaTextView.setTextColor(Color.LTGRAY);
-                    reportarIncidenciaTextView.setClickable(false);
-                    reportarIncidenciaTextView.setEnabled(false);
-
+                    btnReportarOverlay.setText("Incidencia reportada");
+                    btnReportarOverlay.setBackgroundColor(Color.GRAY);
+                    btnReportarOverlay.setEnabled(false);
                     Toast.makeText(this, "Incidencia registrada correctamente", Toast.LENGTH_SHORT).show();
+                    listenForIncidenciaResolution();
                 }
             }
     );
 
-
-    // --- Permisos ------------------------------------------------------------------------------------------------------------
     /**
-     * @brief Launcher para solicitar múltiples permisos de la aplicación.
-     * Si los permisos se conceden (específicamente ACCESS_FINE_LOCATION), inicia el servicio de rastreo.
+     * @brief Gestiona la solicitud de permisos en tiempo de ejecución.
+     * Verifica permisos críticos (Ubicación, Bluetooth y Notificaciones) antes de arrancar el servicio.
      */
     private final ActivityResultLauncher<String[]> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestMultiplePermissions(),
             permissions -> {
-                if (Boolean.TRUE.equals(permissions.get(Manifest.permission.ACCESS_FINE_LOCATION))) {
+                boolean allPermissionsGranted = permissions.entrySet().stream().allMatch(entry -> entry.getValue());
+                if (allPermissionsGranted) {
                     startTrackingService();
                 } else {
-                    Toast.makeText(this, "Permisos necesarios denegados", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Todos los permisos son necesarios para el funcionamiento.", Toast.LENGTH_LONG).show();
                 }
             });
-    // --- Fin Permisos --------------------------------------------------------------------------------------------------------
 
-    // --- Inicio onCreate --------------------------------------------------------------------------------------------------------
     /**
-     * @brief Inicialización de la actividad.
-     *
-     * 1. Vincula todas las vistas del layout.
-     * 2. Recupera el SENSOR_CODE del Intent.
-     * 3. Configura los listeners de los botones (Cerrar sesión, Reportar, Ver Gráficas).
-     * 4. Inicializa los observadores de datos.
-     * 5. Verifica permisos e inicia el servicio.
-     *
+     * @brief Método de inicialización del ciclo de vida.
+     * Configura la inyección de dependencias, inicializa vistas y observadores.
      * @param savedInstanceState Estado guardado de la aplicación.
      */
     @Override
@@ -154,7 +162,28 @@ public class SesionSensorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sesion_sensor);
 
-        // Inicialización de Vistas y Objetos que vamos a usar en la actividad
+        initializeViews();
+        setupListeners();
+
+        dataHolder = TrackingDataHolder.getInstance();
+        db = FirebaseFirestore.getInstance();
+
+        // Extraer el ID del sensor del Intent
+        Intent currentIntent = getIntent();
+        if (currentIntent != null && currentIntent.hasExtra("SENSOR_CODE")) {
+            sensorId = currentIntent.getStringExtra("SENSOR_CODE");
+            nombreSensorTextView.setText("Sensor " + sensorId);
+        }
+
+        setupObservers();
+        checkPermissionsAndStartService();
+    }
+
+    /**
+     * @brief Vincula los objetos Java con los elementos del XML.
+     * Aplica estilos programáticos (como el subrayado de enlaces).
+     */
+    private void initializeViews() {
         ubicacionTextView = findViewById(R.id.textView_ubicacion);
         ultimaConexionTextView = findViewById(R.id.textView_ultimaConexion);
         bateriaTextView = findViewById(R.id.textView_bateria);
@@ -164,36 +193,26 @@ public class SesionSensorActivity extends AppCompatActivity {
         co2ProgressBar = findViewById(R.id.progressBar_co2);
         ozonoProgressBar = findViewById(R.id.progressBar_ozono);
         temperaturaProgressBar = findViewById(R.id.progressBar_temperatura);
-        alertaTextView = findViewById(R.id.textView_alerta);
-        incidenciaTextView = findViewById(R.id.textView_incidencia);
         estadoTextView = findViewById(R.id.textView_estado);
-        reportarIncidenciaTextView = findViewById(R.id.textView_reportar_incidencia);
         nombreSensorTextView = findViewById(R.id.textView_nombreSensor);
         verGraficasTextView = findViewById(R.id.textView_graficas);
         imgSignal = findViewById(R.id.img_signal);
+        notificacionesButton = findViewById(R.id.imageView_notificaciones);
+        layoutOverlayDesconexion = findViewById(R.id.layout_overlay_desconexion);
+        btnReportarOverlay = findViewById(R.id.btn_reportar_overlay);
+        manualUsuarioTextView = findViewById(R.id.textView_manualUsuario);
+
+        // Añadir subrayado a los textos
+        verGraficasTextView.setPaintFlags(verGraficasTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        manualUsuarioTextView.setPaintFlags(manualUsuarioTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+    }
+
+    /**
+     * @brief Configura los Listeners para la interacción del usuario.
+     * Define la navegación a otras actividades (Gráficas, Incidencias, Manual, Login).
+     */
+    private void setupListeners() {
         ImageView cerrarSesionButton = findViewById(R.id.imageView_cerrarSesion);
-
-        dataHolder = TrackingDataHolder.getInstance();
-
-        // Logica para codigo de sensor
-        Intent currentintent = getIntent();
-        if (currentintent != null && currentintent.hasExtra("SENSOR_CODE")) {
-            sensorId = currentintent.getStringExtra("SENSOR_CODE");
-            // Mostrar el nombre
-            String displayMessage = "Sensor " + sensorId;
-
-            if (nombreSensorTextView != null) {
-                nombreSensorTextView.setText(displayMessage);
-            }
-        }
-
-
-
-        // Listener para el botón de cerrar sesión
-        /**
-         * @brief Listener para el botón de cerrar sesión.
-         * Detiene el servicio de rastreo y navega de vuelta a la actividad principal.
-         */
         cerrarSesionButton.setOnClickListener(v -> {
             stopTrackingService();
             Intent intent = new Intent(SesionSensorActivity.this, MainActivity.class);
@@ -201,98 +220,57 @@ public class SesionSensorActivity extends AppCompatActivity {
             finish();
         });
 
-        /**
-         * @brief Listener para el botón de reportar incidencia.
-         * Inicia \ref EnvioIncidenciasActivity, pasando los datos de contexto (sensor, ubicación, última conexión).
-         */
-        reportarIncidenciaTextView.setOnClickListener(v -> {
+        notificacionesButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SesionSensorActivity.this, IncidenciasActivity.class);
+            intent.putExtra("SENSOR_NAME", sensorId);
+            intent.putExtra("UBICACION", ubicacionTextView.getText().toString());
+            startActivity(intent);
+        });
+
+        btnReportarOverlay.setOnClickListener(v -> {
             Intent intent = new Intent(SesionSensorActivity.this, EnvioIncidenciasActivity.class);
-            
-            // Recopilamos los datos necesarios de los TextViews
-            String sensorName = sensorId;
-            String ubicacion = ubicacionTextView.getText().toString();
-            String ultimaConexion = ultimaConexionTextView.getText().toString();
-
-            // Los añadimos al Intent para que la otra actividad los pueda leer
-            intent.putExtra("SENSOR_NAME", sensorName);
-            intent.putExtra("UBICACION", ubicacion);
-            intent.putExtra("ULTIMA_CONEXION", ultimaConexion);
-
+            intent.putExtra("SENSOR_NAME", sensorId);
+            intent.putExtra("UBICACION", ubicacionTextView.getText().toString());
+            intent.putExtra("ULTIMA_CONEXION", ultimaConexionTextView.getText().toString());
             reportarIncidenciaLauncher.launch(intent);
         });
 
-        /**
-         * @brief Listener para el botón "Saber más..." (gráficas).
-         * Abre la actividad InformacionActivity.
-         */
         verGraficasTextView.setOnClickListener(v -> {
             Intent intent = new Intent(SesionSensorActivity.this, InformacionActivity.class);
             startActivity(intent);
         });
 
-        // Inicializamos los Observers
-        setupObservers();
-        // Pedimos los permisos necesarios
-        checkPermissionsAndStartService();
-
+        manualUsuarioTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(SesionSensorActivity.this, ManualUsuarioActivity.class);
+            startActivity(intent);
+        });
     }
 
-    // --- Fin onCreate --------------------------------------------------------------------------------------------------------
-
-
-    // --- setupObservers --------------------------------------------------------------------------------------------------------
-
-    // Funcion para inicializar los Observers que van a estar observando los cambios en los datos del sensor y del usuario
-    //Cambios en ubicacion, ultimaConexion, bateria, ozono, temperatura, co2, alerta, incidencia, estado
     /**
-     * @brief Configura los observadores LiveData para actualizar la UI en tiempo real.
+     * @brief Configura el patrón Observer sobre los LiveData del DataHolder.
      *
-     * () -> setupObservers() -> ()
-     *
-     * Define la lógica de colores y umbrales para los indicadores visuales:
-     * - **Batería:** Rojo si <= 15%.
-     * - **Ozono (ppm):**
-     * - Verde: < 0.6
-     * - Naranja: 0.6 - 0.9
-     * - Rojo: >= 0.9
-     * - **Temperatura (ºC):**
-     * - Azul: <= 20
-     * - Naranja: 20 - 28
-     * - Rojo: > 28
-     * - **CO2 (ppm):**
-     * - Verde: < 800
-     * - Naranja: 800 - 1200
-     * - Rojo: >= 1200
-     * - **RSSI:** Actualiza el icono de barras según la potencia (dBm).
+     * @details
+     * Define la lógica de presentación:
+     * - **Colores:** Asigna drawables (Verde/Naranja/Rojo) a las barras de progreso.
+     * - **Visibilidad:** Muestra/Oculta el overlay de desconexión según el estado.
+     * - **Iconografía:** Cambia el icono de señal según el RSSI.
      */
     private void setupObservers() {
-
-        // Ubicacion del dispositivo -----------------------------------
         dataHolder.locationData.observe(this, address -> {
             if (address != null) ubicacionTextView.setText(address);
         });
 
-        // Hora de recepcion de datos del sensor -----------------------
         dataHolder.timeData.observe(this, time -> {
             if (time != null) ultimaConexionTextView.setText(time);
         });
 
-        // Bateria del dispositivo -------------------------------------
-        // Si es baja cambiamos el color a rojo para que destaque, si no el texto se ve en negro
         dataHolder.bateriaData.observe(this, bateria -> {
             if (bateria != null) {
                 bateriaTextView.setText(String.format(Locale.getDefault(), "%d%%", bateria));
-                if (bateria <= 15) {
-                    bateriaTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_red));
-                } else {
-                    bateriaTextView.setTextColor(Color.BLACK);
-                }
+                bateriaTextView.setTextColor(bateria <= 15 ? ContextCompat.getColor(this, R.color.progress_red) : Color.BLACK);
             }
         });
 
-        // Dato de ozono -----------------------------------------------
-        // Mostramos el dato de ozono y ademas en la progress bar se muestra por rangos de colores:
-        // Verde: 0-0.6 ppm, Amarillo: 0.6-0.9 ppm y Rojo: >0.9 ppm
         dataHolder.ozonoData.observe(this, ozono -> {
             if (ozono != null) {
                 ozonoTextView.setText(String.format(Locale.getDefault(), "%.3f ppm", ozono));
@@ -300,12 +278,8 @@ public class SesionSensorActivity extends AppCompatActivity {
                 Drawable d = (ozono < 0.6) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_green) : (ozono < 0.9) ? ContextCompat.getDrawable(this, R.drawable.progress_bar_orange) : ContextCompat.getDrawable(this, R.drawable.progress_bar_red);
                 ozonoProgressBar.setProgressDrawable(d);
             }
-
         });
 
-        // Dato de temperatura ----------------------------------------
-        // Mostramos el dato de temperatura y ademas en la progress bar se muestra por rangos de colores:
-        // Verde: 0-20 ºC, Amarillo: 20-28 ºC y Rojo: >28 ºC
         dataHolder.temperaturaData.observe(this, temperatura -> {
             if (temperatura != null) {
                 temperaturaTextView.setText(String.format(Locale.getDefault(), "%.1f ºC", temperatura));
@@ -315,9 +289,6 @@ public class SesionSensorActivity extends AppCompatActivity {
             }
         });
 
-        // Dato de Co2 ------------------------------------------------
-        // Mostramos el dato de Co2 y ademas en la progress bar se muestra por rangos de colores:
-        // Verde: 0-800 ppm, Amarillo: 800-1200 ppm y Rojo: >1200 ppm
         dataHolder.co2Data.observe(this, co2 -> {
             if (co2 != null) {
                 co2TextView.setText(String.format(Locale.getDefault(), "%d ppm", co2));
@@ -327,95 +298,88 @@ public class SesionSensorActivity extends AppCompatActivity {
             }
         });
 
-        // RSSI (Señal) ------------------------------------------------
-        // Actualizamos el icono de la señal según el valor RSSI (dBm)
         dataHolder.rssiData.observe(this, rssi -> {
             if (rssi != null) {
-                if (rssi >= -60) {
-                    imgSignal.setImageResource(R.drawable.ic_signal_bars_4); // Excelente
-                } else if (rssi >= -70) {
-                    imgSignal.setImageResource(R.drawable.ic_signal_bars_3); // Buena
-                } else if (rssi >= -80) {
-                    imgSignal.setImageResource(R.drawable.ic_signal_bars_2); // Regular
-                } else if (rssi >= -90) {
-                    imgSignal.setImageResource(R.drawable.ic_signal_bars_1); // Mala
-                } else {
-                    imgSignal.setImageResource(R.drawable.ic_signal_bars_0); // Muy mala/Sin señal
-                }
+                if (rssi >= -60) imgSignal.setImageResource(R.drawable.ic_signal_bars_4);
+                else if (rssi >= -70) imgSignal.setImageResource(R.drawable.ic_signal_bars_3);
+                else if (rssi >= -80) imgSignal.setImageResource(R.drawable.ic_signal_bars_2);
+                else if (rssi >= -90) imgSignal.setImageResource(R.drawable.ic_signal_bars_1);
+                else imgSignal.setImageResource(R.drawable.ic_signal_bars_0);
             }
         });
 
-        // Alertas ----------------------------------------------------
-        dataHolder.alertData.observe(this, alert -> {
-            if(alert != null) alertaTextView.setText(alert); // si no es null muestra el texto de alerta
-
-        });
-
-        // Incidencias ------------------------------------------------
-        dataHolder.incidenciaData.observe(this, incidencia -> {
-            if(incidencia != null) incidenciaTextView.setText(incidencia); // si no es null muestra el texto de incidencia
-        });
-
-        // Estado conectado - desconectado ----------------------------
-        // Si esta conectado cambiamos el color a verde, si no el texto se ve en rojo
         dataHolder.estadoData.observe(this, estado -> {
             if (estado != null) {
                 estadoTextView.setText(estado);
                 if ("Conectado".equals(estado)) {
                     estadoTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_green));
-                    reportarIncidenciaTextView.setVisibility(View.GONE);
+                    layoutOverlayDesconexion.setVisibility(View.GONE);
                 } else {
                     estadoTextView.setTextColor(ContextCompat.getColor(this, R.color.progress_red));
-                    reportarIncidenciaTextView.setVisibility(View.VISIBLE);
-                    imgSignal.setImageResource(R.drawable.ic_signal_bars_0); // Si desconectado, señal 0
+                    layoutOverlayDesconexion.setVisibility(View.VISIBLE);
+                    imgSignal.setImageResource(R.drawable.ic_signal_bars_0);
                 }
             }
         });
-
-
-
     }
 
-    // --- Fin setupObservers --------------------------------------------------------------------------------------------------
-
+    /**
+     * @brief Inicia una escucha activa en Firestore.
+     * Si la incidencia activa (vinculada al ID del sensor) marca `resuelta: true`,
+     * la aplicación desbloquea automáticamente la interfaz del usuario.
+     */
+    private void listenForIncidenciaResolution() {
+        if (sensorId == null || sensorId.isEmpty()) return;
+        final DocumentReference incidenciaRef = db.collection("incidencias").document(sensorId);
+        incidenciaListener = incidenciaRef.addSnapshotListener(this, (snapshot, e) -> {
+            if (e != null) return;
+            if (snapshot != null && snapshot.exists()) {
+                if (Boolean.TRUE.equals(snapshot.getBoolean("resuelta"))) {
+                    layoutOverlayDesconexion.setVisibility(View.GONE);
+                    btnReportarOverlay.setText("Reportar Incidencia");
+                    btnReportarOverlay.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    btnReportarOverlay.setEnabled(true);
+                    if (incidenciaListener != null) {
+                        incidenciaListener.remove();
+                    }
+                }
+            }
+        });
+    }
 
     /**
-     * @brief Verifica si todos los permisos necesarios (Ubicación, Bluetooth) están concedidos.
-     * Si no, solicita al usuario.
-     * () -> checkPermissionsAndStartService() -> ()
+     * @brief Verifica permisos e inicia el servicio.
      *
-     * Si faltan permisos, utiliza @ref requestPermissionLauncher para solicitarlos.
-     * Si están concedidos, llama inmediatamente a @ref startTrackingService.
-     *
+     * @note Gestiona explícitamente `POST_NOTIFICATIONS` para Android 13+ (API 33).
+     * Si faltan permisos, los solicita en bloque. Si se tienen, arranca el servicio.
      */
     private void checkPermissionsAndStartService() {
-        String[] permissionsToRequest = {
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.BLUETOOTH_SCAN,
-                Manifest.permission.BLUETOOTH_CONNECT
-        };
+        List<String> requiredPermissions = new ArrayList<>();
+        requiredPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        requiredPermissions.add(Manifest.permission.BLUETOOTH_SCAN);
+        requiredPermissions.add(Manifest.permission.BLUETOOTH_CONNECT);
 
-        boolean allPermissionsGranted = true;
-        for (String permission : permissionsToRequest) {
+        // A partir de Android 13 (API 33), el permiso de notificaciones es un permiso de ejecución.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requiredPermissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
+
+        List<String> permissionsToRequest = new ArrayList<>();
+        for (String permission : requiredPermissions) {
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                allPermissionsGranted = false;
-                break;
+                permissionsToRequest.add(permission);
             }
         }
 
-        //Si hay permisos empezamos el servicio de tracking
-        if (allPermissionsGranted) {
+        if (permissionsToRequest.isEmpty()) {
             startTrackingService();
         } else {
-            requestPermissionLauncher.launch(permissionsToRequest);
+            requestPermissionLauncher.launch(permissionsToRequest.toArray(new String[0]));
         }
     }
 
-    // Metodo para empezar el servicio de tracking --------------------------
     /**
-     * @brief Inicia el servicio de rastreo (\ref SensorTrackingService) como un servicio en primer plano.
-     * Pasa el \p sensorId al servicio para que pueda establecer su DocumentReference en Firestore.
-     * () -> startTrackingService() -> ()
+     * @brief Arranca el @ref SensorTrackingService como Foreground Service.
      */
     private void startTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
@@ -425,17 +389,23 @@ public class SesionSensorActivity extends AppCompatActivity {
         ContextCompat.startForegroundService(this, serviceIntent);
     }
 
-    // Metodo para parar el servicio de tracking --------------------------
-
     /**
-     * @brief Detiene el servicio de rastreo @ref SensorTrackingService
-     * () -> stopTrackingService() -> ()
+     * @brief Detiene el servicio de rastreo al cerrar sesión.
      */
     private void stopTrackingService() {
         Intent serviceIntent = new Intent(this, SensorTrackingService.class);
         stopService(serviceIntent);
     }
 
-
-
+    /**
+     * @brief Limpieza de recursos al destruir la actividad.
+     * Elimina el listener de Firestore para evitar fugas de memoria.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (incidenciaListener != null) {
+            incidenciaListener.remove();
+        }
+    }
 }

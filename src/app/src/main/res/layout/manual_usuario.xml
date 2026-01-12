@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:fitsSystemWindows="true">
+
+    <View
+        android:id="@+id/view_header_faq"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_back_faq"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/abc_ic_ab_back_material"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_faq"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_faq"
+        app:tint="@android:color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manual de Usuario y Ayuda"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view_header_faq"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view_header_faq" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_header_faq">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true">
+
+                    <LinearLayout android:id="@+id/header_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_lock_outline" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="1. Inicio de Sesión y Acceso Seguro" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_login" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_keyboard_arrow_down" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/content_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manual_login_content"
+                            android:textColor="#555"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true">
+
+                    <LinearLayout android:id="@+id/header_panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_dashboard" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="2. Panel Principal y Estado del Sensor" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_panel" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_keyboard_arrow_down" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/content_panel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manual_panel_content"
+                            android:textColor="#555"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <LinearLayout android:id="@+id/header_contaminantes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_science" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="3. Guía de Referencia: Los 5 Contaminantes" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_contaminantes" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_keyboard_arrow_down" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/content_contaminantes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/manual_contaminantes_intro" android:layout_marginBottom="8dp" android:textColor="#555"/>
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:stretchColumns="1">
+                            <TableRow>
+                                <TextView android:textStyle="bold" android:text="Contaminante" android:paddingEnd="8dp" android:textColor="#333"/>
+                                <TextView android:textStyle="bold" android:text="Niveles de Referencia" android:textColor="#333"/>
+                            </TableRow>
+                            <TableRow android:layout_marginTop="8dp">
+                                <TextView android:text="Ozono (O3)" android:textColor="#555"/>
+                                <TextView android:text="🟢 Seguro: ≤ 0.061 ppm\n🟠 Riesgo: 0.061 - 0.092 ppm\n🔴 Peligroso: > 0.122 ppm" android:textColor="#555"/>
+                            </TableRow>
+                            <TableRow android:layout_marginTop="8dp">
+                                <TextView android:text="Monóxido de\nCarbono (CO)" android:textColor="#555"/>
+                                <TextView android:text="🟢 Seguro: ≤ 10 mg/m³\n🟠 Riesgo: 10 - 30 mg/m³\n🔴 Peligroso: > 30 mg/m³" android:textColor="#555"/>
+                            </TableRow>
+                            <TableRow android:layout_marginTop="8dp">
+                                <TextView android:text="Dióxido de\nNitrógeno (NO2)" android:textColor="#555"/>
+                                <TextView android:text="🟢 Seguro: ≤ 200 µg/m³\n🟠 Riesgo: 200 - 400 µg/m³\n🔴 Peligroso: > 400 µg/m³" android:textColor="#555"/>
+                            </TableRow>
+                            <TableRow android:layout_marginTop="8dp">
+                                <TextView android:text="Dióxido de\nAzufre (SO2)" android:textColor="#555"/>
+                                <TextView android:text="🟢 Seguro: ≤ 350 µg/m³\n🟠 Riesgo: 350 - 500 µg/m³\n🔴 Peligroso: > 500 µg/m³" android:textColor="#555"/>
+                            </TableRow>
+                            <TableRow android:layout_marginTop="8dp">
+                                <TextView android:text="Dióxido de\nCarbono (CO2)" android:textColor="#555"/>
+                                <TextView android:text="🟢 Óptimo: ≤ 800 ppm\n🟠 Inadecuado: 800 - 5000 ppm\n🔴 Peligroso: > 5000 ppm" android:textColor="#555"/>
+                            </TableRow>
+                        </TableLayout>
+                        <TextView android:layout_marginTop="12dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manual_contaminantes_nota"
+                            android:textColor="#555"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true">
+
+                    <LinearLayout android:id="@+id/header_graficas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_bar_chart" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="4. Análisis Histórico y Gráficas" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_graficas" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_keyboard_arrow_down" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/content_graficas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manual_graficas_content"
+                            android:textColor="#555"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true">
+
+                    <LinearLayout android:id="@+id/header_alertas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_notifications" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="5. Sistema de Alertas y Permisos" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_alertas" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_keyboard_arrow_down" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/content_alertas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manual_alertas_content"
+                            android:textColor="#555"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true">
+
+                    <LinearLayout android:id="@+id/header_incidencias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_error" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="6. Resolución de Problemas y Gestión de Incidencias" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_incidencias" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_keyboard_arrow_down" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/content_incidencias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manual_incidencias_content"
+                            android:textColor="#555"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true">
+
+                    <LinearLayout android:id="@+id/header_faq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_help_outline" app:tint="@color/colorPrimary"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="7. Preguntas Frecuentes (FAQ)" android:textSize="16sp" android:textStyle="bold" android:textColor="#333"/>
+                        <ImageView android:id="@+id/arrow_faq" android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_keyboard_arrow_down" app:tint="#777"/>
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/content_faq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manual_faq_content"
+                            android:textColor="#555"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="4dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

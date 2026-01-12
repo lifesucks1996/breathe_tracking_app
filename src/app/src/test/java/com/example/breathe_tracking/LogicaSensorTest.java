@@ -50,7 +50,7 @@ public class LogicaSensorTest {
     @Test
     public void verificarTemperatura() {
         System.out.println("[TEST 3] Verificando Temperatura...");
-        System.out.println("    - Probando 36ºC (Calor)...");
+        System.out.println("    - Probando 36ºC (Calor) es >= 35ºC ...");
         assertTrue(SensorTrackingService.esTemperaturaPeligrosa(36.0f));
         System.out.println("Test de Temperatura superado.");
     }

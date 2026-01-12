@@ -22,4 +22,5 @@
 
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="semi_transparent_white">#CCFFFFFF</color>
 </resources>

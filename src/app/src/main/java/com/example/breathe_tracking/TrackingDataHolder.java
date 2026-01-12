@@ -8,6 +8,9 @@ package com.example.breathe_tracking;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @class TrackingDataHolder
  * @brief "Tablón de Anuncios" reactivo de la aplicación (Singleton + LiveData).
@@ -24,12 +27,11 @@ import androidx.lifecycle.MutableLiveData;
  *
  * @author Sandra (Arquitectura LiveData - 29/10/2025)
  */
-
 public class TrackingDataHolder {
     /** @brief Instancia única y estática de la clase (Singleton). */
     private static final TrackingDataHolder instance = new TrackingDataHolder();
 
-    //----- LiveData para datos principales --------------
+    // LiveData para datos principales
     /** @brief Contiene la ubicación actual del dispositivo (ej: "Calle Falsa 123, Ciudad"). */
     public final MutableLiveData<String> locationData = new MutableLiveData<>();
     /** @brief Contiene la hora de la última recepción de datos del sensor (ej: "Última conex. 14:30"). */
@@ -45,15 +47,19 @@ public class TrackingDataHolder {
     /** @brief Contiene la intensidad de la señal recibida (RSSI) en dBm. */
     public final MutableLiveData<Integer> rssiData = new MutableLiveData<>();
 
-    // ---- LiveData para el estado de conexión ---------------------------
+    // LiveData para el estado de conexión
     /** @brief Contiene el estado de conexión del sensor ("Conectado" o "Desconectado"). */
     public final MutableLiveData<String> estadoData = new MutableLiveData<>();
 
-    // ---- LiveData para Alertas e Incidencias ----------------------------
-    /** @brief Contiene una cadena con los mensajes de alertas de mediciones (CO2, O3, Temp) que superan umbrales. */
-    public final MutableLiveData<String> alertData = new MutableLiveData<>();
+    // LiveData para Alertas e Incidencias
+    /** @brief Contiene una lista con un máximo de 5 mensajes de alerta. */
+    public final MutableLiveData<List<String>> alertData = new MutableLiveData<>(new ArrayList<>());
+
     /** @brief Contiene un mensaje sobre incidencias (principalmente la pérdida de conexión del sensor). */
     public final MutableLiveData<String> incidenciaData = new MutableLiveData<>();
+
+    /** @brief Nuevo: Contiene el historial de las últimas 4 incidencias enviadas. */
+    public final MutableLiveData<List<String>> incidenciasEnviadasData = new MutableLiveData<>(new ArrayList<>());
 
     /**
      * @brief Constructor privado para forzar el patrón Singleton.
