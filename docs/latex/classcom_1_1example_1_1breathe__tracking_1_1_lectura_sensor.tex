@@ -1,0 +1,212 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+
+
+Clase modelo para subir las lecturas de los sensores a Firebase Firestore.  
+
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a}{Lectura\+Sensor}} ()
+\begin{DoxyCompactList}\small\item\em Constructor vacío. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af79f89e7e6a98748952e5b439f795dff}{Lectura\+Sensor}} (float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a}{O3}}, float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae}{temperatura}}, int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf}{co2}}, int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952}{bateria}}, String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a}{ubicacion}}, String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be}{estado}})
+\begin{DoxyCompactList}\small\item\em Constructor con todos los campos de datos y contexto. (O3\+:float, temperatura\+:float, co2\+:int, bateria\+:int, ubicacion\+:String, estado\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a}{Lectura\+Sensor()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a}{O3}}
+\begin{DoxyCompactList}\small\item\em Nivel de Ozono (O3) medido, en partes por millón (ppm). \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae}{temperatura}}
+\begin{DoxyCompactList}\small\item\em Temperatura medida, en grados Celsius. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf}{co2}}
+\begin{DoxyCompactList}\small\item\em Nivel de Dióxido de Carbono (CO2) medido, en partes por millón (ppm). \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952}{bateria}}
+\begin{DoxyCompactList}\small\item\em Porcentaje de batería del sensor. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a}{ubicacion}}
+\begin{DoxyCompactList}\small\item\em Ubicación geográfica del dispositivo móvil en el momento de la lectura (dirección legible). \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be}{estado}}
+\begin{DoxyCompactList}\small\item\em Estado de conexión del sensor ("{}\+Conectado"{} o "{}\+Desconectado"{}) en el momento de la lectura. \end{DoxyCompactList}\item 
+Date \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a050901564b7590ef64b188b2a316fe20}{fecha}}
+\begin{DoxyCompactList}\small\item\em Timestamp del servidor que registra la hora exacta en la que la lectura fue subida a Firestore. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Clase modelo para subir las lecturas de los sensores a Firebase Firestore. 
+
+Esta clase define la estructura de datos que se guarda como documento dentro de la subcolección "{}mediciones"{} de cada sensor en Firestore, utilizada para mantener un historial de datos.
+
+Esta clase actúa como un Data Transfer Object (DTO). Define la estructura exacta de los documentos que se almacenan en la subcolección {\ttfamily mediciones} de cada sensor.
+
+\begin{DoxyNote}{Note}
+El campo \textquotesingle{}fecha\textquotesingle{} está anotado con @\+Server\+Timestamp para asegurar que el servidor de Firebase registre la hora exacta de la subida, garantizando precisión en el historial. 
+\end{DoxyNote}
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00026}{26}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!LecturaSensor@{LecturaSensor}}
+\index{LecturaSensor@{LecturaSensor}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{LecturaSensor()}{LecturaSensor()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a} 
+com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+Lectura\+Sensor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Constructor vacío. 
+
+\begin{DoxyWarning}{Warning}
+Este constructor es {\bfseries{obligatorio}} para que Firebase Firestore pueda deserializar los documentos de la base de datos en objetos de Java automáticamente. 
+\end{DoxyWarning}
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00057}{57}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af79f89e7e6a98748952e5b439f795dff}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!LecturaSensor@{LecturaSensor}}
+\index{LecturaSensor@{LecturaSensor}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{LecturaSensor()}{LecturaSensor()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af79f89e7e6a98748952e5b439f795dff} 
+com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+Lectura\+Sensor (\begin{DoxyParamCaption}\item[{float}]{O3}{, }\item[{float}]{temperatura}{, }\item[{int}]{co2}{, }\item[{int}]{bateria}{, }\item[{String}]{ubicacion}{, }\item[{String}]{estado}{}\end{DoxyParamCaption})}
+
+
+
+Constructor con todos los campos de datos y contexto. (O3\+:float, temperatura\+:float, co2\+:int, bateria\+:int, ubicacion\+:String, estado\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a}{Lectura\+Sensor()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em O3} & Nivel de ozono. \\
+\hline
+{\em temperatura} & Nivel de temperatura. \\
+\hline
+{\em co2} & Nivel de dióxido de carbono. \\
+\hline
+{\em bateria} & Porcentaje de batería. \\
+\hline
+{\em ubicacion} & Dirección actual del dispositivo. \\
+\hline
+{\em estado} & Estado de conexión del sensor. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00069}{69}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!bateria@{bateria}}
+\index{bateria@{bateria}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{bateria}{bateria}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952} 
+int com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+bateria}
+
+
+
+Porcentaje de batería del sensor. 
+
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00034}{34}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!co2@{co2}}
+\index{co2@{co2}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{co2}{co2}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf} 
+int com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+co2}
+
+
+
+Nivel de Dióxido de Carbono (CO2) medido, en partes por millón (ppm). 
+
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00032}{32}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!estado@{estado}}
+\index{estado@{estado}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{estado}{estado}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be} 
+String com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+estado}
+
+
+
+Estado de conexión del sensor ("{}\+Conectado"{} o "{}\+Desconectado"{}) en el momento de la lectura. 
+
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00038}{38}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a050901564b7590ef64b188b2a316fe20}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!fecha@{fecha}}
+\index{fecha@{fecha}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{fecha}{fecha}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a050901564b7590ef64b188b2a316fe20} 
+Date com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+fecha}
+
+
+
+Timestamp del servidor que registra la hora exacta en la que la lectura fue subida a Firestore. 
+
+\begin{DoxyNote}{Note}
+La anotación {\ttfamily @Server\+Timestamp} indica a Firestore que debe rellenar este campo con la hora del servidor en el momento de la escritura, garantizando cronología exacta independiente de la hora del dispositivo móvil.
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+com.\+google.\+firebase.\+firestore.\+Server\+Timestamp 
+\end{DoxySeeAlso}
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00050}{50}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!O3@{O3}}
+\index{O3@{O3}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{O3}{O3}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a} 
+float com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+O3}
+
+
+
+Nivel de Ozono (O3) medido, en partes por millón (ppm). 
+
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00028}{28}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!temperatura@{temperatura}}
+\index{temperatura@{temperatura}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{temperatura}{temperatura}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae} 
+float com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+temperatura}
+
+
+
+Temperatura medida, en grados Celsius. 
+
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00030}{30}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a}\index{com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}!ubicacion@{ubicacion}}
+\index{ubicacion@{ubicacion}!com.example.breathe\_tracking.LecturaSensor@{com.example.breathe\_tracking.LecturaSensor}}
+\doxysubsubsection{\texorpdfstring{ubicacion}{ubicacion}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a} 
+String com.\+example.\+breathe\+\_\+tracking.\+Lectura\+Sensor.\+ubicacion}
+
+
+
+Ubicación geográfica del dispositivo móvil en el momento de la lectura (dirección legible). 
+
+
+
+Definition at line \mbox{\hyperlink{_lectura_sensor_8java_source_l00036}{36}} of file \mbox{\hyperlink{_lectura_sensor_8java_source}{Lectura\+Sensor.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_lectura_sensor_8java}{Lectura\+Sensor.\+java}}\end{DoxyCompactItemize}

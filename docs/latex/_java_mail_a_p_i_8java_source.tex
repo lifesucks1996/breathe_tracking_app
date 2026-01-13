@@ -1,0 +1,207 @@
+\doxysection{Java\+Mail\+API.\+java}
+\hypertarget{_java_mail_a_p_i_8java_source}{}\label{_java_mail_a_p_i_8java_source}\index{src/app/src/main/java/com/example/breathe\_tracking/JavaMailAPI.java@{src/app/src/main/java/com/example/breathe\_tracking/JavaMailAPI.java}}
+\mbox{\hyperlink{_java_mail_a_p_i_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00001}00001\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00002}00002\ \textcolor{comment}{\ *\ @file\ JavaMailAPI.java}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00003}00003\ \textcolor{comment}{\ *\ @brief\ Implementación\ de\ tarea\ asíncrona\ para\ el\ envío\ de\ correos\ electrónicos\ SMTP.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00004}00004\ \textcolor{comment}{\ *\ @package\ com.example.breathe\_tracking}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00005}00005\ \textcolor{comment}{\ *\ @copyright\ Copyright\ ©\ 2025}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00008}00008\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00010}00010\ \textcolor{keyword}{import}\ android.content.Context;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00011}00011\ \textcolor{keyword}{import}\ android.os.AsyncTask;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00012}00012\ \textcolor{keyword}{import}\ android.widget.Toast;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00013}00013\ \textcolor{keyword}{import}\ java.util.Properties;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00014}00014\ \textcolor{keyword}{import}\ javax.mail.Message;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00015}00015\ \textcolor{keyword}{import}\ javax.mail.MessagingException;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00016}00016\ \textcolor{keyword}{import}\ javax.mail.PasswordAuthentication;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00017}00017\ \textcolor{keyword}{import}\ javax.mail.Session;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00018}00018\ \textcolor{keyword}{import}\ javax.mail.Transport;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00019}00019\ \textcolor{keyword}{import}\ javax.mail.internet.InternetAddress;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00020}00020\ \textcolor{keyword}{import}\ javax.mail.internet.MimeMessage;}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00021}00021\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00022}00022\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00023}00023\ \textcolor{comment}{\ *\ @class\ JavaMailAPI}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00024}00024\ \textcolor{comment}{\ *\ @brief\ Gestiona\ el\ envío\ de\ correos\ electrónicos\ en\ segundo\ plano.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00025}00025\ \textcolor{comment}{\ *\ @extends\ AsyncTask<Void,\ Void,\ Void>}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00026}00026\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00027}00027\ \textcolor{comment}{\ *\ @details}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00028}00028\ \textcolor{comment}{\ *\ Esta\ clase\ evita\ el\ bloqueo\ del\ hilo\ principal\ (Main\ Thread)\ al\ realizar\ operaciones\ de\ red.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00029}00029\ \textcolor{comment}{\ *\ Utiliza\ la\ biblioteca\ **JavaMail**\ para\ conectar\ con\ el\ servidor\ SMTP\ de\ Gmail.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00030}00030\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00031}00031\ \textcolor{comment}{\ *\ **Características\ principales:**}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00032}00032\ \textcolor{comment}{\ *\ -\/\ Autenticación\ segura\ mediante\ "{}Contraseña\ de\ Aplicación"{}\ de\ Google.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00033}00033\ \textcolor{comment}{\ *\ -\/\ Construcción\ de\ mensajes\ MIME\ multipartes\ (soporte\ HTML).}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00034}00034\ \textcolor{comment}{\ *\ -\/\ Inyección\ de\ estilos\ CSS\ para\ correos\ corporativos/profesionales.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00035}00035\ \textcolor{comment}{\ *\ -\/\ Notificación\ visual\ (Toast)\ al\ finalizar\ el\ envío.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00036}00036\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00037}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{00037}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a074b9b97561efb0d25eb3d071883a214}{JavaMailAPI}}\ \textcolor{keyword}{extends}\ AsyncTask<Void,\ Void,\ Void>\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00039}00039\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ CONFIGURACIÓN\ DEL\ ROBOT\ -\/-\/-\/}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00040}00040\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Dirección\ de\ correo\ electrónico\ del\ remitente\ (Cuenta\ Robot).\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00041}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac4c68018c0c19aebf03b9b283345a5a7}{00041}}\ \ \ \ \ \textcolor{keyword}{private}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac4c68018c0c19aebf03b9b283345a5a7}{EMAIL\_ROBOT}}\ =\ \textcolor{stringliteral}{"{}rousio2211@gmail.com"{}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00042}00042\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00043}00043\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Contraseña\ de\ aplicación\ (App\ Password)\ generada\ por\ Google\ para\ autenticación\ segura.\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00044}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a9a411af6d683bb64fd43b017a86d3282}{00044}}\ \ \ \ \ \textcolor{keyword}{private}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a9a411af6d683bb64fd43b017a86d3282}{PASSWORD\_ROBOT}}\ =\ \textcolor{stringliteral}{"{}qksu\ kdas\ eluz\ wofs"{}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00046}00046\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00047}00047\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00048}00048\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Contexto\ de\ la\ aplicación,\ necesario\ para\ mostrar\ mensajes\ Toast\ en\ la\ UI.\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00049}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}{00049}}\ \ \ \ \ \textcolor{keyword}{private}\ Context\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}{context}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00050}00050\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00051}00051\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Sesión\ de\ correo\ que\ mantiene\ la\ configuración\ y\ autenticación.\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00052}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ab4cf2d3c4d2c414261822354dd675e05}{00052}}\ \ \ \ \ \textcolor{keyword}{private}\ Session\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ab4cf2d3c4d2c414261822354dd675e05}{session}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00053}00053\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00054}00054\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Dirección\ de\ correo\ electrónico\ del\ destinatario\ (Administrador).\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00055}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}{00055}}\ \ \ \ \ \textcolor{keyword}{private}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}{emailDestino}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00056}00056\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00057}00057\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Asunto\ del\ correo\ electrónico.\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00058}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{00058}}\ \ \ \ \ \textcolor{keyword}{private}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{asunto}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00059}00059\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00060}00060\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Cuerpo\ del\ mensaje\ (texto\ base\ que\ será\ formateado\ a\ HTML).\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00061}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{00061}}\ \ \ \ \ \textcolor{keyword}{private}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00062}00062\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00063}00063\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00064}00064\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Constructor\ de\ la\ clase\ JavaMailAPI.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00065}00065\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00066}00066\ \textcolor{comment}{\ \ \ \ \ *\ Inicializa\ los\ datos\ necesarios\ para\ componer\ y\ enviar\ el\ correo.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00067}00067\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00068}00068\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00069}00069\ \textcolor{comment}{\ \ \ \ \ *\ @param\ context\ Contexto\ de\ la\ actividad\ o\ aplicación.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00070}00070\ \textcolor{comment}{\ \ \ \ \ *\ @param\ emailDestino\ Dirección\ de\ email\ a\ la\ que\ se\ enviará\ la\ alerta.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00071}00071\ \textcolor{comment}{\ \ \ \ \ *\ @param\ asunto\ Título\ del\ correo.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00072}00072\ \textcolor{comment}{\ \ \ \ \ *\ @param\ mensaje\ Contenido\ del\ mensaje.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00073}00073\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00074}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a074b9b97561efb0d25eb3d071883a214}{00074}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a074b9b97561efb0d25eb3d071883a214}{JavaMailAPI}}(Context\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}{context}},\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}{emailDestino}},\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{asunto}},\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}})\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00075}00075\ \ \ \ \ \ \ \ \ this.context\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}{context}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00076}00076\ \ \ \ \ \ \ \ \ this.emailDestino\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}{emailDestino}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00077}00077\ \ \ \ \ \ \ \ \ this.asunto\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{asunto}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00078}00078\ \ \ \ \ \ \ \ \ this.mensaje\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00079}00079\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00080}00080\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00081}00081\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00082}00082\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Lógica\ de\ conexión\ y\ envío\ en\ hilo\ secundario.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00083}00083\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00084}00084\ \textcolor{comment}{\ \ \ \ \ *\ 1.\ Configura\ las\ propiedades\ (`Properties`)\ para\ TLS/SSL\ en\ el\ puerto\ 465\ de\ Gmail.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00085}00085\ \textcolor{comment}{\ \ \ \ \ *\ 2.\ Inicia\ sesión\ (`Session`)\ con\ las\ credenciales\ del\ robot.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00086}00086\ \textcolor{comment}{\ \ \ \ \ *\ 3.\ Crea\ el\ objeto\ \`{}MimeMessage`.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00087}00087\ \textcolor{comment}{\ \ \ \ \ *\ 4.\ Asigna\ un\ alias\ ("{}⚠️\ Alertas\ Breathe\ Tracking"{})\ al\ remitente.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00088}00088\ \textcolor{comment}{\ \ \ \ \ *\ 5.\ Genera\ el\ contenido\ HTML\ llamando\ a\ @ref\ construirHTML.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00089}00089\ \textcolor{comment}{\ \ \ \ \ *\ 6.\ Envía\ el\ mensaje\ mediante\ \`{}Transport.send()`.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00090}00090\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00091}00091\ \textcolor{comment}{\ \ \ \ \ *\ @param\ params\ Void\ (no\ se\ usan\ parámetros\ variables).}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00092}00092\ \textcolor{comment}{\ \ \ \ \ *\ @return\ null}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00093}00093\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00094}00094\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00095}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a6f361bfaf44a71e680b04967ccbbc5e2}{00095}}\ \ \ \ \ \textcolor{keyword}{protected}\ Void\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a6f361bfaf44a71e680b04967ccbbc5e2}{doInBackground}}(Void...\ params)\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00096}00096\ \ \ \ \ \ \ \ \ Properties\ props\ =\ \textcolor{keyword}{new}\ Properties();}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00097}00097\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Configuración\ para\ conectarse\ a\ Gmail}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00098}00098\ \ \ \ \ \ \ \ \ props.put(\textcolor{stringliteral}{"{}mail.smtp.host"{}},\ \textcolor{stringliteral}{"{}smtp.gmail.com"{}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00099}00099\ \ \ \ \ \ \ \ \ props.put(\textcolor{stringliteral}{"{}mail.smtp.socketFactory.port"{}},\ \textcolor{stringliteral}{"{}465"{}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00100}00100\ \ \ \ \ \ \ \ \ props.put(\textcolor{stringliteral}{"{}mail.smtp.socketFactory.class"{}},\ \textcolor{stringliteral}{"{}javax.net.ssl.SSLSocketFactory"{}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00101}00101\ \ \ \ \ \ \ \ \ props.put(\textcolor{stringliteral}{"{}mail.smtp.auth"{}},\ \textcolor{stringliteral}{"{}true"{}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00102}00102\ \ \ \ \ \ \ \ \ props.put(\textcolor{stringliteral}{"{}mail.smtp.port"{}},\ \textcolor{stringliteral}{"{}465"{}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00104}00104\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Iniciar\ sesión}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00105}00105\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ab4cf2d3c4d2c414261822354dd675e05}{session}}\ =\ Session.getDefaultInstance(props,\ \textcolor{keyword}{new}\ javax.mail.Authenticator()\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ protected\ PasswordAuthentication\ getPasswordAuthentication()\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ return\ new\ PasswordAuthentication(EMAIL\_ROBOT,\ PASSWORD\_ROBOT);}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00109}00109\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00111}00111\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ MimeMessage\ mm\ =\ \textcolor{keyword}{new}\ MimeMessage(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ab4cf2d3c4d2c414261822354dd675e05}{session}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00113}00113\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00114}00114\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ /**\ @brief\ Configuración\ del\ remitente\ con\ alias\ visual\ personalizado\ para\ apariencia\ profesional.\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ mm.setFrom(\textcolor{keyword}{new}\ InternetAddress(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac4c68018c0c19aebf03b9b283345a5a7}{EMAIL\_ROBOT}},\ \textcolor{stringliteral}{"{}⚠️\ Alertas\ Breathe\ Tracking"{}}));}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ mm.addRecipient(Message.RecipientType.TO,\ \textcolor{keyword}{new}\ InternetAddress(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}{emailDestino}}));}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ mm.setSubject(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{asunto}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ String\ contenidoHTML\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc}{construirHTML}}(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{asunto}},\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}});\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00122}00122\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ /**\ @brief\ Establece\ el\ contenido\ como\ HTML\ con\ codificación\ UTF-\/8\ para\ soporte\ de\ tildes.\ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ mm.setContent(contenidoHTML,\ \textcolor{stringliteral}{"{}text/html;\ charset=utf-\/8"{}});}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00124}00124\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ Transport.send(mm);}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00127}00127\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{catch}\ (Exception\ e)\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ e.printStackTrace();}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00129}00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00130}00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{null};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00131}00131\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00132}00132\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00133}00133\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00134}00134\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Se\ ejecuta\ en\ el\ hilo\ principal\ (UI\ Thread)\ al\ finalizar\ el\ envío.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00135}00135\ \textcolor{comment}{\ \ \ \ \ *\ Muestra\ una\ notificación\ Toast\ al\ usuario\ indicando\ que\ la\ incidencia\ se\ ha\ enviado.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00136}00136\ \textcolor{comment}{\ \ \ \ \ *\ (result:Void)\ -\/>\ onPostExecute()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00137}00137\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00138}00138\ \textcolor{comment}{\ \ \ \ \ *\ @param\ result\ Resultado\ de\ doInBackground\ (siempre\ null\ en\ este\ caso).}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00139}00139\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00140}00140\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00141}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a43410391cf2f042202be4fefd413e2b9}{00141}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a43410391cf2f042202be4fefd413e2b9}{onPostExecute}}(Void\ result)\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00142}00142\ \ \ \ \ \ \ \ \ super.onPostExecute(result);}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00143}00143\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Mostrar\ aviso\ al\ usuario\ cuando\ termine}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00144}00144\ \ \ \ \ \ \ \ \ Toast.makeText(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}{context}},\ \textcolor{stringliteral}{"{}Incidencia\ enviada\ correctamente"{}},\ Toast.LENGTH\_LONG).show();}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00145}00145\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00147}00147\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ NUEVO\ MÉTODO\ PARA\ CREAR\ EL\ DISEÑO\ HTML\ -\/-\/-\/}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00148}00148\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00149}00149\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Genera\ una\ estructura\ HTML\ con\ estilos\ CSS\ integrados\ para\ el\ cuerpo\ del\ correo.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00150}00150\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00151}00151\ \textcolor{comment}{\ \ \ \ \ *\ Crea\ un\ diseño\ visual\ profesional\ con\ cabecera\ corporativa,\ contenedor\ de\ datos}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00152}00152\ \textcolor{comment}{\ \ \ \ \ *\ y\ pie\ de\ página,\ insertando\ dinámicamente\ el\ título\ y\ el\ mensaje.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00153}00153\ \textcolor{comment}{\ \ \ \ \ *\ (titulo:String,\ mensaje:String)\ -\/>\ construirHTML()\ -\/>\ String\ (HTML)}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00154}00154\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00155}00155\ \textcolor{comment}{\ \ \ \ \ *\ @param\ titulo\ El\ título\ de\ la\ incidencia.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00156}00156\ \textcolor{comment}{\ \ \ \ \ *\ @param\ mensaje\ El\ mensaje\ descriptivo\ de\ la\ incidencia.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00157}00157\ \textcolor{comment}{\ \ \ \ \ *\ @return\ String\ que\ contiene\ el\ código\ HTML\ completo\ del\ correo.}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00158}00158\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00159}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc}{00159}}\ \ \ \ \ \textcolor{keyword}{private}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc}{construirHTML}}(String\ titulo,\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}})\ \{}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00160}00160\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}<!DOCTYPE\ html>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<html>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<head>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<style>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}body\ \{font-\/family:\ Arial,\ sans-\/serif;\ margin:\ 0;\ padding:\ 0;\ background-\/color:\ \#f4f4f4;\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.container\ \{max-\/width:\ 600px;\ margin:\ 20px\ auto;\ background-\/color:\ \#ffffff;\ border-\/radius:\ 8px;\ overflow:\ hidden;\ box-\/shadow:\ 0\ 2px\ 5px\ rgba(0,0,0,0.1);\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.header\ \{background-\/color:\ \#0E344C;\ color:\ \#ffffff;\ padding:\ 20px;\ text-\/align:\ center;\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.header\ h1\ \{margin:\ 0;\ font-\/size:\ 24px;\ letter-\/spacing:\ 2px;\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.content\ \{padding:\ 30px;\ color:\ \#333333;\ line-\/height:\ 1.6;\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.label\ \{font-\/weight:\ bold;\ color:\ \#0E344C;\ display:\ block;\ margin-\/top:\ 15px;\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.value\ \{background-\/color:\ \#f9f9f9;\ padding:\ 10px;\ border-\/left:\ 4px\ solid\ \#0E344C;\ margin-\/top:\ 5px;\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}.footer\ \{background-\/color:\ \#eeeeee;\ text-\/align:\ center;\ padding:\ 15px;\ font-\/size:\ 12px;\ color:\ \#777777;\}"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}</style>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}</head>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}<body>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ <div\ class='container'>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ <div\ class='header'>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <h1>BREATHE\ TRACKING</h1>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <p>Sistema\ de\ Gestión\ de\ Incidencias</p>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ </div>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ <div\ class='content'>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <p>Hola\ Administrador,</p>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <p>Se\ ha\ recibido\ un\ nuevo\ reporte\ automático\ desde\ la\ aplicación\ móvil.</p>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <hr\ style='border:\ 0;\ border-\/top:\ 1px\ solid\ \#eee;\ margin:\ 20px\ 0;'>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00184}00184\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <span\ class='label'>TÍTULO:</span>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <div\ class='value'>"{}}\ +\ titulo\ +\ \textcolor{stringliteral}{"{}</div>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <span\ class='label'>DETALLE\ DEL\ MENSAJE:</span>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <div\ class='value'>"{}}\ +\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}}\ +\ \textcolor{stringliteral}{"{}</div>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <p\ style='margin-\/top:\ 30px;\ font-\/size:\ 0.9em;'><em>Por\ favor,\ revise\ el\ panel\ de\ control\ para\ más\ detalles\ técnicos\ del\ sensor\ afectado.</em></p>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ </div>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ <div\ class='footer'>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <p>Este\ es\ un\ mensaje\ automático.\ No\ responder\ a\ este\ correo.</p>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ <p>\&copy;\ 2025\ Breathe\ Tracking\ System</p>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ </div>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00197}00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ </div>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}</body>"{}}\ +}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}</html>"{}};}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00200}00200\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_java_mail_a_p_i_8java_source_l00201}00201\ \}}
+
+\end{DoxyCode}

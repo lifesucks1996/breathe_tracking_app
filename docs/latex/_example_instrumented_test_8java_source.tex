@@ -1,0 +1,32 @@
+\doxysection{Example\+Instrumented\+Test.\+java}
+\hypertarget{_example_instrumented_test_8java_source}{}\label{_example_instrumented_test_8java_source}\index{src/app/src/androidTest/java/com/example/breathe\_tracking/ExampleInstrumentedTest.java@{src/app/src/androidTest/java/com/example/breathe\_tracking/ExampleInstrumentedTest.java}}
+\mbox{\hyperlink{_example_instrumented_test_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00001}\mbox{\hyperlink{namespacecom_1_1example_1_1breathe__tracking}{00001}}\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00003}00003\ \textcolor{keyword}{import}\ android.content.Context;}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00004}00004\ }
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00005}00005\ \textcolor{keyword}{import}\ androidx.test.platform.app.InstrumentationRegistry;}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00006}00006\ \textcolor{keyword}{import}\ androidx.test.ext.junit.runners.AndroidJUnit4;}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00008}00008\ \textcolor{keyword}{import}\ org.junit.Test;}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00009}00009\ \textcolor{keyword}{import}\ org.junit.runner.RunWith;}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00011}00011\ \textcolor{keyword}{import}\ \textcolor{keyword}{static}\ org.junit.Assert.*;}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00012}00012\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00013}00013\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00014}00014\ \textcolor{comment}{\ *\ Instrumented\ test,\ which\ will\ execute\ on\ an\ Android\ device.}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00015}00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00016}00016\ \textcolor{comment}{\ *\ @see\ <a\ href="{}http://d.android.com/tools/testing"{}>Testing\ documentation</a>}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00017}00017\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00018}00018\ @RunWith(AndroidJUnit4.class)}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00019}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_example_instrumented_test}{00019}}\ public\ class\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_example_instrumented_test}{ExampleInstrumentedTest}}\ \{}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00020}00020\ \ \ \ \ @Test}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00021}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_example_instrumented_test_a4928d4cc3d8ac42d9ac489c79fa0a5b7}{00021}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_example_instrumented_test_a4928d4cc3d8ac42d9ac489c79fa0a5b7}{useAppContext}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00022}00022\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Context\ of\ the\ app\ under\ test.}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00023}00023\ \ \ \ \ \ \ \ \ Context\ appContext\ =\ InstrumentationRegistry.getInstrumentation().getTargetContext();}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00024}00024\ \ \ \ \ \ \ \ \ assertEquals(\textcolor{stringliteral}{"{}com.example.breathe\_tracking"{}},\ appContext.getPackageName());}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00025}00025\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_example_instrumented_test_8java_source_l00026}00026\ \}}
+
+\end{DoxyCode}

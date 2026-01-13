@@ -1,8 +1,7 @@
 /**
  * @file LecturaSensor.java
- * @brief Modelo de datos (POJO) para la persistencia de lecturas en el historial.
+ * @brief Modelo de datos (POJO) para almacenar una lectura individual del sensor en la colección de historial de Firebase Firestore.
  * @package com.example.breathe_tracking
- * @copyright Copyright © 2025
  */
 package com.example.breathe_tracking;
 
@@ -13,7 +12,7 @@ import java.util.Date;
  * @class LecturaSensor
  * @brief Clase modelo para subir las lecturas de los sensores a Firebase Firestore.
  *
- * @details Esta clase define la estructura de datos que se guarda como documento dentro de la subcolección
+ * Esta clase define la estructura de datos que se guarda como documento dentro de la subcolección
  * "mediciones" de cada sensor en Firestore, utilizada para mantener un historial de datos.
  *
  * @note El campo 'fecha' está anotado con @ServerTimestamp para asegurar que el servidor de Firebase

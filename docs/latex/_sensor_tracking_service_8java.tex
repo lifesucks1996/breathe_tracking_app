@@ -1,0 +1,67 @@
+\doxysection{src/app/src/main/java/com/example/breathe\+\_\+tracking/\+Sensor\+Tracking\+Service.java File Reference}
+\hypertarget{_sensor_tracking_service_8java}{}\label{_sensor_tracking_service_8java}\index{src/app/src/main/java/com/example/breathe\_tracking/SensorTrackingService.java@{src/app/src/main/java/com/example/breathe\_tracking/SensorTrackingService.java}}
+
+
+Implementa el servicio en primer plano para la gestión del ciclo de vida del rastreo del sensor.  
+
+
+{\ttfamily import android.\+Manifest;}\newline
+{\ttfamily import android.\+app.\+Notification;}\newline
+{\ttfamily import android.\+app.\+Notification\+Channel;}\newline
+{\ttfamily import android.\+app.\+Notification\+Manager;}\newline
+{\ttfamily import android.\+app.\+Pending\+Intent;}\newline
+{\ttfamily import android.\+app.\+Service;}\newline
+{\ttfamily import android.\+content.\+Intent;}\newline
+{\ttfamily import android.\+content.\+pm.\+Package\+Manager;}\newline
+{\ttfamily import android.\+location.\+Address;}\newline
+{\ttfamily import android.\+location.\+Geocoder;}\newline
+{\ttfamily import android.\+os.\+Handler;}\newline
+{\ttfamily import android.\+os.\+IBinder;}\newline
+{\ttfamily import android.\+os.\+Looper;}\newline
+{\ttfamily import android.\+util.\+Log;}\newline
+{\ttfamily import android.\+bluetooth.\+Bluetooth\+Adapter;}\newline
+{\ttfamily import android.\+bluetooth.\+Bluetooth\+Device;}\newline
+{\ttfamily import android.\+bluetooth.\+le.\+Bluetooth\+Le\+Scanner;}\newline
+{\ttfamily import android.\+bluetooth.\+le.\+Scan\+Callback;}\newline
+{\ttfamily import android.\+bluetooth.\+le.\+Scan\+Record;}\newline
+{\ttfamily import android.\+bluetooth.\+le.\+Scan\+Result;}\newline
+{\ttfamily import android.\+bluetooth.\+le.\+Scan\+Settings;}\newline
+{\ttfamily import androidx.\+core.\+app.\+Activity\+Compat;}\newline
+{\ttfamily import androidx.\+core.\+app.\+Notification\+Compat;}\newline
+{\ttfamily import com.\+google.\+android.\+gms.\+location.\+Fused\+Location\+Provider\+Client;}\newline
+{\ttfamily import com.\+google.\+android.\+gms.\+location.\+Location\+Callback;}\newline
+{\ttfamily import com.\+google.\+android.\+gms.\+location.\+Location\+Request;}\newline
+{\ttfamily import com.\+google.\+android.\+gms.\+location.\+Location\+Result;}\newline
+{\ttfamily import com.\+google.\+android.\+gms.\+location.\+Location\+Services;}\newline
+{\ttfamily import java.\+io.\+IOException;}\newline
+{\ttfamily import java.\+text.\+Simple\+Date\+Format;}\newline
+{\ttfamily import java.\+util.\+Array\+List;}\newline
+{\ttfamily import java.\+util.\+Date;}\newline
+{\ttfamily import java.\+util.\+List;}\newline
+{\ttfamily import java.\+util.\+Locale;}\newline
+{\ttfamily import java.\+util.\+String\+Joiner;}\newline
+{\ttfamily import com.\+google.\+firebase.\+firestore.\+Firebase\+Firestore;}\newline
+{\ttfamily import com.\+google.\+firebase.\+firestore.\+Document\+Reference;}\newline
+{\ttfamily import com.\+google.\+firebase.\+firestore.\+Set\+Options;}\newline
+{\ttfamily import com.\+google.\+firebase.\+firestore.\+Field\+Value;}\newline
+{\ttfamily import java.\+util.\+Hash\+Map;}\newline
+{\ttfamily import java.\+util.\+Map;}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service}}
+\begin{DoxyCompactList}\small\item\em Servicio en primer plano (Foreground Service) que actúa como el núcleo de procesamiento de datos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Packages}
+\begin{DoxyCompactItemize}
+\item 
+package \mbox{\hyperlink{namespacecom_1_1example_1_1breathe__tracking}{com.\+example.\+breathe\+\_\+tracking}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Implementa el servicio en primer plano para la gestión del ciclo de vida del rastreo del sensor. 
+
+
+
+Definition in file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+

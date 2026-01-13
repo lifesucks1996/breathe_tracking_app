@@ -1,0 +1,179 @@
+\doxysection{Envio\+Incidencias\+Activity.\+java}
+\hypertarget{_envio_incidencias_activity_8java_source}{}\label{_envio_incidencias_activity_8java_source}\index{src/app/src/main/java/com/example/breathe\_tracking/EnvioIncidenciasActivity.java@{src/app/src/main/java/com/example/breathe\_tracking/EnvioIncidenciasActivity.java}}
+\mbox{\hyperlink{_envio_incidencias_activity_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00001}00001\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00002}00002\ \textcolor{comment}{\ *\ @file\ EnvioIncidenciasActivity.java}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00003}00003\ \textcolor{comment}{\ *\ @brief\ Actividad\ para\ el\ reporte\ de\ incidencias\ de\ sensores\ IoT.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00004}00004\ \textcolor{comment}{\ *\ @package\ com.example.breathe\_tracking}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00005}00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00006}00006\ \textcolor{comment}{\ *\ @copyright\ Copyright\ ©\ 2025}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00007}00007\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00008}00008\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00010}00010\ \textcolor{keyword}{import}\ android.content.Intent;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00011}00011\ \textcolor{keyword}{import}\ android.os.Bundle;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00012}00012\ \textcolor{keyword}{import}\ android.widget.Button;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00013}00013\ \textcolor{keyword}{import}\ android.widget.EditText;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00014}00014\ \textcolor{keyword}{import}\ android.widget.Toast;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00016}00016\ \textcolor{keyword}{import}\ androidx.appcompat.app.AlertDialog;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00017}00017\ \textcolor{keyword}{import}\ androidx.appcompat.app.AppCompatActivity;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00018}00018\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00019}00019\ \textcolor{keyword}{import}\ com.google.firebase.firestore.FieldValue;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00020}00020\ \textcolor{keyword}{import}\ com.google.firebase.firestore.FirebaseFirestore;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00022}00022\ \textcolor{keyword}{import}\ java.util.HashMap;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00023}00023\ \textcolor{keyword}{import}\ java.util.Locale;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00024}00024\ \textcolor{keyword}{import}\ java.util.Map;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00025}00025\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00026}00026\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00027}00027\ \textcolor{comment}{\ *\ @class\ EnvioIncidenciasActivity}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00028}00028\ \textcolor{comment}{\ *\ @brief\ Gestiona\ la\ interfaz\ y\ lógica\ para\ reportar\ incidencias\ de\ desconexión.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00029}00029\ \textcolor{comment}{\ *\ @extends\ AppCompatActivity}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00030}00030\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00031}00031\ \textcolor{comment}{\ *\ @details}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00032}00032\ \textcolor{comment}{\ *\ Esta\ actividad\ se\ encarga\ de:}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00033}00033\ \textcolor{comment}{\ *\ 1.\ Recibir\ datos\ del\ sensor\ fallido\ via\ Intent.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00034}00034\ \textcolor{comment}{\ *\ 2.\ Pre-\/cargar\ un\ formulario\ con\ un\ mensaje\ y\ título\ sugerido.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00035}00035\ \textcolor{comment}{\ *\ 3.\ Enviar\ un\ correo\ electrónico\ al\ administrador\ usando\ @ref\ JavaMailAPI.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00036}00036\ \textcolor{comment}{\ *\ 4.\ Registrar\ la\ incidencia\ en\ la\ colección\ 'incidencias'\ de\ Firebase\ Firestore.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00037}00037\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00038}00038\ \textcolor{comment}{\ *\ @author\ Sandra\ (Creación\ y\ autocomplete)}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00039}00039\ \textcolor{comment}{\ *\ @author\ Rocio\ (Subida\ a\ Firebase)}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00040}00040\ \textcolor{comment}{\ *\ @date\ 30/10/2024\ (Creación)}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00041}00041\ \textcolor{comment}{\ *\ @date\ 25/11/2024\ (Integración\ Firebase)}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00042}00042\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00043}00043\ \textcolor{comment}{\ *\ @see\ JavaMailAPI}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00044}00044\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00045}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity}{00045}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity}{EnvioIncidenciasActivity}}\ \textcolor{keyword}{extends}\ AppCompatActivity\ \{\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00046}00046\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00047}00047\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Método\ de\ inicialización\ de\ la\ actividad.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00048}00048\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00049}00049\ \textcolor{comment}{\ \ \ \ \ *\ Se\ encarga\ de:}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00050}00050\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Vincular\ las\ vistas\ del\ layout.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00051}00051\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Recuperar\ datos\ del\ Intent\ (SENSOR\_NAME,\ UBICACION,\ ULTIMA\_CONEXION).}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00052}00052\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Autocompletar\ los\ campos\ de\ texto\ con\ un\ mensaje\ preformateado.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00053}00053\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Configurar\ los\ listeners\ para\ los\ botones\ de\ Aceptar\ y\ Cancelar.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00054}00054\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00055}00055\ \textcolor{comment}{\ \ \ \ \ *\ @param\ savedInstanceState\ Estado\ guardado\ de\ la\ aplicación\ (si\ existe).}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00056}00056\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00057}00057\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00058}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity_a81d7f6711809287661cd2b7f06457ff5}{00058}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity_a81d7f6711809287661cd2b7f06457ff5}{onCreate}}(Bundle\ savedInstanceState)\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00059}00059\ \ \ \ \ \ \ \ \ super.onCreate(savedInstanceState);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00060}00060\ \ \ \ \ \ \ \ \ setContentView(R.layout.envio\_incidencias);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Encontrar\ las\ vistas}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Campo\ de\ texto\ para\ el\ título\ de\ la\ incidencia.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00064}00064\ \ \ \ \ \ \ \ \ EditText\ tituloEditText\ =\ findViewById(R.id.editText\_tituloIncidencia);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00065}00065\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Campo\ de\ texto\ para\ el\ mensaje\ detallado\ de\ la\ incidencia.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00066}00066\ \ \ \ \ \ \ \ \ EditText\ mensajeEditText\ =\ findViewById(R.id.editText\_mensaje);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Botón\ para\ enviar\ la\ incidencia.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00068}00068\ \ \ \ \ \ \ \ \ Button\ acceptButton\ =\ findViewById(R.id.button\_aceptar);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Botón\ para\ cancelar\ y\ cerrar\ la\ actividad.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00070}00070\ \ \ \ \ \ \ \ \ Button\ cancelButton\ =\ findViewById(R.id.button\_cancelar);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00072}00072\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Lógica\ para\ rellenar\ los\ datos\ automáticamente\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00073}00073\ \ \ \ \ \ \ \ \ Intent\ intent\ =\ getIntent();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00074}00074\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nombre\ o\ código\ del\ sensor\ recibido\ de\ la\ actividad\ anterior.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00075}00075\ \ \ \ \ \ \ \ \ String\ sensorName\ =\ intent.getStringExtra(\textcolor{stringliteral}{"{}SENSOR\_NAME"{}});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ubicación\ actual\ del\ sensor\ (coordenadas\ convertidas\ a\ dirección).}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00077}00077\ \ \ \ \ \ \ \ \ String\ ubicacion\ =\ intent.getStringExtra(\textcolor{stringliteral}{"{}UBICACION"{}});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Cadena\ de\ texto\ que\ indica\ la\ hora\ de\ la\ última\ conexión.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00079}00079\ \ \ \ \ \ \ \ \ String\ ultimaConexion\ =\ intent.getStringExtra(\textcolor{stringliteral}{"{}ULTIMA\_CONEXION"{}});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00081}00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ultimaConexion\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ ultimaConexion\ =\ ultimaConexion.replace(\textcolor{stringliteral}{"{}Última\ conex.\ "{}},\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00083}00083\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Lógica\ para\ rellenar\ los\ campos\ de\ texto\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Rellenamos\ automaticamente\ el\ asunto\ y\ el\ mensaje}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00087}00087\ \ \ \ \ \ \ \ \ String\ titulo\ =\ String.format(\textcolor{stringliteral}{"{}AVISO:\ Sensor\ \%s\ \ Desconectado"{}},\ sensorName);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00088}00088\ \ \ \ \ \ \ \ \ String\ mensaje\ =\ String.format(Locale.getDefault(),}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}El\ sensor\ \%s\ de\ la\ zona\ \%s\ ha\ dejado\ de\ funcionar.\ La\ última\ lectura\ se\ recibió\ a\ las\ \%s.\ Por\ favor,\ compruebe\ la\ conexión\ o\ si\ existe\ algún\ problema\ con\ el\ sensor."{}},}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sensorName,\ ubicacion,\ ultimaConexion);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00092}00092\ \ \ \ \ \ \ \ \ tituloEditText.setText(titulo);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00093}00093\ \ \ \ \ \ \ \ \ mensajeEditText.setText(mensaje);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00095}00095\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Lógica\ de\ los\ botones\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00096}00096\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Listener\ para\ el\ botón\ Cancelar.\ Cierra\ la\ actividad.}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00097}00097\ \ \ \ \ \ \ \ \ cancelButton.setOnClickListener(v\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ finish();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00099}00099\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00101}00101\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Listener\ para\ el\ botón\ Aceptar\ (Enviar).}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Recoge\ los\ datos,\ crea\ un\ mapa\ de\ incidencia\ y\ lo\ sube\ a\ Firebase\ Firestore}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00103}00103\ \ \ \ \ \ \ \ \ acceptButton.setOnClickListener(v\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ String\ tituloIncidencia\ =\ tituloEditText.getText().toString();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ String\ mensajeIncidencia\ =\ mensajeEditText.getText().toString();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 0.\ Validación\ básica\ antes\ de\ enviar\ nada}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tituloIncidencia.isEmpty()\ ||\ mensajeIncidencia.isEmpty())\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(\textcolor{keyword}{this},\ \textcolor{stringliteral}{"{}Por\ favor,\ rellena\ título\ y\ mensaje"{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/\ Implementación\ Envío\ de\ Correo\ (JavaMail)\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dirección\ de\ correo\ del\ administrador\ que\ recibirá\ la\ alerta.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ String\ emailDestino\ =\ \textcolor{stringliteral}{"{}sandralovesel@gmail.com"{}};}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Asunto\ del\ correo\ concatenando\ el\ prefijo\ fijo\ y\ el\ título\ del\ usuario.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ String\ asuntoCorreo\ =\ tituloIncidencia;}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00119}00119\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Instancia\ de\ la\ clase\ asíncrona\ encargada\ de\ la\ conexión\ SMTP\ con\ el\ 'Robot'.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00121}00121\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{JavaMailAPI}}\ mailSender\ =\ \textcolor{keyword}{new}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{JavaMailAPI}}(\textcolor{keyword}{this},\ emailDestino,\ asuntoCorreo,\ mensajeIncidencia);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ejecuta\ el\ envío\ del\ correo\ electrónico\ en\ segundo\ plano.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ mailSender.execute();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00128}00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/\ Implementación\ Firebase\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ FirebaseFirestore\ db\ =\ FirebaseFirestore.getInstance();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ Map<String,\ Object>\ incidencia\ =\ \textcolor{keyword}{new}\ HashMap<>();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Código\ o\ nombre\ del\ sensor\ afectado\ (asegúrate\ de\ tener\ esta\ variable\ definida).\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ incidencia.put(\textcolor{stringliteral}{"{}sensor\_id"{}},\ sensorName);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Título\ de\ la\ incidencia\ (manual\ o\ precargado).\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ incidencia.put(\textcolor{stringliteral}{"{}titulo"{}},\ tituloIncidencia);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Contenido\ detallado\ de\ la\ incidencia\ (manual\ o\ precargado).\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ incidencia.put(\textcolor{stringliteral}{"{}mensaje"{}},\ mensajeIncidencia);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ubicación\ registrada\ del\ sensor\ en\ el\ momento\ de\ la\ incidencia.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ incidencia.put(\textcolor{stringliteral}{"{}ubicacion"{}},\ ubicacion);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Estado\ inicial\ de\ la\ incidencia.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ incidencia.put(\textcolor{stringliteral}{"{}estado"{}},\ \textcolor{stringliteral}{"{}PENDIENTE"{}});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Indicador\ de\ si\ la\ incidencia\ ha\ sido\ resuelta.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ incidencia.put(\textcolor{stringliteral}{"{}resuelta"{}},\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Timestamp\ del\ servidor\ para\ registrar\ la\ fecha\ de\ envío\ exacta.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ incidencia.put(\textcolor{stringliteral}{"{}fecha"{}},\ com.google.firebase.firestore.FieldValue.serverTimestamp());}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00148}00148\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Sube\ el\ documento\ a\ la\ colección\ 'incidencias'}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ db.collection(\textcolor{stringliteral}{"{}incidencias"{}}).add(incidencia)}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .addOnSuccessListener(documentReference\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//PARA\ EL\ CAMBIO\ DE\ BOTON\ DE\ INCIDENCIAS}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ setResult(RESULT\_OK);}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Muestra\ un\ diálogo\ de\ éxito\ y\ cierra\ la\ actividad\ al\ aceptar.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ androidx.appcompat.app.AlertDialog.Builder(\textcolor{keyword}{this})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setTitle(\textcolor{stringliteral}{"{}Enviado"{}})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setMessage(\textcolor{stringliteral}{"{}Incidencia\ registrada\ en\ el\ sistema\ y\ correo\ enviado\ al\ administrador."{}})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setPositiveButton(\textcolor{stringliteral}{"{}Aceptar"{}},\ (dialog,\ which)\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ finish();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setCancelable(\textcolor{keyword}{false})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .show();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .addOnFailureListener(e\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Manejo\ de\ errores\ en\ caso\ de\ fallo\ de\ conexión\ con\ Firebase.\ */}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00165}00165\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ androidx.appcompat.app.AlertDialog.Builder(\textcolor{keyword}{this})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setTitle(\textcolor{stringliteral}{"{}Error\ de\ Envío"{}})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setMessage(\textcolor{stringliteral}{"{}No\ se\ pudo\ guardar\ la\ incidencia\ en\ la\ base\ de\ datos.\ Error:\ "{}}\ +\ e.getMessage())}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setPositiveButton(\textcolor{stringliteral}{"{}Aceptar"{}},\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .show();}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00171}00171\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00172}00172\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_envio_incidencias_activity_8java_source_l00173}00173\ \}}
+
+\end{DoxyCode}

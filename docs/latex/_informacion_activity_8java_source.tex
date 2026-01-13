@@ -1,0 +1,500 @@
+\doxysection{Informacion\+Activity.\+java}
+\hypertarget{_informacion_activity_8java_source}{}\label{_informacion_activity_8java_source}\index{src/app/src/main/java/com/example/breathe\_tracking/InformacionActivity.java@{src/app/src/main/java/com/example/breathe\_tracking/InformacionActivity.java}}
+\mbox{\hyperlink{_informacion_activity_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00001}00001\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00002}00002\ \textcolor{comment}{\ *\ @file\ InformacionActivity.java}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00003}00003\ \textcolor{comment}{\ *\ @brief\ Actividad\ para\ la\ visualización\ gráfica\ de\ datos\ históricos\ de\ contaminantes.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00004}00004\ \textcolor{comment}{\ *\ @package\ com.example.breathe\_tracking}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00005}00005\ \textcolor{comment}{\ *\ @copyright\ Copyright\ ©\ 2025}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00008}00008\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00010}00010\ \textcolor{keyword}{import}\ android.content.Intent;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00011}00011\ \textcolor{keyword}{import}\ android.graphics.Color;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00012}00012\ \textcolor{keyword}{import}\ android.os.Bundle;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00013}00013\ \textcolor{keyword}{import}\ android.util.Log;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00014}00014\ \textcolor{keyword}{import}\ android.view.View;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00015}00015\ \textcolor{keyword}{import}\ android.widget.AdapterView;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00016}00016\ \textcolor{keyword}{import}\ android.widget.ArrayAdapter;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00017}00017\ \textcolor{keyword}{import}\ android.widget.ImageView;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00018}00018\ \textcolor{keyword}{import}\ android.widget.Spinner;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00019}00019\ \textcolor{keyword}{import}\ android.widget.TextView;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00020}00020\ \textcolor{keyword}{import}\ android.widget.Toast;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00022}00022\ \textcolor{keyword}{import}\ androidx.appcompat.app.AppCompatActivity;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00023}00023\ \textcolor{keyword}{import}\ androidx.core.content.ContextCompat;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00025}00025\ \textcolor{keyword}{import}\ com.github.mikephil.charting.charts.LineChart;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00026}00026\ \textcolor{keyword}{import}\ com.github.mikephil.charting.components.LimitLine;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00027}00027\ \textcolor{keyword}{import}\ com.github.mikephil.charting.components.XAxis;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00028}00028\ \textcolor{keyword}{import}\ com.github.mikephil.charting.components.YAxis;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00029}00029\ \textcolor{keyword}{import}\ com.github.mikephil.charting.data.Entry;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00030}00030\ \textcolor{keyword}{import}\ com.github.mikephil.charting.data.LineData;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00031}00031\ \textcolor{keyword}{import}\ com.github.mikephil.charting.data.LineDataSet;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00032}00032\ \textcolor{keyword}{import}\ com.github.mikephil.charting.formatter.ValueFormatter;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00033}00033\ \textcolor{keyword}{import}\ com.google.firebase.firestore.FirebaseFirestore;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00034}00034\ \textcolor{keyword}{import}\ com.google.firebase.firestore.Query;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00035}00035\ \textcolor{keyword}{import}\ com.google.firebase.firestore.QueryDocumentSnapshot;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00037}00037\ \textcolor{keyword}{import}\ java.text.DecimalFormat;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00038}00038\ \textcolor{keyword}{import}\ java.util.ArrayList;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00039}00039\ \textcolor{keyword}{import}\ java.util.Calendar;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00040}00040\ \textcolor{keyword}{import}\ java.util.Date;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00041}00041\ \textcolor{keyword}{import}\ java.util.HashMap;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00042}00042\ \textcolor{keyword}{import}\ java.util.List;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00043}00043\ \textcolor{keyword}{import}\ java.util.Locale;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00044}00044\ \textcolor{keyword}{import}\ java.util.Map;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00045}00045\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00046}00046\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00047}00047\ \textcolor{comment}{\ *\ @class\ GasData}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00048}00048\ \textcolor{comment}{\ *\ @brief\ Modelo\ de\ datos\ unificado\ para\ almacenar\ las\ 5\ concentraciones\ por\ una\ hora.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00049}00049\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00050}00050\ \textcolor{keyword}{class\ }GasData\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00051}00051\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ ozono;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00052}00052\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ co2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00053}00053\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ co;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00054}00054\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ no2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00055}00055\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ so2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00056}00056\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{long}\ timestamp;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00058}00058\ \ \ \ \ \textcolor{keyword}{public}\ GasData(\textcolor{keywordtype}{float}\ ozono,\ \textcolor{keywordtype}{float}\ co2,\ \textcolor{keywordtype}{float}\ co,\ \textcolor{keywordtype}{float}\ no2,\ \textcolor{keywordtype}{float}\ so2,\ \textcolor{keywordtype}{long}\ timestamp)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00059}00059\ \ \ \ \ \ \ \ \ this.ozono\ =\ ozono;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00060}00060\ \ \ \ \ \ \ \ \ this.co2\ =\ co2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00061}00061\ \ \ \ \ \ \ \ \ this.co\ =\ co;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00062}00062\ \ \ \ \ \ \ \ \ this.no2\ =\ no2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00063}00063\ \ \ \ \ \ \ \ \ this.so2\ =\ so2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00064}00064\ \ \ \ \ \ \ \ \ this.timestamp\ =\ timestamp;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00065}00065\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00066}00066\ \ \ \ \ \textcolor{keyword}{public}\ GasData(\textcolor{keywordtype}{long}\ timestamp)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00067}00067\ \ \ \ \ \ \ \ \ this.co\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00068}00068\ \ \ \ \ \ \ \ \ this.co2\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00069}00069\ \ \ \ \ \ \ \ \ this.no2\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00070}00070\ \ \ \ \ \ \ \ \ this.ozono\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00071}00071\ \ \ \ \ \ \ \ \ this.so2\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00072}00072\ \ \ \ \ \ \ \ \ this.timestamp\ =\ timestamp;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00073}00073\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00074}00074\ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00075}00075\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00076}00076\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00077}00077\ \textcolor{comment}{\ *\ @class\ HourValueFormatter}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00078}00078\ \textcolor{comment}{\ *\ @brief\ Formateador\ simple\ que\ convierte\ el\ índice\ de\ la\ hora\ (0-\/23)\ a\ formato\ HH:00.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00079}00079\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00080}00080\ \textcolor{keyword}{class\ }HourValueFormatter\ \textcolor{keyword}{extends}\ ValueFormatter\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00081}00081\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{final}\ DecimalFormat\ mFormat\ =\ \textcolor{keyword}{new}\ DecimalFormat(\textcolor{stringliteral}{"{}00"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00083}00083\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00084}00084\ \ \ \ \ \textcolor{keyword}{public}\ String\ getFormattedValue(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00085}00085\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ hour\ =\ Math.round(value);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00086}00086\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Formateamos\ como\ 00:00,\ 01:00,\ etc.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00087}00087\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mFormat.format(hour)\ +\ \textcolor{stringliteral}{"{}:00"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00088}00088\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00089}00089\ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00090}00090\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00091}00091\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00092}00092\ \textcolor{comment}{\ *\ @class\ DecimalValueFormatter\ (Clase\ Adaptadora\ para\ Eje\ Y)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00093}00093\ \textcolor{comment}{\ *\ @brief\ Adaptador\ para\ formatear\ valores\ numéricos\ con\ precisión\ decimal.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00094}00094\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00095}00095\ \textcolor{keyword}{class\ }DecimalValueFormatter\ \textcolor{keyword}{extends}\ ValueFormatter\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00096}00096\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{final}\ DecimalFormat\ mFormat;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00098}00098\ \ \ \ \ \textcolor{keyword}{public}\ DecimalValueFormatter(String\ pattern)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00099}00099\ \ \ \ \ \ \ \ \ mFormat\ =\ \textcolor{keyword}{new}\ DecimalFormat(pattern);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00100}00100\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00101}00101\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00102}00102\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00103}00103\ \ \ \ \ \textcolor{keyword}{public}\ String\ getFormattedValue(\textcolor{keywordtype}{float}\ value)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00104}00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mFormat.format(value);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00105}00105\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00106}00106\ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00107}00107\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00108}00108\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00109}00109\ \textcolor{comment}{\ *\ @class\ InformacionActivity}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00110}00110\ \textcolor{comment}{\ *\ @brief\ Muestra\ el\ gráfico\ de\ datos\ históricos\ (CO2,\ O3,\ etc.)\ leídos\ de\ Firebase\ Firestore.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00111}00111\ \textcolor{comment}{\ *\ @extends\ AppCompatActivity}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00112}00112\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00113}00113\ \textcolor{comment}{\ *\ @details}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00114}00114\ \textcolor{comment}{\ *\ Esta\ actividad\ gestiona\ la\ visualización\ de\ la\ evolución\ de\ contaminantes\ en\ un\ periodo\ de\ 24\ horas.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00115}00115\ \textcolor{comment}{\ *\ Su\ funcionamiento\ se\ divide\ en:}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00116}00116\ \textcolor{comment}{\ *\ 1.\ Conexión\ a\ Firebase\ Firestore\ para\ recuperar\ la\ colección\ 'datos\_grafico'.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00117}00117\ \textcolor{comment}{\ *\ 2.\ Procesamiento\ de\ arrays\ de\ datos\ (un\ array\ por\ contaminante)\ en\ una\ lista\ de\ objetos\ @ref\ GasData.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00118}00118\ \textcolor{comment}{\ *\ 3.\ Renderizado\ de\ un\ gráfico\ de\ líneas\ interactivo\ usando\ la\ librería\ MPAndroidChart.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00119}00119\ \textcolor{comment}{\ *\ 4.\ Evaluación\ dinámica\ del\ riesgo\ (lógica\ de\ "{}semáforo"{}\ y\ carita)\ según\ los\ umbrales\ de\ cada\ gas.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00120}00120\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00121}00121\ \textcolor{comment}{\ *\ @author\ Sandra\ (Creación\ actividad\ y\ XML)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00122}00122\ \textcolor{comment}{\ *\ @author\ Rocio\ (Conexión\ con\ Base\ de\ Datos\ y\ lógica\ gráfica)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00123}00123\ \textcolor{comment}{\ *\ @date\ 27/11/2024\ (Inicio)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00124}00124\ \textcolor{comment}{\ *\ @date\ 06/12/2024\ (Integración\ Firebase)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00125}00125\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00126}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{00126}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{InformacionActivity}}\ \textcolor{keyword}{extends}\ AppCompatActivity\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00127}00127\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00128}00128\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ VARIABLES\ DE\ FIREBASE\ -\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00129}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_af3116d902f8be151c98fbb0555d7a7d6}{00129}}\ \ \ \ \ \textcolor{keyword}{private}\ FirebaseFirestore\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_af3116d902f8be151c98fbb0555d7a7d6}{db}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00131}00131\ \ \ \ \ \textcolor{comment}{//\ Lista\ que\ almacena\ los\ ddatos\ procesados}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00132}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{00132}}\ \ \ \ \ \textcolor{keyword}{private}\ List<GasData>\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historicalData}}\ =\ \textcolor{keyword}{new}\ ArrayList<>();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00133}00133\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00134}00134\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00135}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{00135}}\ \ \ \ \ \textcolor{keyword}{private}\ LineChart\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00136}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}{00136}}\ \ \ \ \ \textcolor{keyword}{private}\ Spinner\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}{spinner}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00137}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{00137}}\ \ \ \ \ \textcolor{keyword}{private}\ ImageView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{imgCarita}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00138}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a2059672c52836ea2e80400024a15c416}{00138}}\ \ \ \ \ \textcolor{keyword}{private}\ ImageView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a2059672c52836ea2e80400024a15c416}{imgBackArrow}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00139}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{00139}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txtExplicacion}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00140}00140\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00141}00141\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00142}00142\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Método\ de\ creación\ de\ la\ actividad.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00143}00143\ \textcolor{comment}{\ \ \ \ \ *\ Inicializa\ las\ vistas,\ configura\ el\ Spinner\ de\ selección\ de\ gas\ y\ lanza\ la\ carga\ de\ datos.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00144}00144\ \textcolor{comment}{\ \ \ \ \ *\ @param\ savedInstanceState\ Estado\ guardado\ de\ la\ instancia.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00145}00145\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00146}00146\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00147}00147\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00148}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ac7d809bf8aee24e11f2a483fd20044ce}{00148}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ac7d809bf8aee24e11f2a483fd20044ce}{onCreate}}(Bundle\ savedInstanceState)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00149}00149\ \ \ \ \ \ \ \ \ super.onCreate(savedInstanceState);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00150}00150\ \ \ \ \ \ \ \ \ setContentView(R.layout.informacion);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Inicialización\ de\ Firebase\ y\ obtención\ del\ ID}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00153}00153\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_af3116d902f8be151c98fbb0555d7a7d6}{db}}\ =\ FirebaseFirestore.getInstance();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00155}00155\ \ \ \ \ \ \ \ \ \textcolor{comment}{//views}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00156}00156\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}\ =\ findViewById(R.id.chart\_gases);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00157}00157\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}{spinner}}\ =\ findViewById(R.id.spinner\_gases);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00158}00158\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{imgCarita}}\ =\ findViewById(R.id.img\_carita);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00159}00159\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a2059672c52836ea2e80400024a15c416}{imgBackArrow}}\ =\ findViewById(R.id.img\_back\_arrow);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00160}00160\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txtExplicacion}}\ =\ findViewById(R.id.txt\_explicacion);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00162}00162\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a2059672c52836ea2e80400024a15c416}{imgBackArrow}}.setOnClickListener(v\ -\/>\ finish());}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00164}00164\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Configurar\ Spinner}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00165}00165\ \ \ \ \ \ \ \ \ String[]\ gases\ =\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Ozono\ (O3)"{}},}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Monóxido\ de\ Carbono\ (CO)"{}},}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00168}00168\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Dióxido\ de\ Nitrógeno\ (NO2)"{}},}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Dióxido\ de\ Azufre\ (SO2)"{}},}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Dióxido\ de\ Carbono\ (CO2)"{}}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00171}00171\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00173}00173\ \ \ \ \ \ \ \ \ ArrayAdapter<String>\ adapter\ =\ \textcolor{keyword}{new}\ ArrayAdapter<>(\textcolor{keyword}{this},\ android.R.layout.simple\_spinner\_dropdown\_item,\ gases);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00174}00174\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}{spinner}}.setAdapter(adapter);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00176}00176\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.\ Listener\ del\ Spinner}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00177}00177\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}{spinner}}.setOnItemSelectedListener(\textcolor{keyword}{new}\ AdapterView.OnItemSelectedListener()\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ public\ void\ onItemSelected(AdapterView<?>\ parent,\ View\ view,\ int\ position,\ long\ id)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cargarDatosGas(position);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ onNothingSelected(AdapterView<?>\ parent)\ \{\}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00184}00184\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00185}00185\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 4.\ Configuración\ base\ del\ gráfico}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00186}00186\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1e5e089018ae71c4b0a224c3f70f9a99}{configurarEstiloGrafico}}();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00188}00188\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 5.\ Cargar\ los\ datos\ de\ Firebase\ y\ luego\ cargar\ el\ gráfico\ por\ defecto\ (Ozono)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00189}00189\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a9492beef6cafafca6335d80bcf464d82}{cargarDatosDeFirebase}}();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00190}00190\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00191}00191\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00192}00192\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00193}00193\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Consulta\ Firestore\ para\ obtener\ los\ arrays\ de\ datos\ históricos.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00194}00194\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00195}00195\ \textcolor{comment}{\ \ \ \ \ *\ Lee\ la\ colección\ 'datos\_grafico',\ donde\ cada\ documento\ representa\ un\ gas}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00196}00196\ \textcolor{comment}{\ \ \ \ \ *\ y\ contiene\ un\ array\ 'valor'\ con\ 24\ mediciones.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00197}00197\ \textcolor{comment}{\ \ \ \ \ *\ Transforma\ estos\ arrays\ horizontales\ en\ una\ lista\ vertical\ de\ objetos\ @ref\ GasData.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00198}00198\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00199}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a9492beef6cafafca6335d80bcf464d82}{00199}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a9492beef6cafafca6335d80bcf464d82}{cargarDatosDeFirebase}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00201}00201\ \ \ \ \ \ \ \ \ Toast.makeText(\textcolor{keyword}{this},\ \textcolor{stringliteral}{"{}Cargando\ datos\ por\ hora..."{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00203}00203\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ IDs\ de\ documento\ que\ esperamos\ encontrar\ en\ Firestore}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00204}00204\ \ \ \ \ \ \ \ \ \textcolor{keyword}{final}\ String\ CO\_ID\ =\ \textcolor{stringliteral}{"{}co"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00205}00205\ \ \ \ \ \ \ \ \ \textcolor{keyword}{final}\ String\ CO2\_ID\ =\ \textcolor{stringliteral}{"{}co2"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00206}00206\ \ \ \ \ \ \ \ \ \textcolor{keyword}{final}\ String\ NO2\_ID\ =\ \textcolor{stringliteral}{"{}no2"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00207}00207\ \ \ \ \ \ \ \ \ \textcolor{keyword}{final}\ String\ O3\_ID\ =\ \textcolor{stringliteral}{"{}ozono"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00208}00208\ \ \ \ \ \ \ \ \ \textcolor{keyword}{final}\ String\ SO2\_ID\ =\ \textcolor{stringliteral}{"{}so2"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00210}00210\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_af3116d902f8be151c98fbb0555d7a7d6}{db}}.collection(\textcolor{stringliteral}{"{}datos\_grafico"{}}).get()}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .addOnSuccessListener(queryDocumentSnapshots\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00212}00212\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Map<String,\ List<Number>>\ hourlyArrays\ =\ \textcolor{keyword}{new}\ HashMap<>();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (queryDocumentSnapshots.isEmpty())\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(\textcolor{keyword}{this},\ \textcolor{stringliteral}{"{}Colección\ 'datos\_grafico'\ vacía."{}},\ Toast.LENGTH\_LONG).show();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00219}00219\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00220}00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Procesar\ los\ documentos\ y\ guardar\ los\ arrays}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (QueryDocumentSnapshot\ document\ :\ queryDocumentSnapshots)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00222}00222\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ String\ contaminantId\ =\ document.getId();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00223}00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Firestore\ devuelve\ arrays\ de\ números\ como\ List<Number>}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00224}00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ List<Number>\ values\ =\ (List<Number>)\ document.get(\textcolor{stringliteral}{"{}valor"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00226}00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (values\ !=\ \textcolor{keyword}{null}\ \&\&\ values.size()\ >=\ 24)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ hourlyArrays.put(contaminantId,\ values);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00228}00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00230}00230\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00231}00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Inicializar\ la\ lista\ final\ con\ 24\ entradas\ (una\ por\ hora)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00232}00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historicalData}}.clear();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00233}00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 24;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00234}00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historicalData}}.add(\textcolor{keyword}{new}\ GasData(0L));\ \textcolor{comment}{//\ Inicializa\ todos\ los\ valores\ en\ 0}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.\ Llenar\ los\ datos\ de\ cada\ hora}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Map.Entry<String,\ List<Number>>\ entry\ :\ hourlyArrays.entrySet())\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ String\ contaminantId\ =\ entry.getKey();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00240}00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ List<Number>\ values\ =\ entry.getValue();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ h\ =\ 0;\ h\ <\ 24\ \&\&\ h\ <\ values.size();\ h++)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ GasData\ data\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historicalData}}.get(h);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00244}00244\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Conversión\ segura\ a\ float\ (ya\ que\ todos\ los\ valores\ son\ numéricos\ en\ la\ BD)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ value\ =\ values.get(h).floatValue();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00247}00247\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (contaminantId)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ CO\_ID:\ data.co\ =\ value;\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ CO2\_ID:\ data.co2\ =\ value;\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00251}00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ NO2\_ID:\ data.no2\ =\ value;\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ O3\_ID:\ data.ozono\ =\ value;\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ SO2\_ID:\ data.so2\ =\ value;\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00257}00257\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 4.\ Configurar\ el\ Eje\ X\ y\ cargar\ la\ gráfica\ por\ defecto\ (Ozono\ =\ índice\ 0)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ae17403258dbc108552eb03aba0714e55}{configurarEjeXDemo}}();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a4bda0dfff982c777cf0b88de7cc579c1}{cargarDatosGas}}(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}{spinner}}.getSelectedItemPosition());}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{InformacionActivity}}.this,\ \textcolor{stringliteral}{"{}Datos\ cargados\ con\ éxito\ (24\ horas)."{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00262}00262\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \})}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .addOnFailureListener(e\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Log.e(\textcolor{stringliteral}{"{}FirebaseDebug"{}},\ \textcolor{stringliteral}{"{}Error\ al\ leer\ datos\ DEMO:\ "{}}\ +\ e.getMessage(),\ e);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{InformacionActivity}}.this,\ \textcolor{stringliteral}{"{}Error\ lectura\ datos"{}},\ Toast.LENGTH\_LONG).show();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00268}00268\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00269}00269\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00270}00270\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00271}00271\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Configuración\ general\ de\ estilo\ para\ el\ componente\ LineChart.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00272}00272\ \textcolor{comment}{\ \ \ \ \ *\ Habilita\ zoom,\ touch\ y\ configura\ ejes\ básicos.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00273}00273\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00274}00274\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00275}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1e5e089018ae71c4b0a224c3f70f9a99}{00275}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1e5e089018ae71c4b0a224c3f70f9a99}{configurarEstiloGrafico}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00276}00276\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.getDescription().setEnabled(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00277}00277\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.setTouchEnabled(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00278}00278\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.setDragEnabled(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00279}00279\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.setScaleEnabled(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00280}00280\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.setPinchZoom(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00281}00281\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00282}00282\ \ \ \ \ \ \ \ \ XAxis\ xAxis\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.getXAxis();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00283}00283\ \ \ \ \ \ \ \ \ xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00284}00284\ \ \ \ \ \ \ \ \ xAxis.setDrawGridLines(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00285}00285\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00286}00286\ \ \ \ \ \ \ \ \ YAxis\ leftAxis\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.getAxisLeft();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00287}00287\ \ \ \ \ \ \ \ \ leftAxis.setAxisMinimum(0f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00288}00288\ \ \ \ \ \ \ \ \ leftAxis.setTextColor(Color.BLACK);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00289}00289\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00290}00290\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00291}00291\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.getAxisRight().setEnabled(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00292}00292\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00293}00293\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00294}00294\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00295}00295\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Configura\ el\ Eje\ X\ para\ mostrar\ específicamente\ 24\ horas\ (00:00\ -\/\ 23:00).}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00296}00296\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00297}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ae17403258dbc108552eb03aba0714e55}{00297}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ae17403258dbc108552eb03aba0714e55}{configurarEjeXDemo}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00298}00298\ \ \ \ \ \ \ \ \ XAxis\ xAxis\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.getXAxis();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00299}00299\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00300}00300\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Aplicar\ el\ formateador\ simple\ (0\ -\/>\ 00:00,\ 1\ -\/>\ 01:00,\ etc.)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00301}00301\ \ \ \ \ \ \ \ \ xAxis.setValueFormatter(\textcolor{keyword}{new}\ HourValueFormatter());}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00302}00302\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00303}00303\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ FORZAR\ RANGO:\ El\ rango\ máximo\ debe\ ser\ 24\ para\ que\ el\ índice\ 23\ tenga\ espacio.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00304}00304\ \ \ \ \ \ \ \ \ xAxis.setAxisMinimum(0f);\ \ \ \ \ \ \textcolor{comment}{//\ Mínimo:\ 0\ (Hora\ 0)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00305}00305\ \ \ \ \ \ \ \ \ xAxis.setAxisMaximum(23f);\ \ \ \ \ \textcolor{comment}{//\ MÁXIMO\ CORREGIDO:\ 24\ (Representa\ el\ punto\ final\ 24:00)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00306}00306\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00307}00307\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.\ Mejorar\ legibilidad\ (Etiquetas\ cada\ 2\ horas)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00308}00308\ \ \ \ \ \ \ \ \ xAxis.setGranularity(1f);\ \ \ \ \ \ \textcolor{comment}{//\ Paso\ de\ 2\ horas\ (2)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00309}00309\ \ \ \ \ \ \ \ \ xAxis.setLabelCount(12,\ \textcolor{keyword}{true});\ \textcolor{comment}{//\ 13\ etiquetas\ (00,\ 02,\ 04,\ ...,\ 24)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00310}00310\ \ \ \ \ \ \ \ \ xAxis.setLabelRotationAngle(-\/45);\ \textcolor{comment}{//\ Rotar\ etiquetas}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00311}00311\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00312}00312\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00313}00313\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00314}00314\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Carga\ y\ dibuja\ los\ datos\ del\ gas\ seleccionado\ en\ el\ Spinner.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00315}00315\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00316}00316\ \textcolor{comment}{\ \ \ \ \ *\ Este\ método\ se\ encarga\ de:}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00317}00317\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Extraer\ los\ valores\ correspondientes\ de\ \`{}historicalData`.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00318}00318\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Definir\ colores,\ unidades\ y\ límites\ de\ seguridad\ específicos\ para\ cada\ gas.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00319}00319\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Dibujar\ las\ líneas\ límite\ (LimitLines)\ en\ el\ gráfico.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00320}00320\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Llamar\ a\ @ref\ evaluarExposicion\ para\ actualizar\ la\ interfaz.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00321}00321\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00322}00322\ \textcolor{comment}{\ \ \ \ \ *\ @param\ position\ Índice\ del\ gas\ seleccionado\ en\ el\ Spinner\ (0=O3,\ 1=CO,\ etc).}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00323}00323\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00324}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a4bda0dfff982c777cf0b88de7cc579c1}{00324}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a4bda0dfff982c777cf0b88de7cc579c1}{cargarDatosGas}}(\textcolor{keywordtype}{int}\ position)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00325}00325\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00326}00326\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ limiteSeguro\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00327}00327\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ limitePeligro\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00328}00328\ \ \ \ \ \ \ \ \ String\ unidad\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00329}00329\ \ \ \ \ \ \ \ \ String\ nombreGas\ =\ \textcolor{stringliteral}{"{}"{}};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00330}00330\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00331}00331\ \ \ \ \ \ \ \ \ List<Entry>\ entries\ =\ \textcolor{keyword}{new}\ ArrayList<>();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00332}00332\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ color\ =\ Color.GRAY;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00333}00333\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ yMax\ =\ 1f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00334}00334\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00335}00335\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Formateadores\ para\ Eje\ Y\ (usando\ la\ solución\ de\ clase\ anónima)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00336}00336\ \ \ \ \ \ \ \ \ \textcolor{keyword}{final}\ DecimalFormat\ formatTwoDecimals\ =\ \textcolor{keyword}{new}\ DecimalFormat(\textcolor{stringliteral}{"{}0.00"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00337}00337\ \ \ \ \ \ \ \ \ \textcolor{keyword}{final}\ DecimalFormat\ formatZeroDecimals\ =\ \textcolor{keyword}{new}\ DecimalFormat(\textcolor{stringliteral}{"{}0"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00338}00338\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00339}00339\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00340}00340\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Iterar\ sobre\ los\ datos\ ya\ cargados\ y\ extraer\ el\ valor\ del\ gas\ correspondiente}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00341}00341\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historicalData}}.isEmpty())\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00342}00342\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historicalData}}.size();\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00343}00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ GasData\ data\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historicalData}}.get(i);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00344}00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ valueY\ =\ 0f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00345}00345\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00346}00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ El\ valor\ X\ es\ el\ índice\ 'i',\ que\ representa\ la\ hora\ (0,\ 1,\ 2...\ 23)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00347}00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ valueX\ =\ (float)\ i;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00348}00348\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00349}00349\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{switch}\ (position)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00350}00350\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 0:\ \textcolor{comment}{//\ Ozono\ (O3)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00351}00351\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ valueY\ =\ data.ozono;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00352}00352\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nombreGas\ =\ \textcolor{stringliteral}{"{}Ozono\ (O3)"{}};\ unidad\ =\ \textcolor{stringliteral}{"{}ppm"{}};\ color\ =\ Color.parseColor(\textcolor{stringliteral}{"{}\#8A2BE2"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00353}00353\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limiteSeguro\ =\ 0.6f;\ limitePeligro\ =\ 0.9f;\ yMax\ =\ 1f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00354}00354\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00355}00355\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 1:\ \textcolor{comment}{//\ Monóxido\ de\ Carbono\ (CO)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00356}00356\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ valueY\ =\ data.co;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00357}00357\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nombreGas\ =\ \textcolor{stringliteral}{"{}Monóxido\ de\ Carbono\ (CO)"{}};\ unidad\ =\ \textcolor{stringliteral}{"{}mg/m³"{}};\ color\ =\ Color.parseColor(\textcolor{stringliteral}{"{}\#FF8C00"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00358}00358\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limiteSeguro\ =\ 10f;\ limitePeligro\ =\ 30f;\ yMax\ =\ 40f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00359}00359\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00360}00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 2:\ \textcolor{comment}{//\ Dióxido\ de\ Nitrógeno\ (NO2)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00361}00361\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ valueY\ =\ data.no2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00362}00362\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nombreGas\ =\ \textcolor{stringliteral}{"{}Dióxido\ de\ Nitrógeno\ (NO2)"{}};\ unidad\ =\ \textcolor{stringliteral}{"{}µg/m³"{}};\ color\ =\ Color.parseColor(\textcolor{stringliteral}{"{}\#E6A100"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00363}00363\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limiteSeguro\ =\ 200f;\ limitePeligro\ =\ 400f;\ yMax\ =\ 500f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00364}00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00365}00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 3:\ \textcolor{comment}{//\ Dióxido\ de\ Azufre\ (SO2)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00366}00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ valueY\ =\ data.so2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00367}00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nombreGas\ =\ \textcolor{stringliteral}{"{}Dióxido\ de\ Azufre\ (SO2)"{}};\ unidad\ =\ \textcolor{stringliteral}{"{}µg/m³"{}};\ color\ =\ Color.parseColor(\textcolor{stringliteral}{"{}\#00BFFF"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00368}00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limiteSeguro\ =\ 350f;\ limitePeligro\ =\ 500f;\ yMax\ =\ 700f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00369}00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00370}00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{case}\ 4:\ \textcolor{comment}{//\ Dióxido\ de\ Carbono\ (CO2)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00371}00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ valueY\ =\ data.co2;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00372}00372\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ nombreGas\ =\ \textcolor{stringliteral}{"{}Dióxido\ de\ Carbono\ (CO2)"{}};\ unidad\ =\ \textcolor{stringliteral}{"{}ppm"{}};\ color\ =\ Color.parseColor(\textcolor{stringliteral}{"{}\#32CD32"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00373}00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limiteSeguro\ =\ 800f;\ limitePeligro\ =\ 1200f;\ yMax\ =\ 1300f;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00374}00374\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00375}00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00376}00376\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ entries.add(\textcolor{keyword}{new}\ Entry(valueX,\ valueY));}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00377}00377\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00378}00378\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00379}00379\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00380}00380\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Configuración\ de\ Eje\ Y\ y\ Limit\ Lines}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00381}00381\ \ \ \ \ \ \ \ \ YAxis\ leftAxis\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.getAxisLeft();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00382}00382\ \ \ \ \ \ \ \ \ leftAxis.removeAllLimitLines();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00383}00383\ \ \ \ \ \ \ \ \ leftAxis.setAxisMinimum(0f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00384}00384\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00385}00385\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ajuste\ de\ precisión\ del\ Eje\ Y}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00386}00386\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (position\ ==\ 0)\ \{\ \textcolor{comment}{//\ Ozono\ (ppm)\ requiere\ precisión\ de\ dos\ decimales}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00387}00387\ \ \ \ \ \ \ \ \ \ \ \ \ leftAxis.setValueFormatter(\textcolor{keyword}{new}\ ValueFormatter()\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00388}00388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ @Override\ \textcolor{keyword}{public}\ String\ getFormattedValue(\textcolor{keywordtype}{float}\ value)\ \{\ \textcolor{keywordflow}{return}\ formatTwoDecimals.format(value);\ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00389}00389\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00390}00390\ \ \ \ \ \ \ \ \ \ \ \ \ leftAxis.setGranularity(0.1f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00391}00391\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00392}00392\ \ \ \ \ \ \ \ \ \ \ \ \ leftAxis.setValueFormatter(\textcolor{keyword}{new}\ ValueFormatter()\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00393}00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ @Override\ \textcolor{keyword}{public}\ String\ getFormattedValue(\textcolor{keywordtype}{float}\ value)\ \{\ \textcolor{keywordflow}{return}\ formatZeroDecimals.format(value);\ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00394}00394\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00395}00395\ \ \ \ \ \ \ \ \ \ \ \ \ leftAxis.setGranularity(1f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00396}00396\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00397}00397\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00398}00398\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00399}00399\ \ \ \ \ \ \ \ \ LimitLine\ llSeguro\ =\ \textcolor{keyword}{new}\ LimitLine(limiteSeguro,\ \textcolor{stringliteral}{"{}Seguro\ ("{}}\ +\ limiteSeguro\ +\ \textcolor{stringliteral}{"{}\ "{}}\ +\ unidad\ +\ \textcolor{stringliteral}{"{})"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00400}00400\ \ \ \ \ \ \ \ \ llSeguro.setLineColor(Color.GREEN);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00401}00401\ \ \ \ \ \ \ \ \ llSeguro.setLineWidth(2f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00402}00402\ \ \ \ \ \ \ \ \ llSeguro.enableDashedLine(10f,\ 10f,\ 0f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00403}00403\ \ \ \ \ \ \ \ \ llSeguro.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT\_BOTTOM);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00404}00404\ \ \ \ \ \ \ \ \ llSeguro.setTextSize(10f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00405}00405\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00406}00406\ \ \ \ \ \ \ \ \ LimitLine\ llPeligro\ =\ \textcolor{keyword}{new}\ LimitLine(limitePeligro,\ \textcolor{stringliteral}{"{}Peligroso\ ("{}}\ +\ limitePeligro\ +\ \textcolor{stringliteral}{"{}\ "{}}\ +\ unidad\ +\ \textcolor{stringliteral}{"{})"{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00407}00407\ \ \ \ \ \ \ \ \ llPeligro.setLineColor(Color.RED);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00408}00408\ \ \ \ \ \ \ \ \ llPeligro.setLineWidth(2f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00409}00409\ \ \ \ \ \ \ \ \ llPeligro.enableDashedLine(10f,\ 10f,\ 0f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00410}00410\ \ \ \ \ \ \ \ \ llPeligro.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT\_TOP);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00411}00411\ \ \ \ \ \ \ \ \ llPeligro.setTextSize(10f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00412}00412\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00413}00413\ \ \ \ \ \ \ \ \ leftAxis.addLimitLine(llSeguro);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00414}00414\ \ \ \ \ \ \ \ \ leftAxis.addLimitLine(llPeligro);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00415}00415\ \ \ \ \ \ \ \ \ leftAxis.setAxisMaximum(yMax);\ \textcolor{comment}{//\ Establece\ el\ límite\ superior\ basado\ en\ el\ contaminante}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00416}00416\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00417}00417\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00418}00418\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Creación\ del\ Dataset\ y\ estilización}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00419}00419\ \ \ \ \ \ \ \ \ LineDataSet\ dataSet\ =\ \textcolor{keyword}{new}\ LineDataSet(entries,\ \textcolor{stringliteral}{"{}Nivel\ de\ "{}}\ +\ nombreGas);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00420}00420\ \ \ \ \ \ \ \ \ dataSet.setColor(color);\ \textcolor{comment}{//\ Usar\ el\ color\ asignado}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00421}00421\ \ \ \ \ \ \ \ \ dataSet.setLineWidth(1f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00422}00422\ \ \ \ \ \ \ \ \ dataSet.setCircleRadius(2f);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00423}00423\ \ \ \ \ \ \ \ \ dataSet.setDrawCircleHole(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00424}00424\ \ \ \ \ \ \ \ \ dataSet.setDrawValues(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00425}00425\ \ \ \ \ \ \ \ \ dataSet.setDrawFilled(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00426}00426\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00427}00427\ \ \ \ \ \ \ \ \ dataSet.setFillDrawable(ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.gradiente\_semaforo));}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00428}00428\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00429}00429\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Aplicar\ y\ animar\ el\ gráfico}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00430}00430\ \ \ \ \ \ \ \ \ LineData\ lineData\ =\ \textcolor{keyword}{new}\ LineData(dataSet);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00431}00431\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.setData(lineData);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00432}00432\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.animateX(1000);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00433}00433\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00434}00434\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}.invalidate();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00435}00435\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00436}00436\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Evaluar\ exposición}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00437}00437\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ad4fa7b96fc28c137eaf2975d8e6cd79e}{evaluarExposicion}}(entries,\ limiteSeguro,\ limitePeligro);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00438}00438\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00439}00439\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00440}00440\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00441}00441\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Evalúa\ los\ datos\ mostrados\ y\ actualiza\ el\ icono\ y\ texto\ de\ estado.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00442}00442\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00443}00443\ \textcolor{comment}{\ \ \ \ \ *\ Lógica\ de\ clasificación:}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00444}00444\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Crítico\ (Face\ Sad):**\ 4\ o\ más\ puntos\ superan\ el\ límite\ de\ peligro.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00445}00445\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Advertencia\ (Face\ Neutral):**\ Al\ menos\ 1\ punto\ supera\ el\ límite\ de\ peligro\ (pico\ aislado).}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00446}00446\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Alerta\ Moderada\ (Face\ Neutral):**\ 10\ o\ más\ puntos\ superan\ el\ límite\ seguro.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00447}00447\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Aceptable\ (Face\ Happy):**\ Algunos\ puntos\ (1-\/9)\ superan\ el\ límite\ seguro.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00448}00448\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Óptimo\ (Face\ Happy):**\ Todos\ los\ valores\ están\ por\ debajo\ del\ límite\ seguro.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00449}00449\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00450}00450\ \textcolor{comment}{\ \ \ \ \ *\ @param\ datos\ Lista\ de\ entradas\ (puntos)\ del\ gráfico\ actual.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00451}00451\ \textcolor{comment}{\ \ \ \ \ *\ @param\ limiteSeguro\ Valor\ umbral\ de\ seguridad.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00452}00452\ \textcolor{comment}{\ \ \ \ \ *\ @param\ limitePeligro\ Valor\ umbral\ de\ peligro.}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00453}00453\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00454}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ad4fa7b96fc28c137eaf2975d8e6cd79e}{00454}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ad4fa7b96fc28c137eaf2975d8e6cd79e}{evaluarExposicion}}(List<Entry>\ datos,\ \textcolor{keywordtype}{float}\ limiteSeguro,\ \textcolor{keywordtype}{float}\ limitePeligro)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00455}00455\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ contadorPeligroso\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00456}00456\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ contadorRiesgo\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00457}00457\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00458}00458\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Entry\ e\ :\ datos)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00459}00459\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{float}\ val\ =\ e.getY();}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00460}00460\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (val\ >\ limitePeligro)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00461}00461\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ contadorPeligroso++;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00462}00462\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (val\ >\ limiteSeguro)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00463}00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ contadorRiesgo++;}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00464}00464\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00465}00465\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00466}00466\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00467}00467\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (contadorPeligroso\ >=\ 4)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00468}00468\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nivel\ 5:\ CRÍTICO\ (4\ o\ más\ puntos\ en\ el\ rango\ ROJO)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00469}00469\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{imgCarita}}.setImageResource(R.drawable.ic\_face\_sad);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00470}00470\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txtExplicacion}}.setText(\textcolor{stringliteral}{"{}¡PELIGRO\ CRÍTICO!\ Exposición\ prolongada.\ Evite\ la\ zona\ de\ inmediato."{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00471}00471\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00472}00472\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (contadorPeligroso\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00473}00473\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nivel\ 4:\ PELIGRO\ AISLADO\ (1\ a\ 3\ picos\ en\ el\ rango\ ROJO)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00474}00474\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Esto\ cubre\ tu\ regla:\ "{}si\ solo\ hay\ un\ punto\ peligroso\ sea\ regular\ [peligro\ aislado]"{}}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00475}00475\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{imgCarita}}.setImageResource(R.drawable.ic\_face\_neutral);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00476}00476\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txtExplicacion}}.setText(\textcolor{stringliteral}{"{}ADVERTENCIA:\ Se\ ha\ detectado\ un\ pico\ peligroso\ puntual."{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00477}00477\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00478}00478\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (contadorRiesgo\ >=\ 10)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00479}00479\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nivel\ 3:\ RIESGO\ MODERADO\ (Múltiples\ puntos\ en\ el\ rango\ de\ riesgo/sobre\ el\ límite\ bueno)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00480}00480\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{imgCarita}}.setImageResource(R.drawable.ic\_face\_neutral);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00481}00481\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txtExplicacion}}.setText(\textcolor{stringliteral}{"{}ALERTA\ MODERADA:\ La\ calidad\ del\ aire\ es\ mala,\ muchos\ puntos\ fuera\ de\ lo\ 'Bueno'."{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00482}00482\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00483}00483\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (contadorRiesgo\ >\ 0)\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00484}00484\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nivel\ 2:\ ACEPTABLE\ CON\ ADVERTENCIA\ (1\ a\ 9\ puntos\ ligeramente\ sobre\ el\ límite\ bueno)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00485}00485\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{imgCarita}}.setImageResource(R.drawable.ic\_face\_happy);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00486}00486\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txtExplicacion}}.setText(\textcolor{stringliteral}{"{}ACEPTABLE:\ Calidad\ del\ aire\ dentro\ de\ los\ límites,\ pero\ con\ pequeñas\ variaciones."{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00487}00487\ }
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00488}00488\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00489}00489\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nivel\ 1:\ ÓPTIMO\ (Todos\ los\ puntos\ son\ "{}Buenos"{}\ o\ inferiores)}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00490}00490\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{imgCarita}}.setImageResource(R.drawable.ic\_face\_happy);}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00491}00491\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txtExplicacion}}.setText(\textcolor{stringliteral}{"{}¡ÓPTIMO!\ Calidad\ del\ aire\ excelente\ y\ segura."{}});}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00492}00492\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00493}00493\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_informacion_activity_8java_source_l00494}00494\ \}}
+
+\end{DoxyCode}

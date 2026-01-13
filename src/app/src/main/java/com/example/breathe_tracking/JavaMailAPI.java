@@ -1,10 +1,3 @@
-/**
- * @file JavaMailAPI.java
- * @brief Implementación de tarea asíncrona para el envío de correos electrónicos SMTP.
- * @package com.example.breathe_tracking
- * @copyright Copyright © 2025
- */
-
 package com.example.breathe_tracking;
 
 import android.content.Context;
@@ -12,6 +5,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 import java.util.Properties;
 import javax.mail.Message;
+import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -20,7 +14,12 @@ import javax.mail.internet.MimeMessage;
 
 /**
  * @class JavaMailAPI
- * @brief Gestiona el envío de correos electrónicos en segundo plano.
+ * @brief Clase asíncrona encargada de gestionar el envío de correos electrónicos en segundo plano.
+ *
+ * Esta clase extiende de AsyncTask para realizar operaciones de red (SMTP) sin bloquear
+ * el hilo principal de la interfaz de usuario (UI Thread). Utiliza la librería JavaMail
+ * para conectar con el servidor SMTP de Gmail.
+ *
  * @extends AsyncTask<Void, Void, Void>
  *
  * @details
@@ -62,9 +61,8 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
 
     /**
      * @brief Constructor de la clase JavaMailAPI.
-     *(context:Context, emailDestino:String, asunto:String, mensaje:String) -> JavaMailAPI() -> ()
      *
-     * @detail Inicializa los datos necesarios para componer y enviar el correo.
+     * Inicializa los datos necesarios para componer y enviar el correo.
      *
      * @param context Contexto de la actividad o aplicación.
      * @param emailDestino Dirección de email a la que se enviará la alerta.
@@ -82,14 +80,11 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
      * @brief Lógica de conexión y envío en hilo secundario.
      * (params:Void) -> doInBackground() -> ()
      *
-     * 1. Configura las propiedades (`Properties`) para TLS/SSL en el puerto 465 de Gmail.
-     * 2. Inicia sesión (`Session`) con las credenciales del robot.
-     * 3. Crea el objeto `MimeMessage`.
-     * 4. Asigna un alias ("⚠️ Alertas Breathe Tracking") al remitente.
-     * 5. Genera el contenido HTML llamando a @ref construirHTML.
-     * 6. Envía el mensaje mediante `Transport.send()`.
+     * Configura las propiedades del servidor SMTP de Gmail (Host, Puerto 465, SSL),
+     * realiza la autenticación, construye el mensaje MIME con formato HTML y máscara
+     * de remitente, y finalmente envía el correo.
      *
-     * @param params Void (no se usan parámetros variables).
+     * @param params Parámetros de entrada (no utilizados en esta implementación).
      * @return null
      */
     @Override
@@ -145,17 +140,17 @@ public class JavaMailAPI extends AsyncTask<Void, Void, Void> {
         Toast.makeText(context, "Incidencia enviada correctamente", Toast.LENGTH_LONG).show();
     }
 
-    // --- MÉTODO PARA CREAR EL DISEÑO HTML ---
+    // --- NUEVO MÉTODO PARA CREAR EL DISEÑO HTML ---
     /**
-     * @brief Genera una plantilla HTML con estilos CSS incrustados.
-     * (titulo:String, mensaje:String) -> construirHTML() -> (String)
+     * @brief Genera una estructura HTML con estilos CSS integrados para el cuerpo del correo.
      *
-     * Envuelve el mensaje del usuario en un diseño corporativo ("Breathe Tracking System")
-     * con cabecera azul, contenedor centrado y pie de página.
+     * Crea un diseño visual profesional con cabecera corporativa, contenedor de datos
+     * y pie de página, insertando dinámicamente el título y el mensaje.
+     * (titulo:String, mensaje:String) -> construirHTML() -> String (HTML)
      *
-     * @param titulo Título de la sección de contenido.
-     * @param mensaje Texto del cuerpo del mensaje.
-     * @return String con el código HTML completo (`<!DOCTYPE html>...`).
+     * @param titulo El título de la incidencia.
+     * @param mensaje El mensaje descriptivo de la incidencia.
+     * @return String que contiene el código HTML completo del correo.
      */
     private String construirHTML(String titulo, String mensaje) {
         return "<!DOCTYPE html>" +

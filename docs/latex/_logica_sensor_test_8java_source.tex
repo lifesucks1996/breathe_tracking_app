@@ -1,0 +1,63 @@
+\doxysection{Logica\+Sensor\+Test.\+java}
+\hypertarget{_logica_sensor_test_8java_source}{}\label{_logica_sensor_test_8java_source}\index{src/app/src/test/java/com/example/breathe\_tracking/LogicaSensorTest.java@{src/app/src/test/java/com/example/breathe\_tracking/LogicaSensorTest.java}}
+\mbox{\hyperlink{_logica_sensor_test_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00001}00001\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00002}00002\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00003}00003\ \textcolor{keyword}{import}\ org.junit.Test;}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00004}00004\ \textcolor{keyword}{import}\ \textcolor{keyword}{static}\ org.junit.Assert.*;}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00006}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test}{00006}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test}{LogicaSensorTest}}\ \{}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00008}00008\ \ \ \ \ @Test}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00009}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test_a281841febd2271081e1c4be39748d05a}{00009}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test_a281841febd2271081e1c4be39748d05a}{verificarAlertasCo2}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00010}00010\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_TEST\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_"{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00011}00011\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}[TEST\ 1]\ Verificando\ Lógica\ de\ CO2..."{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00013}00013\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Caso\ 1}}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00014}00014\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ valorPeligroso\ =\ 1300;}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00015}00015\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ Preguntando\ al\ código:\ '¿Es\ "{}}\ +\ valorPeligroso\ +\ \textcolor{stringliteral}{"{}\ ppm\ peligroso?'"{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00016}00016\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{boolean}\ esPeligroso\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{SensorTrackingService}}.\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae9d7dd0ab517e6d872613b00e0d05fa8}{esCo2Peligroso}}(valorPeligroso);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00017}00017\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ El\ código\ responde:\ "{}}\ +\ (esPeligroso\ ?\ \textcolor{stringliteral}{"{}SÍ"{}}\ :\ \textcolor{stringliteral}{"{}NO"{}}));}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00018}00018\ \ \ \ \ \ \ \ \ assertTrue(\textcolor{stringliteral}{"{}Error:\ 1300\ debería\ ser\ peligroso"{}},\ esPeligroso);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00020}00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Caso\ 2}}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ valorSeguro\ =\ 800;}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00022}00022\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ Preguntando\ al\ código:\ '¿Es\ "{}}\ +\ valorSeguro\ +\ \textcolor{stringliteral}{"{}\ ppm\ peligroso?'"{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00023}00023\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{boolean}\ esSeguro\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{SensorTrackingService}}.\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae9d7dd0ab517e6d872613b00e0d05fa8}{esCo2Peligroso}}(valorSeguro);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00024}00024\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ El\ código\ responde:\ "{}}\ +\ (esSeguro\ ?\ \textcolor{stringliteral}{"{}SÍ"{}}\ :\ \textcolor{stringliteral}{"{}NO"{}}));}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00025}00025\ \ \ \ \ \ \ \ \ assertFalse(\textcolor{stringliteral}{"{}Error:\ 800\ debería\ ser\ seguro"{}},\ esSeguro);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00027}00027\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ Test\ de\ CO2\ superado.\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00028}00028\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00030}00030\ \ \ \ \ @Test}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00031}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test_ac29bb0bfaf58cc5e2b6d0db13c8a8612}{00031}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test_ac29bb0bfaf58cc5e2b6d0db13c8a8612}{verificarAlertaBateria}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00034}00034\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ [TEST\ 2]\ Verificando\ Lógica\ de\ Batería..."{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00036}00036\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ Probando\ batería\ al\ 15\%\ (Límite\ crítico)..."{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00037}00037\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{boolean}\ critico\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{SensorTrackingService}}.\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af3b4dcec67b655673bf3815c61c85f71}{esBateriaCritica}}(15);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00038}00038\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ Resultado:\ "{}}\ +\ critico);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00039}00039\ \ \ \ \ \ \ \ \ assertTrue(critico);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00041}00041\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ Probando\ batería\ al\ 20\%\ (Nivel\ normal)..."{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00042}00042\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{boolean}\ normal\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{SensorTrackingService}}.\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af3b4dcec67b655673bf3815c61c85f71}{esBateriaCritica}}(20);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00043}00043\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ Resultado:\ "{}}\ +\ normal);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00044}00044\ \ \ \ \ \ \ \ \ assertFalse(normal);}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00046}00046\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}Test\ de\ Batería\ superado.\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00047}00047\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_FIN\ TEST\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_"{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00048}00048\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00050}00050\ \ \ \ \ @Test}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00051}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test_a4f195788117212386e60d7839b269fbd}{00051}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_logica_sensor_test_a4f195788117212386e60d7839b269fbd}{verificarTemperatura}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00052}00052\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}[TEST\ 3]\ Verificando\ Temperatura..."{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00053}00053\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}\ \ \ \ -\/\ Probando\ 36ºC\ (Calor)..."{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00054}00054\ \ \ \ \ \ \ \ \ assertTrue(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{SensorTrackingService}}.\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2ca27e87ba11527cc4d55fe41ac3427a}{esTemperaturaPeligrosa}}(36.0f));}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00055}00055\ \ \ \ \ \ \ \ \ System.out.println(\textcolor{stringliteral}{"{}Test\ de\ Temperatura\ superado."{}});}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00056}00056\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_logica_sensor_test_8java_source_l00057}00057\ \}}
+
+\end{DoxyCode}

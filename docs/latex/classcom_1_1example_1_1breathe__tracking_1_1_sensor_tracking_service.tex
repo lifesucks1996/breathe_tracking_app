@@ -1,0 +1,856 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+
+
+Servicio en primer plano (Foreground Service) que actúa como el núcleo de procesamiento de datos.  
+
+
+
+
+Inherits Service.
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a07f4003f4077ebe51f4375a7ab8b6ec3}{on\+Create}} ()
+\begin{DoxyCompactList}\small\item\em Inicialización del servicio. Configura\+: \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a4b9c0211c3484cf5cb4a51d1bc46c2c7}{on\+Start\+Command}} (Intent intent, int flags, int start\+Id)
+\begin{DoxyCompactList}\small\item\em Se llama cada vez que el servicio es iniciado. Gestiona la obtención del ID del sensor, inicia el servicio en primer plano (notificación) y arranca la monitorización. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a593d30033dea28d161f5ab498bec264e}{on\+Destroy}} ()
+\begin{DoxyCompactList}\small\item\em Se llama al destruir el servicio. Libera recursos\+: detiene las actualizaciones de ubicación, el escaneo BLE y el watchdog. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a593d30033dea28d161f5ab498bec264e}{on\+Destroy()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+IBinder \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7f61c715132853ce1252c8db5676371f}{on\+Bind}} (Intent intent)
+\begin{DoxyCompactList}\small\item\em Método requerido para servicios enlazados. No se usa, devuelve null. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7f61c715132853ce1252c8db5676371f}{on\+Bind()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7b9ebf0900105370264c23f81ed64bb0}{subir\+Datos\+AFirebase}} (Float o3\+\_\+ppm, Float temp\+\_\+c, Integer co2\+\_\+ppm, Integer bat\+\_\+porc, String ubicacion, String estado)
+\begin{DoxyCompactList}\small\item\em Sube las mediciones y el estado de contexto (ubicación, conexión) a Firebase Firestore. Realiza dos operaciones\+: guardar un registro en la colección \textquotesingle{}mediciones\textquotesingle{} (historial) y actualizar los campos directos del documento del sensor (última lectura). (o3\+\_\+ppm\+:Float, temp\+\_\+c\+:Float, co2\+\_\+ppm\+:Integer, bat\+\_\+porc\+:Integer, ubicacion\+:String, estado\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7b9ebf0900105370264c23f81ed64bb0}{subir\+Datos\+AFirebase()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static boolean \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae9d7dd0ab517e6d872613b00e0d05fa8}{es\+Co2\+Peligroso}} (int co2)
+\item 
+static boolean \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac1320fa9330d6b51966d9b2061c43328}{es\+Ozono\+Peligroso}} (float ozono)
+\item 
+static boolean \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2ca27e87ba11527cc4d55fe41ac3427a}{es\+Temperatura\+Peligrosa}} (float temperatura)
+\item 
+static boolean \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af3b4dcec67b655673bf3815c61c85f71}{es\+Bateria\+Critica}} (int bateria)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2034207ae6f9cdfa0f5e034a0e21a314}{inicializar\+YComenzar\+Escaneo\+Beacon}} ()
+\begin{DoxyCompactList}\small\item\em Inicializa el escáner BLE y comienza la búsqueda de dispositivos. Configura el Scan\+Callback para procesar los resultados de escaneo. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2034207ae6f9cdfa0f5e034a0e21a314}{inicializar\+YComenzar\+Escaneo\+Beacon()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad0de51ed9be9ec51c1c6052d062db935}{detener\+Escaneo\+Beacon}} ()
+\begin{DoxyCompactList}\small\item\em Detiene el escaneo BLE si está activo. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad0de51ed9be9ec51c1c6052d062db935}{detener\+Escaneo\+Beacon()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af23e9b7eade01f162b578786dd5c2c86}{mostrar\+Informacion\+Dispositivo\+BTLE}} (Scan\+Result resultado)
+\begin{DoxyCompactList}\small\item\em Procesa el resultado del escaneo BLE, filtra el dispositivo "{}rocio"{} y decodifica el payload. Actualiza el estado del Data\+Holder, verifica alertas y sube los datos a Firebase. (resultado\+:Scan\+Result) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af23e9b7eade01f162b578786dd5c2c86}{mostrar\+Informacion\+Dispositivo\+BTLE()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ab723b8e01c99a60c44742b6be10e2d75}{check\+Alerts}} (int co2, float ozono, float temperatura, int bateria)
+\begin{DoxyCompactList}\small\item\em Compara las mediciones recibidas con umbrales predefinidos y genera alertas (notificaciones y Live\+Data). (co2\+:int, ozono\+:float, temperatura\+:float, bateria\+:int) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ab723b8e01c99a60c44742b6be10e2d75}{check\+Alerts()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_aa118def6a69e0185840176219b96c6b0}{send\+Alert\+Notification}} (String title, String message, int notification\+Id)
+\begin{DoxyCompactList}\small\item\em Muestra una notificación de alerta de alta prioridad. (title\+:String, message\+:String, notification\+Id\+:int) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_aa118def6a69e0185840176219b96c6b0}{send\+Alert\+Notification()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a053872c3bd9502735fe925bdf1511594}{cancel\+Alert\+Notification}} (int notification\+Id)
+\begin{DoxyCompactList}\small\item\em Cancela una notificación de alerta específica. (notification\+Id\+:int) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a053872c3bd9502735fe925bdf1511594}{cancel\+Alert\+Notification()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2387817897366089507db963f75ddb24}{create\+Notification\+Channels}} ()
+\begin{DoxyCompactList}\small\item\em Crea los canales de notificación requeridos para el servicio y las alertas. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2387817897366089507db963f75ddb24}{create\+Notification\+Channels()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adf5f4d65f594a8ebe0ad32745d38d037}{start\+Location\+Updates}} ()
+\begin{DoxyCompactList}\small\item\em Solicita actualizaciones periódicas de ubicación GPS al sistema. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adf5f4d65f594a8ebe0ad32745d38d037}{start\+Location\+Updates()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a97c8e886ba33e816d53030dcc73a8e4c}{get\+Address\+From\+Location}} (android.\+location.\+Location location)
+\begin{DoxyCompactList}\small\item\em Convierte una coordenada Location (Latitud/\+Longitud) a una dirección legible (Calle, Ciudad) usando Geocoder. (location\+:android.\+location.\+Location) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a97c8e886ba33e816d53030dcc73a8e4c}{get\+Address\+From\+Location()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7a2c77237137062a235c00061b70457d}{reset\+Watchdog}} ()
+\begin{DoxyCompactList}\small\item\em Reinicia el temporizador del watchdog de conexión. Si el servicio estaba en estado "{}\+Desconectado"{}, al recibir datos lo cambia a "{}\+Conectado"{} y cancela la alerta. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7a2c77237137062a235c00061b70457d}{reset\+Watchdog()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Fused\+Location\+Provider\+Client \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a9198df85216b646bc29c63a0dcbd2354}{fused\+Location\+Client}}
+\begin{DoxyCompactList}\small\item\em Cliente para obtener actualizaciones de ubicación. \end{DoxyCompactList}\item 
+Location\+Callback \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a0409c0c16068cc828c58049af125599c}{location\+Callback}}
+\begin{DoxyCompactList}\small\item\em Callback que se activa al recibir una nueva ubicación. \end{DoxyCompactList}\item 
+Bluetooth\+Le\+Scanner \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2bcc7716b744a68610177a709e89c216}{el\+Escanner}}
+\begin{DoxyCompactList}\small\item\em Escáner de Bluetooth Low Energy (BLE). \end{DoxyCompactList}\item 
+Scan\+Callback \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2f80fd68487bb32cf666eedb703baa91}{callback\+Del\+Escaneo}}
+\begin{DoxyCompactList}\small\item\em Callback que se activa al recibir un resultado de escaneo (un beacon). \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}} \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a55d7b78586f2f3339d93dbeb24d3f506}{data\+Holder}}
+\begin{DoxyCompactList}\small\item\em Singleton que contiene el estado de los datos (Live\+Data) para la comunicación con la UI. \end{DoxyCompactList}\item 
+Handler \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac41a0e0b60d9da313b06acf14b654e12}{watchdog\+Handler}} = new Handler(Looper.\+get\+Main\+Looper())
+\begin{DoxyCompactList}\small\item\em Handler para programar la tarea del watchdog. \end{DoxyCompactList}\item 
+Runnable \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae703c4001323d02b589745ad5ea42c83}{watchdog\+Runnable}}
+\begin{DoxyCompactList}\small\item\em Runnable que se ejecuta si no se reciben datos del sensor en el tiempo de espera. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad9ffecd984b41a0ef1a06525e32a86f3}{last\+Updated\+Temp}} = -\/999.\+0f
+\begin{DoxyCompactList}\small\item\em Almacena la última temperatura recibida. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a508622cfacbd84315af600a06c8ee32d}{last\+Updated\+Ozono}} = -\/999.\+0f
+\begin{DoxyCompactList}\small\item\em Almacena el último valor de ozono recibido. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a19c5366762e13a8ded258c3d8bd2912d}{last\+Updated\+Co2}} = -\/999
+\begin{DoxyCompactList}\small\item\em Almacena el último valor de CO2 recibido. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a28125efe7824479081695500017760a5}{smoothed\+Rssi}} = -\/999.\+0f
+\begin{DoxyCompactList}\small\item\em Almacena el RSSI suavizado para evitar fluctuaciones bruscas. Inicialmente -\/999 (sin señal). \end{DoxyCompactList}\item 
+Firebase\+Firestore \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c4bea42e1ca7feb1825d5478db3c57a}{db}}
+\begin{DoxyCompactList}\small\item\em Instancia principal de Firebase Firestore. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac447c972d66b36c5d47cd907997f916a}{sensor\+Code}}
+\begin{DoxyCompactList}\small\item\em Código único del sensor que se está rastreando. \end{DoxyCompactList}\item 
+Document\+Reference \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2c479e9b631da07e1a5130d9fc9a3597}{sensor\+Doc\+Ref}}
+\begin{DoxyCompactList}\small\item\em Referencia al documento del sensor en Firestore. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a92a5ee968c65799c664d1c96e824ef77}{ETIQUETA\+\_\+\+LOG}} = "{}Sensor\+Service"{}
+\begin{DoxyCompactList}\small\item\em Etiqueta utilizada para los logs de Android. \end{DoxyCompactList}\item 
+static final String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c434c858daec3fe7f1cdc6d84ed59f7}{CHANNEL\+\_\+\+ID}} = "{}Sensor\+Tracking\+Channel"{}
+\begin{DoxyCompactList}\small\item\em ID del canal de notificación para el servicio en primer plano (baja prioridad). \end{DoxyCompactList}\item 
+static final String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a9b72ba55dfa45558472569cac4426c07}{ALERT\+\_\+\+CHANNEL\+\_\+\+ID}} = "{}Alert\+Channel"{}
+\begin{DoxyCompactList}\small\item\em ID del canal de notificación para las alertas (alta prioridad). \end{DoxyCompactList}\item 
+static final int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adecb904823c1cd7c0e1638a345859450}{NOTIFICATION\+\_\+\+ID}} = 1
+\begin{DoxyCompactList}\small\item\em ID para la notificación del servicio en primer plano. \end{DoxyCompactList}\item 
+static final int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a81ca0d100b62738ac94f5d4bca425c88}{CO2\+\_\+\+ALERT\+\_\+\+ID}} = 101
+\begin{DoxyCompactList}\small\item\em ID para la notificación de alerta de CO2. \end{DoxyCompactList}\item 
+static final int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5a79213d3a171c54e0a577b1d8034220}{OZONE\+\_\+\+ALERT\+\_\+\+ID}} = 102
+\begin{DoxyCompactList}\small\item\em ID para la notificación de alerta de Ozono. \end{DoxyCompactList}\item 
+static final int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a50014713cc928dce2ef800f65d78d4ff}{TEMP\+\_\+\+ALERT\+\_\+\+ID}} = 103
+\begin{DoxyCompactList}\small\item\em ID para la notificación de alerta de Temperatura. \end{DoxyCompactList}\item 
+static final int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c67b72f474427b20439af37f877619b}{BATTERY\+\_\+\+ALERT\+\_\+\+ID}} = 104
+\begin{DoxyCompactList}\small\item\em ID para la notificación de alerta de Batería. \end{DoxyCompactList}\item 
+static final int \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a11881d3990193030876dad0548417521}{CONNECTION\+\_\+\+ALERT\+\_\+\+ID}} = 105
+\begin{DoxyCompactList}\small\item\em ID para la notificación de alerta de Conexión perdida. \end{DoxyCompactList}\item 
+static final long \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_abb2ca0be8b72a1dfc01e4968f14f109f}{WATCHDOG\+\_\+\+DELAY\+\_\+\+MS}} = 1 \texorpdfstring{$\ast$}{*} 60 \texorpdfstring{$\ast$}{*} 1000
+\begin{DoxyCompactList}\small\item\em Retraso en milisegundos para el watchdog (3 minutos). \end{DoxyCompactList}\item 
+static final float \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adb738fe122ff51d0435d7a56182bb544}{ALPHA\+\_\+\+RSSI}} = 0.\+2f
+\begin{DoxyCompactList}\small\item\em Factor de suavizado para el filtro (0.\+0 -\/ 1.\+0). Un valor bajo (ej\+: 0.\+1) hace que la barra se mueva lentamente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Servicio en primer plano (Foreground Service) que actúa como el núcleo de procesamiento de datos. 
+
+Este servicio es el componente central de la aplicación. Se ejecuta independientemente de la UI para garantizar que la recolección de datos no se detenga si el usuario minimiza la app.
+
+{\bfseries{Responsabilidades\+:}}
+\begin{DoxyEnumerate}
+\item {\bfseries{Orquestación BLE\+:}} Escanea y filtra dispositivos con nombre "{}rocio"{}. Decodifica la trama de bytes (byte shifting).
+\item {\bfseries{Contexto Geoespacial\+:}} Enriquece los datos del sensor con coordenadas GPS y dirección postal (Geocoding).
+\item {\bfseries{Lógica de Negocio\+:}} Aplica umbrales de seguridad para generar alertas (ej\+: CO2 \texorpdfstring{$>$}{>} 1200 ppm).
+\item {\bfseries{Persistencia\+:}} Sincroniza el estado actual y el historial de mediciones con Firebase Firestore.
+\item {\bfseries{Watchdog\+:}} Monitoriza la "{}salud"{} de la conexión. Si no llegan paquetes en 3 minutos, marca el sensor como desconectado.
+\end{DoxyEnumerate}
+
+\begin{DoxyAuthor}{Author}
+Rocio (Lógica BLE, Decodificación -\/ 22/10, 29/10) 
+
+Sandra (Ubicación, Live\+Data, Alertas, Watchdog, Firebase -\/ 27/10, 29/10, 04/11, 06/11, 17/11) 
+\end{DoxyAuthor}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00082}{82}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a053872c3bd9502735fe925bdf1511594}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!cancelAlertNotification@{cancelAlertNotification}}
+\index{cancelAlertNotification@{cancelAlertNotification}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{cancelAlertNotification()}{cancelAlertNotification()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a053872c3bd9502735fe925bdf1511594} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+cancel\+Alert\+Notification (\begin{DoxyParamCaption}\item[{int}]{notification\+Id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Cancela una notificación de alerta específica. (notification\+Id\+:int) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a053872c3bd9502735fe925bdf1511594}{cancel\+Alert\+Notification()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em notification\+Id} & ID de la notificación a cancelar. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00547}{547}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ab723b8e01c99a60c44742b6be10e2d75}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!checkAlerts@{checkAlerts}}
+\index{checkAlerts@{checkAlerts}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{checkAlerts()}{checkAlerts()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ab723b8e01c99a60c44742b6be10e2d75} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+check\+Alerts (\begin{DoxyParamCaption}\item[{int}]{co2}{, }\item[{float}]{ozono}{, }\item[{float}]{temperatura}{, }\item[{int}]{bateria}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Compara las mediciones recibidas con umbrales predefinidos y genera alertas (notificaciones y Live\+Data). (co2\+:int, ozono\+:float, temperatura\+:float, bateria\+:int) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ab723b8e01c99a60c44742b6be10e2d75}{check\+Alerts()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+\begin{DoxyItemize}
+\item CO2 \texorpdfstring{$>$}{>}= 1200 ppm -\/\texorpdfstring{$>$}{>} Alerta.
+\item O3 \texorpdfstring{$>$}{>}= 0.\+9 ppm -\/\texorpdfstring{$>$}{>} Alerta.
+\item Temp \texorpdfstring{$>$}{>} 35ºC -\/\texorpdfstring{$>$}{>} Alerta.
+\item Bat \texorpdfstring{$<$}{<}= 15\% -\/\texorpdfstring{$>$}{>} Notificación de Batería Baja.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em co2} & Concentración de CO2 en ppm. \\
+\hline
+{\em ozono} & Concentración de Ozono en ppm. \\
+\hline
+{\em temperatura} & Temperatura en grados Celsius. \\
+\hline
+{\em bateria} & Porcentaje de batería. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00464}{464}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2387817897366089507db963f75ddb24}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!createNotificationChannels@{createNotificationChannels}}
+\index{createNotificationChannels@{createNotificationChannels}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{createNotificationChannels()}{createNotificationChannels()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2387817897366089507db963f75ddb24} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+create\+Notification\+Channels (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Crea los canales de notificación requeridos para el servicio y las alertas. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2387817897366089507db963f75ddb24}{create\+Notification\+Channels()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00556}{556}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad0de51ed9be9ec51c1c6052d062db935}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!detenerEscaneoBeacon@{detenerEscaneoBeacon}}
+\index{detenerEscaneoBeacon@{detenerEscaneoBeacon}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{detenerEscaneoBeacon()}{detenerEscaneoBeacon()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad0de51ed9be9ec51c1c6052d062db935} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+detener\+Escaneo\+Beacon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Detiene el escaneo BLE si está activo. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad0de51ed9be9ec51c1c6052d062db935}{detener\+Escaneo\+Beacon()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00348}{348}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af3b4dcec67b655673bf3815c61c85f71}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!esBateriaCritica@{esBateriaCritica}}
+\index{esBateriaCritica@{esBateriaCritica}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{esBateriaCritica()}{esBateriaCritica()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af3b4dcec67b655673bf3815c61c85f71} 
+boolean com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+es\+Bateria\+Critica (\begin{DoxyParamCaption}\item[{int}]{bateria}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00709}{709}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae9d7dd0ab517e6d872613b00e0d05fa8}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!esCo2Peligroso@{esCo2Peligroso}}
+\index{esCo2Peligroso@{esCo2Peligroso}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{esCo2Peligroso()}{esCo2Peligroso()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae9d7dd0ab517e6d872613b00e0d05fa8} 
+boolean com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+es\+Co2\+Peligroso (\begin{DoxyParamCaption}\item[{int}]{co2}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00697}{697}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac1320fa9330d6b51966d9b2061c43328}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!esOzonoPeligroso@{esOzonoPeligroso}}
+\index{esOzonoPeligroso@{esOzonoPeligroso}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{esOzonoPeligroso()}{esOzonoPeligroso()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac1320fa9330d6b51966d9b2061c43328} 
+boolean com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+es\+Ozono\+Peligroso (\begin{DoxyParamCaption}\item[{float}]{ozono}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00701}{701}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2ca27e87ba11527cc4d55fe41ac3427a}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!esTemperaturaPeligrosa@{esTemperaturaPeligrosa}}
+\index{esTemperaturaPeligrosa@{esTemperaturaPeligrosa}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{esTemperaturaPeligrosa()}{esTemperaturaPeligrosa()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2ca27e87ba11527cc4d55fe41ac3427a} 
+boolean com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+es\+Temperatura\+Peligrosa (\begin{DoxyParamCaption}\item[{float}]{temperatura}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00705}{705}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a97c8e886ba33e816d53030dcc73a8e4c}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!getAddressFromLocation@{getAddressFromLocation}}
+\index{getAddressFromLocation@{getAddressFromLocation}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{getAddressFromLocation()}{getAddressFromLocation()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a97c8e886ba33e816d53030dcc73a8e4c} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+get\+Address\+From\+Location (\begin{DoxyParamCaption}\item[{android.\+location.\+Location}]{location}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Convierte una coordenada Location (Latitud/\+Longitud) a una dirección legible (Calle, Ciudad) usando Geocoder. (location\+:android.\+location.\+Location) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a97c8e886ba33e816d53030dcc73a8e4c}{get\+Address\+From\+Location()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em location} & Objeto Location con las coordenadas GPS. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00587}{587}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2034207ae6f9cdfa0f5e034a0e21a314}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!inicializarYComenzarEscaneoBeacon@{inicializarYComenzarEscaneoBeacon}}
+\index{inicializarYComenzarEscaneoBeacon@{inicializarYComenzarEscaneoBeacon}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{inicializarYComenzarEscaneoBeacon()}{inicializarYComenzarEscaneoBeacon()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2034207ae6f9cdfa0f5e034a0e21a314} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+inicializar\+YComenzar\+Escaneo\+Beacon (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Inicializa el escáner BLE y comienza la búsqueda de dispositivos. Configura el Scan\+Callback para procesar los resultados de escaneo. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2034207ae6f9cdfa0f5e034a0e21a314}{inicializar\+YComenzar\+Escaneo\+Beacon()} -\/\texorpdfstring{$>$}{>} (). 
+
+Metodos para recibir, filtrar y decodificar el Beacon 
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00317}{317}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af23e9b7eade01f162b578786dd5c2c86}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!mostrarInformacionDispositivoBTLE@{mostrarInformacionDispositivoBTLE}}
+\index{mostrarInformacionDispositivoBTLE@{mostrarInformacionDispositivoBTLE}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{mostrarInformacionDispositivoBTLE()}{mostrarInformacionDispositivoBTLE()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af23e9b7eade01f162b578786dd5c2c86} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+mostrar\+Informacion\+Dispositivo\+BTLE (\begin{DoxyParamCaption}\item[{Scan\+Result}]{resultado}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Procesa el resultado del escaneo BLE, filtra el dispositivo "{}rocio"{} y decodifica el payload. Actualiza el estado del Data\+Holder, verifica alertas y sube los datos a Firebase. (resultado\+:Scan\+Result) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_af23e9b7eade01f162b578786dd5c2c86}{mostrar\+Informacion\+Dispositivo\+BTLE()} -\/\texorpdfstring{$>$}{>} (). 
+
+{\bfseries{Proceso de Decodificación\+:}}
+\begin{DoxyEnumerate}
+\item Filtra por nombre de dispositivo ("{}rocio"{}).
+\item Calcula RSSI suavizado usando Media Móvil Exponencial\+: $ RSSI_{smooth} = \alpha \cdot RSSI_{raw} + (1-\alpha) \cdot RSSI_{prev} $
+\item Extrae Manufacturer Data (ID 0x004C).
+\item Interpreta bytes mediante Bit Shifting para reconstruir enteros y floats.
+\item Actualiza Data\+Holder y Firebase si los valores han cambiado.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em resultado} & El objeto Scan\+Result devuelto por el escáner BLE. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00375}{375}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7f61c715132853ce1252c8db5676371f}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!onBind@{onBind}}
+\index{onBind@{onBind}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{onBind()}{onBind()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7f61c715132853ce1252c8db5676371f} 
+IBinder com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+on\+Bind (\begin{DoxyParamCaption}\item[{Intent}]{intent}{}\end{DoxyParamCaption})}
+
+
+
+Método requerido para servicios enlazados. No se usa, devuelve null. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7f61c715132853ce1252c8db5676371f}{on\+Bind()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00628}{628}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a07f4003f4077ebe51f4375a7ab8b6ec3}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!onCreate@{onCreate}}
+\index{onCreate@{onCreate}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{onCreate()}{onCreate()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a07f4003f4077ebe51f4375a7ab8b6ec3} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+on\+Create (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Inicialización del servicio. Configura\+: 
+
+
+\begin{DoxyItemize}
+\item Cliente de ubicación y su callback.
+\item Canales de notificación.
+\item Referencia a la base de datos.
+\item Lógica del Watchdog (Runnable) para manejar desconexiones. 
+\end{DoxyItemize}Callback que maneja los resultados de las actualizaciones de ubicación. Convierte Lat/\+Lon a una dirección legible y actualiza el Data\+Holder.
+
+Runnable que se ejecuta cuando el watchdog expira (pérdida de conexión). Actualiza el estado a "{}\+Desconectado"{} y notifica la incidencia a Firebase y al usuario.
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00159}{159}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a593d30033dea28d161f5ab498bec264e}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!onDestroy@{onDestroy}}
+\index{onDestroy@{onDestroy}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{onDestroy()}{onDestroy()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a593d30033dea28d161f5ab498bec264e} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+on\+Destroy (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Se llama al destruir el servicio. Libera recursos\+: detiene las actualizaciones de ubicación, el escaneo BLE y el watchdog. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a593d30033dea28d161f5ab498bec264e}{on\+Destroy()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00300}{300}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a4b9c0211c3484cf5cb4a51d1bc46c2c7}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!onStartCommand@{onStartCommand}}
+\index{onStartCommand@{onStartCommand}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{onStartCommand()}{onStartCommand()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a4b9c0211c3484cf5cb4a51d1bc46c2c7} 
+int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+on\+Start\+Command (\begin{DoxyParamCaption}\item[{Intent}]{intent}{, }\item[{int}]{flags}{, }\item[{int}]{start\+Id}{}\end{DoxyParamCaption})}
+
+
+
+Se llama cada vez que el servicio es iniciado. Gestiona la obtención del ID del sensor, inicia el servicio en primer plano (notificación) y arranca la monitorización. 
+
+(intent\+:Intent, flags\+:int, start\+Id\+:int) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a4b9c0211c3484cf5cb4a51d1bc46c2c7}{on\+Start\+Command()} -\/\texorpdfstring{$>$}{>} START\+\_\+\+STICKY
+
+
+\begin{DoxyEnumerate}
+\item Recupera el {\ttfamily SENSOR\+\_\+\+ID\+\_\+\+KEY} del Intent.
+\item Configura la notificación persistente para elevar el servicio a Foreground.
+\item Inicia la escucha de ubicación y el escáner BLE.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em intent} & El Intent utilizado para iniciar el servicio, debe contener el ID del sensor. \\
+\hline
+{\em flags} & Información adicional sobre cómo se inició el servicio. \\
+\hline
+{\em start\+Id} & Un ID único que representa esta solicitud de inicio. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+START\+\_\+\+STICKY para que el sistema intente recrear el servicio si se destruye. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00241}{241}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7a2c77237137062a235c00061b70457d}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!resetWatchdog@{resetWatchdog}}
+\index{resetWatchdog@{resetWatchdog}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{resetWatchdog()}{resetWatchdog()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7a2c77237137062a235c00061b70457d} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+reset\+Watchdog (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Reinicia el temporizador del watchdog de conexión. Si el servicio estaba en estado "{}\+Desconectado"{}, al recibir datos lo cambia a "{}\+Conectado"{} y cancela la alerta. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7a2c77237137062a235c00061b70457d}{reset\+Watchdog()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00611}{611}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_aa118def6a69e0185840176219b96c6b0}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!sendAlertNotification@{sendAlertNotification}}
+\index{sendAlertNotification@{sendAlertNotification}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{sendAlertNotification()}{sendAlertNotification()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_aa118def6a69e0185840176219b96c6b0} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+send\+Alert\+Notification (\begin{DoxyParamCaption}\item[{String}]{title}{, }\item[{String}]{message}{, }\item[{int}]{notification\+Id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra una notificación de alerta de alta prioridad. (title\+:String, message\+:String, notification\+Id\+:int) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_aa118def6a69e0185840176219b96c6b0}{send\+Alert\+Notification()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Título de la notificación. \\
+\hline
+{\em message} & Cuerpo del mensaje de la notificación. \\
+\hline
+{\em notification\+Id} & ID único para esta alerta, permite cancelarla posteriormente. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00527}{527}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adf5f4d65f594a8ebe0ad32745d38d037}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!startLocationUpdates@{startLocationUpdates}}
+\index{startLocationUpdates@{startLocationUpdates}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{startLocationUpdates()}{startLocationUpdates()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adf5f4d65f594a8ebe0ad32745d38d037} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+start\+Location\+Updates (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Solicita actualizaciones periódicas de ubicación GPS al sistema. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adf5f4d65f594a8ebe0ad32745d38d037}{start\+Location\+Updates()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00571}{571}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7b9ebf0900105370264c23f81ed64bb0}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!subirDatosAFirebase@{subirDatosAFirebase}}
+\index{subirDatosAFirebase@{subirDatosAFirebase}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{subirDatosAFirebase()}{subirDatosAFirebase()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7b9ebf0900105370264c23f81ed64bb0} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+subir\+Datos\+AFirebase (\begin{DoxyParamCaption}\item[{Float}]{o3\+\_\+ppm}{, }\item[{Float}]{temp\+\_\+c}{, }\item[{Integer}]{co2\+\_\+ppm}{, }\item[{Integer}]{bat\+\_\+porc}{, }\item[{String}]{ubicacion}{, }\item[{String}]{estado}{}\end{DoxyParamCaption})}
+
+
+
+Sube las mediciones y el estado de contexto (ubicación, conexión) a Firebase Firestore. Realiza dos operaciones\+: guardar un registro en la colección \textquotesingle{}mediciones\textquotesingle{} (historial) y actualizar los campos directos del documento del sensor (última lectura). (o3\+\_\+ppm\+:Float, temp\+\_\+c\+:Float, co2\+\_\+ppm\+:Integer, bat\+\_\+porc\+:Integer, ubicacion\+:String, estado\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a7b9ebf0900105370264c23f81ed64bb0}{subir\+Datos\+AFirebase()} -\/\texorpdfstring{$>$}{>} (). 
+
+Realiza una {\bfseries{doble escritura}}\+:
+\begin{DoxyEnumerate}
+\item {\bfseries{Histórico\+:}} Añade un nuevo documento a la subcolección {\ttfamily mediciones}.
+\item {\bfseries{Estado Actual\+:}} Actualiza los campos del documento principal del sensor con {\ttfamily Set\+Options.\+merge()}.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em o3\+\_\+ppm} & Concentración de Ozono. \\
+\hline
+{\em temp\+\_\+c} & Temperatura. \\
+\hline
+{\em co2\+\_\+ppm} & Concentración de CO2. \\
+\hline
+{\em bat\+\_\+porc} & Porcentaje de batería. \\
+\hline
+{\em ubicacion} & Dirección legible de la ubicación. \\
+\hline
+{\em estado} & Estado de conexión del sensor. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00650}{650}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a9b72ba55dfa45558472569cac4426c07}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!ALERT\_CHANNEL\_ID@{ALERT\_CHANNEL\_ID}}
+\index{ALERT\_CHANNEL\_ID@{ALERT\_CHANNEL\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{ALERT\_CHANNEL\_ID}{ALERT\_CHANNEL\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a9b72ba55dfa45558472569cac4426c07} 
+final String com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+ALERT\+\_\+\+CHANNEL\+\_\+\+ID = "{}Alert\+Channel"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID del canal de notificación para las alertas (alta prioridad). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00090}{90}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adb738fe122ff51d0435d7a56182bb544}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!ALPHA\_RSSI@{ALPHA\_RSSI}}
+\index{ALPHA\_RSSI@{ALPHA\_RSSI}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{ALPHA\_RSSI}{ALPHA\_RSSI}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adb738fe122ff51d0435d7a56182bb544} 
+final float com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+ALPHA\+\_\+\+RSSI = 0.\+2f\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Factor de suavizado para el filtro (0.\+0 -\/ 1.\+0). Un valor bajo (ej\+: 0.\+1) hace que la barra se mueva lentamente. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00138}{138}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c67b72f474427b20439af37f877619b}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!BATTERY\_ALERT\_ID@{BATTERY\_ALERT\_ID}}
+\index{BATTERY\_ALERT\_ID@{BATTERY\_ALERT\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{BATTERY\_ALERT\_ID}{BATTERY\_ALERT\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c67b72f474427b20439af37f877619b} 
+final int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+BATTERY\+\_\+\+ALERT\+\_\+\+ID = 104\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID para la notificación de alerta de Batería. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00102}{102}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2f80fd68487bb32cf666eedb703baa91}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!callbackDelEscaneo@{callbackDelEscaneo}}
+\index{callbackDelEscaneo@{callbackDelEscaneo}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{callbackDelEscaneo}{callbackDelEscaneo}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2f80fd68487bb32cf666eedb703baa91} 
+Scan\+Callback com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+callback\+Del\+Escaneo\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Callback que se activa al recibir un resultado de escaneo (un beacon). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00114}{114}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c434c858daec3fe7f1cdc6d84ed59f7}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!CHANNEL\_ID@{CHANNEL\_ID}}
+\index{CHANNEL\_ID@{CHANNEL\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{CHANNEL\_ID}{CHANNEL\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c434c858daec3fe7f1cdc6d84ed59f7} 
+final String com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+CHANNEL\+\_\+\+ID = "{}Sensor\+Tracking\+Channel"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID del canal de notificación para el servicio en primer plano (baja prioridad). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00088}{88}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a81ca0d100b62738ac94f5d4bca425c88}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!CO2\_ALERT\_ID@{CO2\_ALERT\_ID}}
+\index{CO2\_ALERT\_ID@{CO2\_ALERT\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{CO2\_ALERT\_ID}{CO2\_ALERT\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a81ca0d100b62738ac94f5d4bca425c88} 
+final int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+CO2\+\_\+\+ALERT\+\_\+\+ID = 101\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID para la notificación de alerta de CO2. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00096}{96}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a11881d3990193030876dad0548417521}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!CONNECTION\_ALERT\_ID@{CONNECTION\_ALERT\_ID}}
+\index{CONNECTION\_ALERT\_ID@{CONNECTION\_ALERT\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{CONNECTION\_ALERT\_ID}{CONNECTION\_ALERT\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a11881d3990193030876dad0548417521} 
+final int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+CONNECTION\+\_\+\+ALERT\+\_\+\+ID = 105\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID para la notificación de alerta de Conexión perdida. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00104}{104}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a55d7b78586f2f3339d93dbeb24d3f506}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!dataHolder@{dataHolder}}
+\index{dataHolder@{dataHolder}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{dataHolder}{dataHolder}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a55d7b78586f2f3339d93dbeb24d3f506} 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}} com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+data\+Holder\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Singleton que contiene el estado de los datos (Live\+Data) para la comunicación con la UI. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00116}{116}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c4bea42e1ca7feb1825d5478db3c57a}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!db@{db}}
+\index{db@{db}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{db}{db}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5c4bea42e1ca7feb1825d5478db3c57a} 
+Firebase\+Firestore com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+db\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Instancia principal de Firebase Firestore. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00142}{142}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2bcc7716b744a68610177a709e89c216}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!elEscanner@{elEscanner}}
+\index{elEscanner@{elEscanner}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{elEscanner}{elEscanner}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2bcc7716b744a68610177a709e89c216} 
+Bluetooth\+Le\+Scanner com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+el\+Escanner\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Escáner de Bluetooth Low Energy (BLE). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00112}{112}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a92a5ee968c65799c664d1c96e824ef77}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!ETIQUETA\_LOG@{ETIQUETA\_LOG}}
+\index{ETIQUETA\_LOG@{ETIQUETA\_LOG}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{ETIQUETA\_LOG}{ETIQUETA\_LOG}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a92a5ee968c65799c664d1c96e824ef77} 
+final String com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+ETIQUETA\+\_\+\+LOG = "{}Sensor\+Service"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Etiqueta utilizada para los logs de Android. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00086}{86}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a9198df85216b646bc29c63a0dcbd2354}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!fusedLocationClient@{fusedLocationClient}}
+\index{fusedLocationClient@{fusedLocationClient}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{fusedLocationClient}{fusedLocationClient}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a9198df85216b646bc29c63a0dcbd2354} 
+Fused\+Location\+Provider\+Client com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+fused\+Location\+Client\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Cliente para obtener actualizaciones de ubicación. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00108}{108}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a19c5366762e13a8ded258c3d8bd2912d}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!lastUpdatedCo2@{lastUpdatedCo2}}
+\index{lastUpdatedCo2@{lastUpdatedCo2}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{lastUpdatedCo2}{lastUpdatedCo2}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a19c5366762e13a8ded258c3d8bd2912d} 
+int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+last\+Updated\+Co2 = -\/999\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Almacena el último valor de CO2 recibido. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00132}{132}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a508622cfacbd84315af600a06c8ee32d}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!lastUpdatedOzono@{lastUpdatedOzono}}
+\index{lastUpdatedOzono@{lastUpdatedOzono}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{lastUpdatedOzono}{lastUpdatedOzono}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a508622cfacbd84315af600a06c8ee32d} 
+float com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+last\+Updated\+Ozono = -\/999.\+0f\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Almacena el último valor de ozono recibido. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00130}{130}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad9ffecd984b41a0ef1a06525e32a86f3}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!lastUpdatedTemp@{lastUpdatedTemp}}
+\index{lastUpdatedTemp@{lastUpdatedTemp}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{lastUpdatedTemp}{lastUpdatedTemp}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ad9ffecd984b41a0ef1a06525e32a86f3} 
+float com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+last\+Updated\+Temp = -\/999.\+0f\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Almacena la última temperatura recibida. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00128}{128}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a0409c0c16068cc828c58049af125599c}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!locationCallback@{locationCallback}}
+\index{locationCallback@{locationCallback}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{locationCallback}{locationCallback}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a0409c0c16068cc828c58049af125599c} 
+Location\+Callback com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+location\+Callback\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Callback que se activa al recibir una nueva ubicación. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00110}{110}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adecb904823c1cd7c0e1638a345859450}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!NOTIFICATION\_ID@{NOTIFICATION\_ID}}
+\index{NOTIFICATION\_ID@{NOTIFICATION\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{NOTIFICATION\_ID}{NOTIFICATION\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_adecb904823c1cd7c0e1638a345859450} 
+final int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+NOTIFICATION\+\_\+\+ID = 1\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID para la notificación del servicio en primer plano. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00092}{92}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5a79213d3a171c54e0a577b1d8034220}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!OZONE\_ALERT\_ID@{OZONE\_ALERT\_ID}}
+\index{OZONE\_ALERT\_ID@{OZONE\_ALERT\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{OZONE\_ALERT\_ID}{OZONE\_ALERT\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a5a79213d3a171c54e0a577b1d8034220} 
+final int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+OZONE\+\_\+\+ALERT\+\_\+\+ID = 102\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID para la notificación de alerta de Ozono. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00098}{98}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac447c972d66b36c5d47cd907997f916a}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!sensorCode@{sensorCode}}
+\index{sensorCode@{sensorCode}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{sensorCode}{sensorCode}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac447c972d66b36c5d47cd907997f916a} 
+String com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+sensor\+Code\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Código único del sensor que se está rastreando. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00144}{144}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2c479e9b631da07e1a5130d9fc9a3597}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!sensorDocRef@{sensorDocRef}}
+\index{sensorDocRef@{sensorDocRef}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{sensorDocRef}{sensorDocRef}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a2c479e9b631da07e1a5130d9fc9a3597} 
+Document\+Reference com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+sensor\+Doc\+Ref\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Referencia al documento del sensor en Firestore. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00146}{146}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a28125efe7824479081695500017760a5}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!smoothedRssi@{smoothedRssi}}
+\index{smoothedRssi@{smoothedRssi}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{smoothedRssi}{smoothedRssi}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a28125efe7824479081695500017760a5} 
+float com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+smoothed\+Rssi = -\/999.\+0f\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Almacena el RSSI suavizado para evitar fluctuaciones bruscas. Inicialmente -\/999 (sin señal). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00136}{136}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a50014713cc928dce2ef800f65d78d4ff}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!TEMP\_ALERT\_ID@{TEMP\_ALERT\_ID}}
+\index{TEMP\_ALERT\_ID@{TEMP\_ALERT\_ID}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{TEMP\_ALERT\_ID}{TEMP\_ALERT\_ID}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_a50014713cc928dce2ef800f65d78d4ff} 
+final int com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+TEMP\+\_\+\+ALERT\+\_\+\+ID = 103\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+ID para la notificación de alerta de Temperatura. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00100}{100}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_abb2ca0be8b72a1dfc01e4968f14f109f}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!WATCHDOG\_DELAY\_MS@{WATCHDOG\_DELAY\_MS}}
+\index{WATCHDOG\_DELAY\_MS@{WATCHDOG\_DELAY\_MS}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{WATCHDOG\_DELAY\_MS}{WATCHDOG\_DELAY\_MS}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_abb2ca0be8b72a1dfc01e4968f14f109f} 
+final long com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+WATCHDOG\+\_\+\+DELAY\+\_\+\+MS = 1 \texorpdfstring{$\ast$}{*} 60 \texorpdfstring{$\ast$}{*} 1000\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Retraso en milisegundos para el watchdog (3 minutos). 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00124}{124}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac41a0e0b60d9da313b06acf14b654e12}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!watchdogHandler@{watchdogHandler}}
+\index{watchdogHandler@{watchdogHandler}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{watchdogHandler}{watchdogHandler}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ac41a0e0b60d9da313b06acf14b654e12} 
+Handler com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+watchdog\+Handler = new Handler(Looper.\+get\+Main\+Looper())\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Handler para programar la tarea del watchdog. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00120}{120}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae703c4001323d02b589745ad5ea42c83}\index{com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}!watchdogRunnable@{watchdogRunnable}}
+\index{watchdogRunnable@{watchdogRunnable}!com.example.breathe\_tracking.SensorTrackingService@{com.example.breathe\_tracking.SensorTrackingService}}
+\doxysubsubsection{\texorpdfstring{watchdogRunnable}{watchdogRunnable}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service_ae703c4001323d02b589745ad5ea42c83} 
+Runnable com.\+example.\+breathe\+\_\+tracking.\+Sensor\+Tracking\+Service.\+watchdog\+Runnable\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Runnable que se ejecuta si no se reciben datos del sensor en el tiempo de espera. 
+
+
+
+Definition at line \mbox{\hyperlink{_sensor_tracking_service_8java_source_l00122}{122}} of file \mbox{\hyperlink{_sensor_tracking_service_8java_source}{Sensor\+Tracking\+Service.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_sensor_tracking_service_8java}{Sensor\+Tracking\+Service.\+java}}\end{DoxyCompactItemize}

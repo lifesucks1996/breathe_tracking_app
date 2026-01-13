@@ -1,0 +1,259 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+
+
+Actividad de inicio de sesión multimodal (Manual, QR, Biometría).  
+
+
+
+
+Inherits App\+Compat\+Activity.
+
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a3acd9a596b16fd0a3d0c91cd78760756}{on\+Create}} (Bundle saved\+Instance\+State)
+\begin{DoxyCompactList}\small\item\em Inicialización de la actividad. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17}{open\+Camera}} ()
+\begin{DoxyCompactList}\small\item\em Inicializa y lanza la actividad del escáner QR. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17}{open\+Camera()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a}{mostrar\+Autenticacion\+Biometrica}} ()
+\begin{DoxyCompactList}\small\item\em Muestra el diálogo de autenticación biométrica (huella dactilar). Si la autenticación es exitosa, intenta recuperar el último ID de sensor guardado para iniciar la sesión rápida. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a}{mostrar\+Autenticacion\+Biometrica()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{iniciar\+Sesion\+Exitosa}} (String code)
+\begin{DoxyCompactList}\small\item\em Guarda el código del sensor en Shared\+Preferences e inicia la \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{Sesion\+Sensor\+Activity}. Esta función se llama tras un login exitoso (manual o biométrico). (code\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{iniciar\+Sesion\+Exitosa()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27}{check\+Sensor\+Code\+In\+Database}} (String sensor\+Code)
+\begin{DoxyCompactList}\small\item\em Verifica asíncronamente si el código del sensor existe como documento en la colección \textquotesingle{}sensores\textquotesingle{} de Firebase Firestore. (sensor\+Code\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27}{check\+Sensor\+Code\+In\+Database()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Edit\+Text \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ac4d76c764cb0a31d2436297956a510d0}{sensor\+Code\+Edit\+Text}}
+\begin{DoxyCompactList}\small\item\em Campo de texto para ingresar manualmente el código del sensor. \end{DoxyCompactList}\item 
+Firebase\+Firestore \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae8402ecb9fe3aade2d85de4557a8f6c2}{db}}
+\begin{DoxyCompactList}\small\item\em Instancia de Firebase Firestore para la verificación del código. \end{DoxyCompactList}\item 
+final Activity\+Result\+Launcher$<$ String $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a6a91b83cba2c2570d26677eafc502fe2}{request\+Permission\+Launcher}}
+\begin{DoxyCompactList}\small\item\em Launcher para solicitar el permiso de cámara necesario para el escáner QR. \end{DoxyCompactList}\item 
+Activity\+Result\+Launcher$<$ Intent $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0d0e953bf1ad46581482d0dcf4e6d0f7}{qr\+Scanner\+Launcher}}
+\begin{DoxyCompactList}\small\item\em Gestiona el resultado de la actividad de escaneo QR (ZXing). Recibe el string decodificado y lo pega en el campo de texto. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Actividad de inicio de sesión multimodal (Manual, QR, Biometría). 
+
+Esta clase gestiona el acceso seguro a la aplicación. Implementa tres métodos de entrada\+:
+\begin{DoxyEnumerate}
+\item {\bfseries{Manual\+:}} El usuario introduce el código alfanumérico del sensor.
+\item {\bfseries{QR\+:}} Escaneo mediante la cámara usando la librería ZXing.
+\item {\bfseries{Biométrico\+:}} Acceso rápido mediante huella dactilar si ya hubo un inicio de sesión previo exitoso.
+\end{DoxyEnumerate}
+
+Independientemente del método, el código final se valida contra la colección {\ttfamily sensores} en {\bfseries{Firebase Firestore}} antes de permitir el acceso a \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{Sesion\+Sensor\+Activity}.
+
+\begin{DoxyAuthor}{Author}
+Sandra (Lógica base y permisos -\/ 30/10/2025) 
+
+Rocio (Lógica BBDD -\/ 30/10/2025) 
+
+Rocio (Lector QR -\/ 16/11/2025) 
+
+Rocio (Acceso Biométrico -\/ 17/11/2025) 
+\end{DoxyAuthor}
+
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00066}{66}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!checkSensorCodeInDatabase@{checkSensorCodeInDatabase}}
+\index{checkSensorCodeInDatabase@{checkSensorCodeInDatabase}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{checkSensorCodeInDatabase()}{checkSensorCodeInDatabase()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27} 
+void com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+check\+Sensor\+Code\+In\+Database (\begin{DoxyParamCaption}\item[{String}]{sensor\+Code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Verifica asíncronamente si el código del sensor existe como documento en la colección \textquotesingle{}sensores\textquotesingle{} de Firebase Firestore. (sensor\+Code\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27}{check\+Sensor\+Code\+In\+Database()} -\/\texorpdfstring{$>$}{>} (). 
+
+Busca el documento con ID {\ttfamily sensor\+Code} en la colección {\ttfamily sensores}.
+\begin{DoxyItemize}
+\item Si existe\+: Llama a \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{iniciar\+Sesion\+Exitosa}.
+\item Si no existe o error\+: Muestra Alert\+Dialog.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em sensor\+Code} & El código de sensor ingresado por el usuario. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00308}{308}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!iniciarSesionExitosa@{iniciarSesionExitosa}}
+\index{iniciarSesionExitosa@{iniciarSesionExitosa}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{iniciarSesionExitosa()}{iniciarSesionExitosa()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd} 
+void com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+iniciar\+Sesion\+Exitosa (\begin{DoxyParamCaption}\item[{String}]{code}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Guarda el código del sensor en Shared\+Preferences e inicia la \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{Sesion\+Sensor\+Activity}. Esta función se llama tras un login exitoso (manual o biométrico). (code\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{iniciar\+Sesion\+Exitosa()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em code} & El código de sensor verificado. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00281}{281}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!mostrarAutenticacionBiometrica@{mostrarAutenticacionBiometrica}}
+\index{mostrarAutenticacionBiometrica@{mostrarAutenticacionBiometrica}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{mostrarAutenticacionBiometrica()}{mostrarAutenticacionBiometrica()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a} 
+void com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+mostrar\+Autenticacion\+Biometrica (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra el diálogo de autenticación biométrica (huella dactilar). Si la autenticación es exitosa, intenta recuperar el último ID de sensor guardado para iniciar la sesión rápida. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a}{mostrar\+Autenticacion\+Biometrica()} -\/\texorpdfstring{$>$}{>} (). 
+
+Lógica\+:
+\begin{DoxyItemize}
+\item Si la huella es válida -\/\texorpdfstring{$>$}{>} Recupera {\ttfamily LAST\+\_\+\+SENSOR\+\_\+\+ID} de Shared\+Preferences.
+\item Si hay un ID guardado -\/\texorpdfstring{$>$}{>} Inicia sesión automáticamente (\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{iniciar\+Sesion\+Exitosa}).
+\item Si no hay ID -\/\texorpdfstring{$>$}{>} Mantiene al usuario en la pantalla para login manual. 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00233}{233}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a3acd9a596b16fd0a3d0c91cd78760756}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!onCreate@{onCreate}}
+\index{onCreate@{onCreate}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{onCreate()}{onCreate()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a3acd9a596b16fd0a3d0c91cd78760756} 
+void com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+on\+Create (\begin{DoxyParamCaption}\item[{Bundle}]{saved\+Instance\+State}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Inicialización de la actividad. 
+
+(saved\+Instance\+State\+:Bundle) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a3acd9a596b16fd0a3d0c91cd78760756}{on\+Create()} -\/\texorpdfstring{$>$}{>} ()
+
+
+\begin{DoxyEnumerate}
+\item Configura la UI (Botones, Textos).
+\item Inicializa Firebase.
+\item Lanza el prompt biométrico para intento de login rápido.
+\item Configura los listeners para el botón de entrar y el escaneo QR.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em saved\+Instance\+State} & Estado guardado de la aplicación. \\
+\hline
+\end{DoxyParams}
+Inicializamos el manejador de resultados del QR. Procesa el resultado del escaneo, pegando el contenido en el campo del código del sensor.
+
+Listener para el botón de login. Recoge el código, verifica que no esté vacío y llama a \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27}{check\+Sensor\+Code\+In\+Database()}.
+
+Listener para el texto del QR. Comprueba el permiso de cámara y, si es necesario, lo solicita antes de abrir la cámara.
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00119}{119}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!openCamera@{openCamera}}
+\index{openCamera@{openCamera}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{openCamera()}{openCamera()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17} 
+void com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+open\+Camera (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Inicializa y lanza la actividad del escáner QR. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17}{open\+Camera()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00206}{206}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae8402ecb9fe3aade2d85de4557a8f6c2}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!db@{db}}
+\index{db@{db}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{db}{db}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae8402ecb9fe3aade2d85de4557a8f6c2} 
+Firebase\+Firestore com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+db\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Instancia de Firebase Firestore para la verificación del código. 
+
+
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00072}{72}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0d0e953bf1ad46581482d0dcf4e6d0f7}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!qrScannerLauncher@{qrScannerLauncher}}
+\index{qrScannerLauncher@{qrScannerLauncher}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{qrScannerLauncher}{qrScannerLauncher}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0d0e953bf1ad46581482d0dcf4e6d0f7} 
+Activity\+Result\+Launcher$<$Intent$>$ com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+qr\+Scanner\+Launcher\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Gestiona el resultado de la actividad de escaneo QR (ZXing). Recibe el string decodificado y lo pega en el campo de texto. 
+
+
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00100}{100}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a6a91b83cba2c2570d26677eafc502fe2}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!requestPermissionLauncher@{requestPermissionLauncher}}
+\index{requestPermissionLauncher@{requestPermissionLauncher}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{requestPermissionLauncher}{requestPermissionLauncher}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a6a91b83cba2c2570d26677eafc502fe2} 
+final Activity\+Result\+Launcher$<$String$>$ com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+request\+Permission\+Launcher\hspace{0.3cm}{\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ registerForActivityResult(}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ ActivityResultContracts.RequestPermission(),}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ isGranted\ -\/>\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (isGranted)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ openCamera();}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Permiso\ de\ cámara\ denegado"{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \})}
+
+\end{DoxyCode}
+
+
+Launcher para solicitar el permiso de cámara necesario para el escáner QR. 
+
+\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17}{open\+Camera()} es llamado si el permiso es concedido 
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00082}{82}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ac4d76c764cb0a31d2436297956a510d0}\index{com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}!sensorCodeEditText@{sensorCodeEditText}}
+\index{sensorCodeEditText@{sensorCodeEditText}!com.example.breathe\_tracking.MainActivity@{com.example.breathe\_tracking.MainActivity}}
+\doxysubsubsection{\texorpdfstring{sensorCodeEditText}{sensorCodeEditText}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ac4d76c764cb0a31d2436297956a510d0} 
+Edit\+Text com.\+example.\+breathe\+\_\+tracking.\+Main\+Activity.\+sensor\+Code\+Edit\+Text\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Campo de texto para ingresar manualmente el código del sensor. 
+
+
+
+Definition at line \mbox{\hyperlink{_main_activity_8java_source_l00069}{69}} of file \mbox{\hyperlink{_main_activity_8java_source}{Main\+Activity.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_main_activity_8java}{Main\+Activity.\+java}}\end{DoxyCompactItemize}

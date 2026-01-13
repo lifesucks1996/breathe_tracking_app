@@ -1,0 +1,46 @@
+\chapter{📱 README\+: App de Nodoportador (Worker App) -\/ Breathe Tracking }
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{📱 README: App de Nodoportador (Worker App) -\/ Breathe Tracking@{📱 README: App de Nodoportador (Worker App) -\/ Breathe Tracking}}
+\label{md__r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md0}%
+
+
+Este documento describe el funcionamiento de la {\bfseries{Aplicación Móvil Ligera (App)}} diseñada para el {\bfseries{Nodoportador}} (el trabajador o empleado).
+
+El objetivo principal de esta aplicación es servir como un panel de control simple para que el trabajador pueda {\bfseries{vincularse a un sensor físico}} y {\bfseries{verificar su estado operativo}} durante sus rutas de trabajo.\hypertarget{md__r_e_a_d_m_e_autotoc_md1}{}\doxysection{\texorpdfstring{👥 Rol del Nodoportador}{👥 Rol del Nodoportador}}\label{md__r_e_a_d_m_e_autotoc_md1}
+El {\bfseries{Nodoportador}} es el empleado (ej. repartidor, técnico de mantenimiento, cartero) que lleva el sensor (nodo) en sus rutas. La recolección de datos es pasiva.
+
+La aplicación móvil {\bfseries{no es para la recolección de datos}} (eso lo hace el hardware del sensor de forma automática), sino para la {\bfseries{vinculación inicial}} y la {\bfseries{supervisión de incidencias}}.
+
+\DoxyHorRuler{0}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{⚙️ Flujo de la Aplicación y Funcionalidades}{⚙️ Flujo de la Aplicación y Funcionalidades}}\label{md__r_e_a_d_m_e_autotoc_md2}
+La aplicación se compone de dos pantallas principales, como se muestra en el diseño\+:\hypertarget{md__r_e_a_d_m_e_autotoc_md3}{}\doxysubsection{\texorpdfstring{1. Página de Vinculación (Login)}{1. Página de Vinculación (Login)}}\label{md__r_e_a_d_m_e_autotoc_md3}
+Al iniciar la aplicación, el trabajador debe vincular la sesión de su {\itshape smartphone} con el sensor físico que se le ha asignado para su jornada.
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Entrada de Código\+:}} El usuario debe introducir el {\bfseries{"{}\+Código único de vinculación"{}}} del sensor (ej. {\ttfamily 12345}).
+\item {\bfseries{Acceso Alternativo\+:}} La app también permite un acceso rápido mediante {\bfseries{escaneo de QR}} ({\ttfamily Acceder con QR}).
+\item {\bfseries{Validación\+:}} La app comprueba (contra la API) que el código del sensor existe y está activo. Si es correcto, da acceso al Panel de Control.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md4}{}\doxysubsection{\texorpdfstring{2. Panel de Control del Sensor}{2. Panel de Control del Sensor}}\label{md__r_e_a_d_m_e_autotoc_md4}
+Una vez vinculado, el trabajador accede a una pantalla que le permite {\bfseries{comprobar que todo está bien}} y monitorizar el estado del hardware.
+
+Esta pantalla tiene tres propósitos clave\+:\hypertarget{md__r_e_a_d_m_e_autotoc_md5}{}\doxysubsubsection{\texorpdfstring{A. Supervisión del Estado del Sensor}{A. Supervisión del Estado del Sensor}}\label{md__r_e_a_d_m_e_autotoc_md5}
+Permite al trabajador verificar el estado operativo del sensor de un vistazo.
+\begin{DoxyItemize}
+\item {\bfseries{Ubicación Actual\+:}} Confirma que el GPS del sensor está reportando.
+\item {\bfseries{Estado\+:}} Muestra información contextual (ej. "{}a 20km del punto de origen"{}).
+\item {\bfseries{Batería\+:}} Muestra la batería restante del hardware del sensor.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md6}{}\doxysubsubsection{\texorpdfstring{B. Visualización de Mediciones}{B. Visualización de Mediciones}}\label{md__r_e_a_d_m_e_autotoc_md6}
+Confirma que el sensor está recolectando datos ambientales en tiempo real. El trabajador puede ver los valores actuales de\+:
+\begin{DoxyItemize}
+\item Ozono
+\item Temperatura
+\item CO2
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md7}{}\doxysubsubsection{\texorpdfstring{C. Alertas e Incidencias}{C. Alertas e Incidencias}}\label{md__r_e_a_d_m_e_autotoc_md7}
+Este es el canal de comunicación clave. Si el sensor detecta una anomalía (ej. "{}\+Temperaturas altas en C/\+Acacias"{}), la alerta se muestra en la app del trabajador.
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Aviso al Trabajador\+:}} El nodoportador está al tanto de las condiciones de su entorno.
+\item {\bfseries{Aviso al Administrador\+:}} Estas alertas también se envían automáticamente al {\itshape Dashboard} del {\bfseries{Administrador (B2B)}}, permitiéndole gestionar la incidencia (ej. gestionar el mantenimiento del sensor). 
+\end{DoxyItemize}

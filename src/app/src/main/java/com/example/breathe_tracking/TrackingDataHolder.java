@@ -25,8 +25,6 @@ import java.util.List;
  * 2. No se produzcan fugas de memoria (Memory Leaks) si la actividad se destruye.
  * 3. La actualización de la interfaz sea segura respecto a los hilos (Thread-safe) usando `.postValue()`.
  *
- *
- *
  * @author Sandra (Arquitectura LiveData - 29/10/2025)
  */
 public class TrackingDataHolder {
@@ -64,14 +62,15 @@ public class TrackingDataHolder {
     public final MutableLiveData<List<String>> incidenciasEnviadasData = new MutableLiveData<>(new ArrayList<>());
 
     /**
-     * @brief Constructor privado.
-     * Evita la instanciación directa para cumplir con el patrón Singleton.
+     * @brief Constructor privado para forzar el patrón Singleton.
      */
     private TrackingDataHolder() {}
 
     /**
-     * @brief Obtiene la instancia única del repositorio de datos.
-     * @return La instancia estática de TrackingDataHolder.
+     * @brief Proporciona la única instancia accesible de la clase.
+     *  () -> getInstance() -> (instance:TrackingDataHolder)
+     *
+     * @return La instancia Singleton de TrackingDataHolder.
      */
     public static TrackingDataHolder getInstance() {
         return instance;

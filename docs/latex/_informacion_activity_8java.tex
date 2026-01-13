@@ -1,0 +1,64 @@
+\doxysection{src/app/src/main/java/com/example/breathe\+\_\+tracking/\+Informacion\+Activity.java File Reference}
+\hypertarget{_informacion_activity_8java}{}\label{_informacion_activity_8java}\index{src/app/src/main/java/com/example/breathe\_tracking/InformacionActivity.java@{src/app/src/main/java/com/example/breathe\_tracking/InformacionActivity.java}}
+
+
+Actividad para la visualización gráfica de datos históricos de contaminantes.  
+
+
+{\ttfamily import android.\+content.\+Intent;}\newline
+{\ttfamily import android.\+graphics.\+Color;}\newline
+{\ttfamily import android.\+os.\+Bundle;}\newline
+{\ttfamily import android.\+util.\+Log;}\newline
+{\ttfamily import android.\+view.\+View;}\newline
+{\ttfamily import android.\+widget.\+Adapter\+View;}\newline
+{\ttfamily import android.\+widget.\+Array\+Adapter;}\newline
+{\ttfamily import android.\+widget.\+Image\+View;}\newline
+{\ttfamily import android.\+widget.\+Spinner;}\newline
+{\ttfamily import android.\+widget.\+Text\+View;}\newline
+{\ttfamily import android.\+widget.\+Toast;}\newline
+{\ttfamily import androidx.\+appcompat.\+app.\+App\+Compat\+Activity;}\newline
+{\ttfamily import androidx.\+core.\+content.\+Context\+Compat;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+charts.\+Line\+Chart;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+components.\+Limit\+Line;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+components.\+XAxis;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+components.\+YAxis;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+data.\+Entry;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+data.\+Line\+Data;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+data.\+Line\+Data\+Set;}\newline
+{\ttfamily import com.\+github.\+mikephil.\+charting.\+formatter.\+Value\+Formatter;}\newline
+{\ttfamily import com.\+google.\+firebase.\+firestore.\+Firebase\+Firestore;}\newline
+{\ttfamily import com.\+google.\+firebase.\+firestore.\+Query;}\newline
+{\ttfamily import com.\+google.\+firebase.\+firestore.\+Query\+Document\+Snapshot;}\newline
+{\ttfamily import java.\+text.\+Decimal\+Format;}\newline
+{\ttfamily import java.\+util.\+Array\+List;}\newline
+{\ttfamily import java.\+util.\+Calendar;}\newline
+{\ttfamily import java.\+util.\+Date;}\newline
+{\ttfamily import java.\+util.\+Hash\+Map;}\newline
+{\ttfamily import java.\+util.\+List;}\newline
+{\ttfamily import java.\+util.\+Locale;}\newline
+{\ttfamily import java.\+util.\+Map;}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries com.\+example.\+breathe\+\_\+tracking.\+Gas\+Data}
+\begin{DoxyCompactList}\small\item\em Modelo de datos unificado para almacenar las 5 concentraciones por una hora. \end{DoxyCompactList}\item 
+class {\bfseries com.\+example.\+breathe\+\_\+tracking.\+Hour\+Value\+Formatter}
+\begin{DoxyCompactList}\small\item\em Formateador simple que convierte el índice de la hora (0-\/23) a formato HH\+:00. \end{DoxyCompactList}\item 
+class {\bfseries com.\+example.\+breathe\+\_\+tracking.\+Decimal\+Value\+Formatter}
+\begin{DoxyCompactList}\small\item\em Adaptador para formatear valores numéricos con precisión decimal. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity}}
+\begin{DoxyCompactList}\small\item\em Muestra el gráfico de datos históricos (CO2, O3, etc.) leídos de Firebase Firestore. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Packages}
+\begin{DoxyCompactItemize}
+\item 
+package \mbox{\hyperlink{namespacecom_1_1example_1_1breathe__tracking}{com.\+example.\+breathe\+\_\+tracking}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Actividad para la visualización gráfica de datos históricos de contaminantes. 
+
+
+
+Definition in file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+

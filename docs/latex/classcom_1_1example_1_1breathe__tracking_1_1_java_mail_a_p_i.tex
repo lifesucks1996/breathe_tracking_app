@@ -1,0 +1,286 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+
+
+Gestiona el envío de correos electrónicos en segundo plano. \texorpdfstring{$<$}{<}Void, Void, Void\texorpdfstring{$>$}{>}.  
+
+
+
+
+Inherits Async\+Task$<$ Void, Void, Void $>$.
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a074b9b97561efb0d25eb3d071883a214}{Java\+Mail\+API}} (Context \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}{context}}, String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}{email\+Destino}}, String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{asunto}}, String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}})
+\begin{DoxyCompactList}\small\item\em Constructor de la clase \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{Java\+Mail\+API}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+Void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a6f361bfaf44a71e680b04967ccbbc5e2}{do\+In\+Background}} (Void... params)
+\begin{DoxyCompactList}\small\item\em Lógica de conexión y envío en hilo secundario. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a43410391cf2f042202be4fefd413e2b9}{on\+Post\+Execute}} (Void result)
+\begin{DoxyCompactList}\small\item\em Se ejecuta en el hilo principal (UI Thread) al finalizar el envío. Muestra una notificación Toast al usuario indicando que la incidencia se ha enviado. (result\+:Void) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a43410391cf2f042202be4fefd413e2b9}{on\+Post\+Execute()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc}{construir\+HTML}} (String titulo, String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}})
+\begin{DoxyCompactList}\small\item\em Genera una estructura HTML con estilos CSS integrados para el cuerpo del correo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac4c68018c0c19aebf03b9b283345a5a7}{EMAIL\+\_\+\+ROBOT}} = "{}rousio2211@gmail.\+com"{}
+\begin{DoxyCompactList}\small\item\em Dirección de correo electrónico del remitente (Cuenta Robot). \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a9a411af6d683bb64fd43b017a86d3282}{PASSWORD\+\_\+\+ROBOT}} = "{}qksu kdas eluz wofs"{}
+\begin{DoxyCompactList}\small\item\em Contraseña de aplicación (App Password) generada por Google para autenticación segura. \end{DoxyCompactList}\item 
+Context \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}{context}}
+\begin{DoxyCompactList}\small\item\em Contexto de la aplicación, necesario para mostrar mensajes Toast en la UI. \end{DoxyCompactList}\item 
+Session \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ab4cf2d3c4d2c414261822354dd675e05}{session}}
+\begin{DoxyCompactList}\small\item\em Sesión de correo que mantiene la configuración y autenticación. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}{email\+Destino}}
+\begin{DoxyCompactList}\small\item\em Dirección de correo electrónico del destinatario (Administrador). \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}{asunto}}
+\begin{DoxyCompactList}\small\item\em Asunto del correo electrónico. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}{mensaje}}
+\begin{DoxyCompactList}\small\item\em Cuerpo del mensaje (texto base que será formateado a HTML). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Gestiona el envío de correos electrónicos en segundo plano. \texorpdfstring{$<$}{<}Void, Void, Void\texorpdfstring{$>$}{>}. 
+
+Esta clase evita el bloqueo del hilo principal (Main Thread) al realizar operaciones de red. Utiliza la biblioteca {\bfseries{Java\+Mail}} para conectar con el servidor SMTP de Gmail.
+
+{\bfseries{Características principales\+:}}
+\begin{DoxyItemize}
+\item Autenticación segura mediante "{}\+Contraseña de Aplicación"{} de Google.
+\item Construcción de mensajes MIME multipartes (soporte HTML).
+\item Inyección de estilos CSS para correos corporativos/profesionales.
+\item Notificación visual (Toast) al finalizar el envío. 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00037}{37}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a074b9b97561efb0d25eb3d071883a214}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!JavaMailAPI@{JavaMailAPI}}
+\index{JavaMailAPI@{JavaMailAPI}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{JavaMailAPI()}{JavaMailAPI()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a074b9b97561efb0d25eb3d071883a214} 
+com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+Java\+Mail\+API (\begin{DoxyParamCaption}\item[{Context}]{context}{, }\item[{String}]{email\+Destino}{, }\item[{String}]{asunto}{, }\item[{String}]{mensaje}{}\end{DoxyParamCaption})}
+
+
+
+Constructor de la clase \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{Java\+Mail\+API}. 
+
+Inicializa los datos necesarios para componer y enviar el correo.
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & Contexto de la actividad o aplicación. \\
+\hline
+{\em email\+Destino} & Dirección de email a la que se enviará la alerta. \\
+\hline
+{\em asunto} & Título del correo. \\
+\hline
+{\em mensaje} & Contenido del mensaje. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00074}{74}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!construirHTML@{construirHTML}}
+\index{construirHTML@{construirHTML}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{construirHTML()}{construirHTML()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc} 
+String com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+construir\+HTML (\begin{DoxyParamCaption}\item[{String}]{titulo}{, }\item[{String}]{mensaje}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Genera una estructura HTML con estilos CSS integrados para el cuerpo del correo. 
+
+Crea un diseño visual profesional con cabecera corporativa, contenedor de datos y pie de página, insertando dinámicamente el título y el mensaje. (titulo\+:String, mensaje\+:String) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc}{construir\+HTML()} -\/\texorpdfstring{$>$}{>} String (HTML)
+
+
+\begin{DoxyParams}{Parameters}
+{\em titulo} & El título de la incidencia. \\
+\hline
+{\em mensaje} & El mensaje descriptivo de la incidencia. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+String que contiene el código HTML completo del correo. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00159}{159}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a6f361bfaf44a71e680b04967ccbbc5e2}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!doInBackground@{doInBackground}}
+\index{doInBackground@{doInBackground}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{doInBackground()}{doInBackground()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a6f361bfaf44a71e680b04967ccbbc5e2} 
+Void com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+do\+In\+Background (\begin{DoxyParamCaption}\item[{Void...}]{params}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Lógica de conexión y envío en hilo secundario. 
+
+
+\begin{DoxyEnumerate}
+\item Configura las propiedades ({\ttfamily Properties}) para TLS/\+SSL en el puerto 465 de Gmail.
+\item Inicia sesión ({\ttfamily Session}) con las credenciales del robot.
+\item Crea el objeto {\ttfamily Mime\+Message}.
+\item Asigna un alias ("{}⚠️ Alertas Breathe Tracking"{}) al remitente.
+\item Genera el contenido HTML llamando a \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a45ee470cf95bdc6af644ed0c3a59d6cc}{construir\+HTML}.
+\item Envía el mensaje mediante {\ttfamily Transport.\+send()}.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em params} & Void (no se usan parámetros variables). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+null 
+\end{DoxyReturn}
+Configuración del remitente con alias visual personalizado para apariencia profesional.
+
+Establece el contenido como HTML con codificación UTF-\/8 para soporte de tildes.
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00095}{95}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a43410391cf2f042202be4fefd413e2b9}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!onPostExecute@{onPostExecute}}
+\index{onPostExecute@{onPostExecute}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{onPostExecute()}{onPostExecute()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a43410391cf2f042202be4fefd413e2b9} 
+void com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+on\+Post\+Execute (\begin{DoxyParamCaption}\item[{Void}]{result}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Se ejecuta en el hilo principal (UI Thread) al finalizar el envío. Muestra una notificación Toast al usuario indicando que la incidencia se ha enviado. (result\+:Void) -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a43410391cf2f042202be4fefd413e2b9}{on\+Post\+Execute()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em result} & Resultado de do\+In\+Background (siempre null en este caso). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00141}{141}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!asunto@{asunto}}
+\index{asunto@{asunto}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{asunto}{asunto}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ae2f3aa3c5f321dc21f7ffe94e3d3c08d} 
+String com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+asunto\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Asunto del correo electrónico. 
+
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00058}{58}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!context@{context}}
+\index{context@{context}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{context}{context}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a44a99f9dd01a3d029fd3d03171f718ae} 
+Context com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+context\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Contexto de la aplicación, necesario para mostrar mensajes Toast en la UI. 
+
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00049}{49}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac4c68018c0c19aebf03b9b283345a5a7}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!EMAIL\_ROBOT@{EMAIL\_ROBOT}}
+\index{EMAIL\_ROBOT@{EMAIL\_ROBOT}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{EMAIL\_ROBOT}{EMAIL\_ROBOT}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac4c68018c0c19aebf03b9b283345a5a7} 
+String com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+EMAIL\+\_\+\+ROBOT = "{}rousio2211@gmail.\+com"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Dirección de correo electrónico del remitente (Cuenta Robot). 
+
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00041}{41}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!emailDestino@{emailDestino}}
+\index{emailDestino@{emailDestino}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{emailDestino}{emailDestino}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_abda5d5491f008f6c997dbbfeceb1cfb9} 
+String com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+email\+Destino\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Dirección de correo electrónico del destinatario (Administrador). 
+
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00055}{55}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!mensaje@{mensaje}}
+\index{mensaje@{mensaje}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{mensaje}{mensaje}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ac096cec441330a8451285c4391e4dfb2} 
+String com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+mensaje\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Cuerpo del mensaje (texto base que será formateado a HTML). 
+
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00061}{61}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a9a411af6d683bb64fd43b017a86d3282}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!PASSWORD\_ROBOT@{PASSWORD\_ROBOT}}
+\index{PASSWORD\_ROBOT@{PASSWORD\_ROBOT}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{PASSWORD\_ROBOT}{PASSWORD\_ROBOT}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_a9a411af6d683bb64fd43b017a86d3282} 
+String com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+PASSWORD\+\_\+\+ROBOT = "{}qksu kdas eluz wofs"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Contraseña de aplicación (App Password) generada por Google para autenticación segura. 
+
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00044}{44}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ab4cf2d3c4d2c414261822354dd675e05}\index{com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}!session@{session}}
+\index{session@{session}!com.example.breathe\_tracking.JavaMailAPI@{com.example.breathe\_tracking.JavaMailAPI}}
+\doxysubsubsection{\texorpdfstring{session}{session}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i_ab4cf2d3c4d2c414261822354dd675e05} 
+Session com.\+example.\+breathe\+\_\+tracking.\+Java\+Mail\+API.\+session\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Sesión de correo que mantiene la configuración y autenticación. 
+
+
+
+Definition at line \mbox{\hyperlink{_java_mail_a_p_i_8java_source_l00052}{52}} of file \mbox{\hyperlink{_java_mail_a_p_i_8java_source}{Java\+Mail\+API.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_java_mail_a_p_i_8java}{Java\+Mail\+API.\+java}}\end{DoxyCompactItemize}

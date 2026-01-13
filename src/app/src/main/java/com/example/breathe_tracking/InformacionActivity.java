@@ -4,8 +4,10 @@
  * @package com.example.breathe_tracking
  * @copyright Copyright © 2025
  */
+
 package com.example.breathe_tracking;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,13 +31,27 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+/**
+ * Copyrigth © 2025
+ *
+ * Esta actividad carga los datos de firebase para mostrar la evolución de cada contaminante en un periodo de 24h
+ * recogiendo los datos de la colección "datos_grafico".
+ * 27/11 - Sandra: creacion actividad y xml
+ * 06/12 - Rocio: conexión con base de datos
+ */
+
 
 /**
  * @class GasData
@@ -57,10 +73,6 @@ class GasData {
         this.so2 = so2;
         this.timestamp = timestamp;
     }
-    /**
-     * @brief Constructor de inicialización vacía (valores a 0).
-     * @param timestamp Marca de tiempo asociada.
-     */
     public GasData(long timestamp) {
         this.co = 0f;
         this.co2 = 0f;
@@ -73,8 +85,7 @@ class GasData {
 
 /**
  * @class HourValueFormatter
- * @brief Formateador para el eje X del gráfico.
- * Convierte el índice numérico (0-23) a formato de hora "HH:00".
+ * @brief Formateador simple que convierte el índice de la hora (0-23) a formato HH:00.
  */
 class HourValueFormatter extends ValueFormatter {
     private final DecimalFormat mFormat = new DecimalFormat("00");
@@ -88,9 +99,8 @@ class HourValueFormatter extends ValueFormatter {
 }
 
 /**
- * @class DecimalValueFormatter
- * @brief Formateador para el eje Y del gráfico.
- * Permite visualizar los valores con un patrón decimal específico.
+ * @class DecimalValueFormatter (Clase Adaptadora para Eje Y)
+ * @brief Adaptador para formatear valores numéricos con precisión decimal.
  */
 class DecimalValueFormatter extends ValueFormatter {
     private final DecimalFormat mFormat;
@@ -117,8 +127,6 @@ class DecimalValueFormatter extends ValueFormatter {
  * 2. Procesamiento de arrays de datos (un array por contaminante) en una lista de objetos @ref GasData.
  * 3. Renderizado de un gráfico de líneas interactivo usando la librería MPAndroidChart.
  * 4. Evaluación dinámica del riesgo (lógica de "semáforo" y carita) según los umbrales de cada gas.
- *
- *
  *
  * @author Sandra (Creación actividad y XML)
  * @author Rocio (Conexión con Base de Datos y lógica gráfica)
@@ -193,11 +201,7 @@ public class InformacionActivity extends AppCompatActivity {
     }
 
     /**
-     * @brief Consulta Firestore para obtener los arrays de datos históricos.
-     *
-     * Lee la colección 'datos_grafico', donde cada documento representa un gas
-     * y contiene un array 'valor' con 24 mediciones.
-     * Transforma estos arrays horizontales en una lista vertical de objetos @ref GasData.
+     * @brief Consulta Firestore para obtener los datos históricos del sensor actual
      */
     private void cargarDatosDeFirebase() {
 
@@ -271,10 +275,6 @@ public class InformacionActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * @brief Configuración general de estilo para el componente LineChart.
-     * Habilita zoom, touch y configura ejes básicos.
-     */
     private void configurarEstiloGrafico() {
         chart.getDescription().setEnabled(false);
         chart.setTouchEnabled(true);

@@ -1,0 +1,84 @@
+\doxysection{Lectura\+Sensor.\+java}
+\hypertarget{_lectura_sensor_8java_source}{}\label{_lectura_sensor_8java_source}\index{src/app/src/main/java/com/example/breathe\_tracking/LecturaSensor.java@{src/app/src/main/java/com/example/breathe\_tracking/LecturaSensor.java}}
+\mbox{\hyperlink{_lectura_sensor_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00001}00001\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00002}00002\ \textcolor{comment}{\ *\ @file\ LecturaSensor.java}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00003}00003\ \textcolor{comment}{\ *\ @brief\ Modelo\ de\ datos\ (POJO)\ para\ la\ persistencia\ de\ lecturas\ en\ el\ historial.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00004}00004\ \textcolor{comment}{\ *\ @package\ com.example.breathe\_tracking}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00005}00005\ \textcolor{comment}{\ *\ @copyright\ Copyright\ ©\ 2025}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00007}00007\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00009}00009\ \textcolor{keyword}{import}\ com.google.firebase.firestore.ServerTimestamp;}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00010}00010\ \textcolor{keyword}{import}\ java.util.Date;}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00011}00011\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00012}00012\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00013}00013\ \textcolor{comment}{\ *\ @class\ LecturaSensor}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00014}00014\ \textcolor{comment}{\ *\ @brief\ Clase\ modelo\ para\ subir\ las\ lecturas\ de\ los\ sensores\ a\ Firebase\ Firestore.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00015}00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00016}00016\ \textcolor{comment}{\ *\ Esta\ clase\ define\ la\ estructura\ de\ datos\ que\ se\ guarda\ como\ documento\ dentro\ de\ la\ subcolección}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00017}00017\ \textcolor{comment}{\ *\ "{}mediciones"{}\ de\ cada\ sensor\ en\ Firestore,\ utilizada\ para\ mantener\ un\ historial\ de\ datos.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00018}00018\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00019}00019\ \textcolor{comment}{\ *\ @details}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00020}00020\ \textcolor{comment}{\ *\ Esta\ clase\ actúa\ como\ un\ Data\ Transfer\ Object\ (DTO).\ Define\ la\ estructura\ exacta\ de\ los\ documentos}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00021}00021\ \textcolor{comment}{\ *\ que\ se\ almacenan\ en\ la\ subcolección\ \`{}mediciones`\ de\ cada\ sensor.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00022}00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00023}00023\ \textcolor{comment}{\ *\ @note\ El\ campo\ 'fecha'\ está\ anotado\ con\ @ServerTimestamp\ para\ asegurar\ que\ el\ servidor\ de\ Firebase}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00024}00024\ \textcolor{comment}{\ *\ registre\ la\ hora\ exacta\ de\ la\ subida,\ garantizando\ precisión\ en\ el\ historial.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00025}00025\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00026}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor}{00026}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a}{LecturaSensor}}\ \{\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00027}00027\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Nivel\ de\ Ozono\ (O3)\ medido,\ en\ partes\ por\ millón\ (ppm).\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00028}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a}{00028}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a}{O3}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00029}00029\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Temperatura\ medida,\ en\ grados\ Celsius.\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00030}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae}{00030}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae}{temperatura}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00031}00031\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Nivel\ de\ Dióxido\ de\ Carbono\ (CO2)\ medido,\ en\ partes\ por\ millón\ (ppm).\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00032}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf}{00032}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf}{co2}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00033}00033\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Porcentaje\ de\ batería\ del\ sensor.\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00034}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952}{00034}}\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952}{bateria}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00035}00035\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Ubicación\ geográfica\ del\ dispositivo\ móvil\ en\ el\ momento\ de\ la\ lectura\ (dirección\ legible).\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00036}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a}{00036}}\ \ \ \ \ \textcolor{keyword}{public}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a}{ubicacion}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00037}00037\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Estado\ de\ conexión\ del\ sensor\ ("{}Conectado"{}\ o\ "{}Desconectado"{})\ en\ el\ momento\ de\ la\ lectura.\ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00038}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be}{00038}}\ \ \ \ \ \textcolor{keyword}{public}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be}{estado}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00039}00039\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00040}00040\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00041}00041\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Timestamp\ del\ servidor\ que\ registra\ la\ hora\ exacta\ en\ la\ que\ la\ lectura\ fue\ subida\ a\ Firestore.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00042}00042\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00043}00043\ \textcolor{comment}{\ \ \ \ \ *\ @note\ La\ anotación\ \`{}@ServerTimestamp`\ indica\ a\ Firestore\ que\ debe\ rellenar\ este\ campo}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00044}00044\ \textcolor{comment}{\ \ \ \ \ *\ con\ la\ hora\ del\ servidor\ en\ el\ momento\ de\ la\ escritura,\ garantizando\ cronología\ exacta}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00045}00045\ \textcolor{comment}{\ \ \ \ \ *\ independiente\ de\ la\ hora\ del\ dispositivo\ móvil.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00046}00046\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00047}00047\ \textcolor{comment}{\ \ \ \ \ *\ @see\ com.google.firebase.firestore.ServerTimestamp}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00048}00048\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00049}00049\ \ \ \ \ @ServerTimestamp}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00050}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a050901564b7590ef64b188b2a316fe20}{00050}}\ \ \ \ \ \textcolor{keyword}{public}\ Date\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a050901564b7590ef64b188b2a316fe20}{fecha}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00051}00051\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00052}00052\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00053}00053\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Constructor\ vacío.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00054}00054\ \textcolor{comment}{\ \ \ \ \ *\ @warning\ Este\ constructor\ es\ **obligatorio**\ para\ que\ Firebase\ Firestore\ pueda}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00055}00055\ \textcolor{comment}{\ \ \ \ \ *\ deserializar\ los\ documentos\ de\ la\ base\ de\ datos\ en\ objetos\ de\ Java\ automáticamente.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00056}00056\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00057}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a}{00057}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a96a86e62219a4cd6727dbc9ae838af3a}{LecturaSensor}}()\ \{\}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00058}00058\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00059}00059\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00060}00060\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Constructor\ con\ todos\ los\ campos\ de\ datos\ y\ contexto.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00061}00061\ \textcolor{comment}{\ \ \ \ \ *\ (O3:float,\ temperatura:float,\ co2:int,\ bateria:int,\ ubicacion:String,\ estado:String)\ -\/>\ LecturaSensor()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00062}00062\ \textcolor{comment}{\ \ \ \ \ *\ @param\ O3\ Nivel\ de\ ozono.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00063}00063\ \textcolor{comment}{\ \ \ \ \ *\ @param\ temperatura\ Nivel\ de\ temperatura.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00064}00064\ \textcolor{comment}{\ \ \ \ \ *\ @param\ co2\ Nivel\ de\ dióxido\ de\ carbono.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00065}00065\ \textcolor{comment}{\ \ \ \ \ *\ @param\ bateria\ Porcentaje\ de\ batería.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00066}00066\ \textcolor{comment}{\ \ \ \ \ *\ @param\ ubicacion\ Dirección\ actual\ del\ dispositivo.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00067}00067\ \textcolor{comment}{\ \ \ \ \ *\ @param\ estado\ Estado\ de\ conexión\ del\ sensor.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00068}00068\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00069}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af79f89e7e6a98748952e5b439f795dff}{00069}}\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af79f89e7e6a98748952e5b439f795dff}{LecturaSensor}}(\textcolor{keywordtype}{float}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a}{O3}},\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae}{temperatura}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf}{co2}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952}{bateria}},\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a}{ubicacion}},\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be}{estado}})\ \{}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00070}00070\ \ \ \ \ \ \ \ \ this.O3\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ac96206f2686d559673bf7dbeb338266a}{O3}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00071}00071\ \ \ \ \ \ \ \ \ this.temperatura\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_af90a445b46f22c05db7c97ff1ae0bcae}{temperatura}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00072}00072\ \ \ \ \ \ \ \ \ this.co2\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_ab4f280cb2d59addf04d7c58731ad7ebf}{co2}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00073}00073\ \ \ \ \ \ \ \ \ this.bateria\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a24a0337fec38559d147fb07311e7f952}{bateria}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00074}00074\ \ \ \ \ \ \ \ \ this.ubicacion\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a5945b995190e993cf4bcc79b1cddfe9a}{ubicacion}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00075}00075\ \ \ \ \ \ \ \ \ this.estado\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_lectura_sensor_a51657fdebf529354e43b8bb3db1d54be}{estado}};}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00076}00076\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ El\ campo\ 'fecha'\ se\ inicializa\ automáticamente\ por\ Firestore\ al\ subir\ el\ objeto.}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00077}00077\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_lectura_sensor_8java_source_l00078}00078\ \}}
+
+\end{DoxyCode}

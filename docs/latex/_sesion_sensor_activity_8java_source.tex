@@ -1,0 +1,447 @@
+\doxysection{Sesion\+Sensor\+Activity.\+java}
+\hypertarget{_sesion_sensor_activity_8java_source}{}\label{_sesion_sensor_activity_8java_source}\index{src/app/src/main/java/com/example/breathe\_tracking/SesionSensorActivity.java@{src/app/src/main/java/com/example/breathe\_tracking/SesionSensorActivity.java}}
+\mbox{\hyperlink{_sesion_sensor_activity_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00001}00001\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00002}00002\ \textcolor{comment}{\ *\ @file\ SesionSensorActivity.java}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00003}00003\ \textcolor{comment}{\ *\ @brief\ Actividad\ principal\ de\ monitorización\ en\ tiempo\ real.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00004}00004\ \textcolor{comment}{\ *\ @package\ com.example.breathe\_tracking}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00005}00005\ \textcolor{comment}{\ *\ @copyright\ Copyright\ ©\ 2025}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00007}00007\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00009}00009\ \textcolor{keyword}{import}\ android.Manifest;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00010}00010\ \textcolor{keyword}{import}\ android.app.Activity;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00011}00011\ \textcolor{keyword}{import}\ android.content.Intent;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00012}00012\ \textcolor{keyword}{import}\ android.content.pm.PackageManager;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00013}00013\ \textcolor{keyword}{import}\ android.graphics.Color;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00014}00014\ \textcolor{keyword}{import}\ android.graphics.drawable.Drawable;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00015}00015\ \textcolor{keyword}{import}\ android.os.Bundle;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00017}00017\ \textcolor{keyword}{import}\ android.view.View;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00018}00018\ \textcolor{keyword}{import}\ android.widget.ImageView;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00019}00019\ \textcolor{keyword}{import}\ android.widget.ProgressBar;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00020}00020\ \textcolor{keyword}{import}\ android.widget.TextView;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00021}00021\ \textcolor{keyword}{import}\ android.widget.Toast;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00023}00023\ \textcolor{keyword}{import}\ androidx.activity.result.ActivityResultLauncher;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00024}00024\ \textcolor{keyword}{import}\ androidx.activity.result.contract.ActivityResultContracts;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00025}00025\ \textcolor{keyword}{import}\ androidx.appcompat.app.AppCompatActivity;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00026}00026\ \textcolor{keyword}{import}\ androidx.core.content.ContextCompat;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00028}00028\ \textcolor{keyword}{import}\ java.util.Locale;}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00029}00029\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00030}00030\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00031}00031\ \textcolor{comment}{\ *\ @class\ SesionSensorActivity}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00032}00032\ \textcolor{comment}{\ *\ @brief\ Actividad\ principal\ que\ muestra\ la\ interfaz\ de\ usuario\ con\ los\ datos\ del\ sensor\ en\ tiempo\ real.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00033}00033\ \textcolor{comment}{\ *\ @extends\ AppCompatActivity}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00034}00034\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00035}00035\ \textcolor{comment}{\ *\ @details}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00036}00036\ \textcolor{comment}{\ *\ Esta\ clase\ actúa\ como\ el\ "{}Dashboard"{}\ principal\ de\ la\ aplicación.\ Su\ arquitectura\ se\ basa\ en\ el\ patrón\ Observer}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00037}00037\ \textcolor{comment}{\ *\ a\ través\ de\ la\ clase\ Singleton\ @ref\ TrackingDataHolder.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00038}00038\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00039}00039\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00040}00040\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00041}00041\ \textcolor{comment}{\ *\ **Funcionalidades\ principales:**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00042}00042\ \textcolor{comment}{\ *\ 1.\ **Visualización\ de\ Datos:**\ Muestra\ CO2,\ Ozono,\ Temperatura,\ Batería\ y\ Ubicación\ actualizándose\ automáticamente.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00043}00043\ \textcolor{comment}{\ *\ 2.\ **Gestión\ de\ Servicios:**\ Inicia\ y\ detiene\ el\ @ref\ SensorTrackingService\ (Foreground\ Service).}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00044}00044\ \textcolor{comment}{\ *\ 3.\ **Feedback\ Visual:**\ Cambia\ el\ color\ de\ las\ barras\ de\ progreso\ según\ umbrales\ de\ seguridad\ definidos.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00045}00045\ \textcolor{comment}{\ *\ 4.\ **Gestión\ de\ Incidencias:**\ Permite\ reportar\ problemas\ de\ conexión\ o\ hardware.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00046}00046\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00047}00047\ \textcolor{comment}{\ *\ @author\ Sandra\ (UI,\ Lógica\ de\ visualización\ y\ alertas\ -\/\ 11/11/2025)}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00048}00048\ \textcolor{comment}{\ *\ @author\ Rocio\ (Conexión\ con\ base\ de\ datos\ y\ lógica\ de\ servicio\ -\/\ 19/11/2025)}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00049}00049\ \textcolor{comment}{\ *\ @see\ SensorTrackingService}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00050}00050\ \textcolor{comment}{\ *\ @see\ TrackingDataHolder}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00051}00051\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00053}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{00053}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{SesionSensorActivity}}\ \textcolor{keyword}{extends}\ AppCompatActivity\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00054}00054\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00055}00055\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ la\ ubicación\ actual\ del\ dispositivo.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00056}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f}{00056}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f}{ubicacionTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00057}00057\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ la\ hora\ de\ la\ última\ conexión/recepción\ de\ datos\ del\ sensor.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00058}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235}{00058}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235}{ultimaConexionTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00059}00059\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ el\ porcentaje\ de\ batería\ del\ sensor.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00060}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}{00060}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}{bateriaTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00061}00061\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ el\ nivel\ de\ ozono.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00062}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a1acfbca4cc082c2725d576c583c295a9}{00062}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a1acfbca4cc082c2725d576c583c295a9}{ozonoTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00063}00063\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ la\ temperatura.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00064}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abd01f7b84f09174e057960d24ae1f143}{00064}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abd01f7b84f09174e057960d24ae1f143}{temperaturaTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00065}00065\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ la\ concentración\ de\ CO2.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00066}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aec0b4f594c45986ea39e2efad8003678}{00066}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aec0b4f594c45986ea39e2efad8003678}{co2TextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00067}00067\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ las\ alertas\ de\ mediciones\ fuera\ de\ rango.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00068}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a06d5645291ae87968ff1e394019d3240}{00068}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a06d5645291ae87968ff1e394019d3240}{alertaTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00069}00069\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ el\ estado\ de\ incidencias\ o\ de\ desconexión.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00070}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab24e1a4750eb87f05b6be85ada1d2633}{00070}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab24e1a4750eb87f05b6be85ada1d2633}{incidenciaTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00071}00071\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ el\ estado\ de\ conexión\ del\ sensor\ ("{}Conectado"{}/"{}Desconectado"{}).\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00072}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}{00072}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}{estadoTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00073}00073\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Botón\ o\ enlace\ para\ iniciar\ la\ actividad\ de\ reportar\ incidencia.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00074}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}{00074}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}{reportarIncidenciaTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00075}00075\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Muestra\ el\ código\ o\ nombre\ del\ sensor\ que\ se\ está\ rastreando.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00076}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100}{00076}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100}{nombreSensorTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00077}00077\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Botón\ para\ ir\ a\ la\ pantalla\ de\ gráficas\ de\ información.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00078}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a58033396e2958de254b5cfaf4ee4df3b}{00078}}\ \ \ \ \ \textcolor{keyword}{private}\ TextView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a58033396e2958de254b5cfaf4ee4df3b}{verGraficasTextView}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00079}00079\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Icono\ para\ mostrar\ la\ intensidad\ de\ la\ señal\ (RSSI).\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00080}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{00080}}\ \ \ \ \ \textcolor{keyword}{private}\ ImageView\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00082}00082\ \ \ \ \ \textcolor{comment}{//Variables\ para\ dibujar\ con\ colores\ las\ medidas}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00083}00083\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Barra\ de\ progreso\ visual\ para\ el\ nivel\ de\ CO2.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00084}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b}{00084}}\ \ \ \ \ \textcolor{keyword}{private}\ ProgressBar\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b}{co2ProgressBar}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00085}00085\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Barra\ de\ progreso\ visual\ para\ el\ nivel\ de\ Ozono.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00086}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c}{00086}}\ \ \ \ \ \textcolor{keyword}{private}\ ProgressBar\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c}{ozonoProgressBar}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00087}00087\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Barra\ de\ progreso\ visual\ para\ el\ nivel\ de\ Temperatura.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00088}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d}{00088}}\ \ \ \ \ \textcolor{keyword}{private}\ ProgressBar\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d}{temperaturaProgressBar}};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00089}00089\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00090}00090\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Instancia\ Singleton\ para\ acceder\ a\ los\ datos\ observados\ (LiveData).\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00091}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{00091}}\ \ \ \ \ \textcolor{keyword}{private}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{TrackingDataHolder}}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}};\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00092}00092\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Código\ único\ del\ sensor\ que\ se\ está\ monitorizando.\ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00093}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{00093}}\ \ \ \ \ \textcolor{keyword}{private}\ String\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{sensorId}};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00095}00095\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00096}00096\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00097}00097\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Lanzador\ de\ actividad\ para\ gestionar\ el\ resultado\ del\ reporte\ de\ incidencias.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00098}00098\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00099}00099\ \textcolor{comment}{\ \ \ \ \ *\ Registra\ un\ callback\ para\ la\ actividad\ de\ envío\ de\ incidencias\ (\(\backslash\)ref\ EnvioIncidenciasActivity).}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00100}00100\ \textcolor{comment}{\ \ \ \ \ *\ Escucha\ el\ código\ de\ resultado\ (resultCode)\ al\ finalizar\ dicha\ actividad.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00101}00101\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00102}00102\ \textcolor{comment}{\ \ \ \ \ *\ Si\ el\ resultado\ es\ Activity.RESULT\_OK:}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00103}00103\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Actualiza\ el\ texto\ del\ botón\ a\ "{}Incidencia\ reportada"{}.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00104}00104\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Cambia\ el\ color\ del\ texto\ a\ gris\ para\ indicar\ visualmente\ que\ está\ deshabilitado.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00105}00105\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Desactiva\ la\ interacción\ (setClickable(false)\ y\ setEnabled(false))\ para\ prevenir\ envíos\ duplicados.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00106}00106\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Muestra\ un\ mensaje\ Toast\ de\ confirmación\ al\ usuario.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00107}00107\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00108}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abc2d4d4182e104a61111a0bbe873658b}{00108}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{final}\ ActivityResultLauncher<Intent>\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abc2d4d4182e104a61111a0bbe873658b}{reportarIncidenciaLauncher}}\ =\ registerForActivityResult(}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ ActivityResultContracts.StartActivityForResult(),}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00110}00110\ \ \ \ \ \ \ \ \ \ \ \ \ result\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00111}00111\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (result.getResultCode()\ ==\ Activity.RESULT\_OK)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00112}00112\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Aquí\ cambiamos\ el\ aspecto\ del\ botón\ cuando\ volvemos}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00113}00113\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setText(\textcolor{stringliteral}{"{}Incidencia\ reportada"{}});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00114}00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setTextColor(Color.LTGRAY);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00115}00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setClickable(false);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00116}00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setEnabled(false);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Incidencia\ registrada\ correctamente"{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00120}00120\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00121}00121\ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00124}00124\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Permisos\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00125}00125\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00126}00126\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Launcher\ para\ solicitar\ múltiples\ permisos\ de\ la\ aplicación.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00127}00127\ \textcolor{comment}{\ \ \ \ \ *\ Si\ los\ permisos\ se\ conceden\ (específicamente\ ACCESS\_FINE\_LOCATION),\ inicia\ el\ servicio\ de\ rastreo.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00128}00128\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00129}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a7d3405f571cc28014679435636a970fc}{00129}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{final}\ ActivityResultLauncher<String[]>\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a7d3405f571cc28014679435636a970fc}{requestPermissionLauncher}}\ =\ registerForActivityResult(}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ ActivityResultContracts.RequestMultiplePermissions(),}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ permissions\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (Boolean.TRUE.equals(permissions.get(Manifest.permission.ACCESS\_FINE\_LOCATION)))\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ startTrackingService();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00135}00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Permisos\ necesarios\ denegados"{}},\ Toast.LENGTH\_LONG).show();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00136}00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00137}00137\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00138}00138\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ Permisos\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00139}00139\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00140}00140\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Inicio\ onCreate\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00141}00141\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00142}00142\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Inicialización\ de\ la\ actividad.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00143}00143\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00144}00144\ \textcolor{comment}{\ \ \ \ \ *\ 1.\ Vincula\ todas\ las\ vistas\ del\ layout.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00145}00145\ \textcolor{comment}{\ \ \ \ \ *\ 2.\ Recupera\ el\ SENSOR\_CODE\ del\ Intent.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00146}00146\ \textcolor{comment}{\ \ \ \ \ *\ 3.\ Configura\ los\ listeners\ de\ los\ botones\ (Cerrar\ sesión,\ Reportar,\ Ver\ Gráficas).}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00147}00147\ \textcolor{comment}{\ \ \ \ \ *\ 4.\ Inicializa\ los\ observadores\ de\ datos.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00148}00148\ \textcolor{comment}{\ \ \ \ \ *\ 5.\ Verifica\ permisos\ e\ inicia\ el\ servicio.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00149}00149\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00150}00150\ \textcolor{comment}{\ \ \ \ \ *\ @param\ savedInstanceState\ Estado\ guardado\ de\ la\ aplicación.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00151}00151\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00152}00152\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00153}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8d1e80a1b6b857e96a12e1d73419817e}{00153}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8d1e80a1b6b857e96a12e1d73419817e}{onCreate}}(Bundle\ savedInstanceState)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00154}00154\ \ \ \ \ \ \ \ \ super.onCreate(savedInstanceState);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00155}00155\ \ \ \ \ \ \ \ \ setContentView(R.layout.sesion\_sensor);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00156}00156\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00157}00157\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inicialización\ de\ Vistas\ y\ Objetos\ que\ vamos\ a\ usar\ en\ la\ actividad}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00158}00158\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f}{ubicacionTextView}}\ =\ findViewById(R.id.textView\_ubicacion);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00159}00159\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235}{ultimaConexionTextView}}\ =\ findViewById(R.id.textView\_ultimaConexion);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00160}00160\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}{bateriaTextView}}\ =\ findViewById(R.id.textView\_bateria);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00161}00161\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a1acfbca4cc082c2725d576c583c295a9}{ozonoTextView}}\ =\ findViewById(R.id.textView\_ozono);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00162}00162\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abd01f7b84f09174e057960d24ae1f143}{temperaturaTextView}}\ =\ findViewById(R.id.textView\_temperatura);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00163}00163\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aec0b4f594c45986ea39e2efad8003678}{co2TextView}}\ =\ findViewById(R.id.textView\_co2);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00164}00164\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b}{co2ProgressBar}}\ =\ findViewById(R.id.progressBar\_co2);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00165}00165\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c}{ozonoProgressBar}}\ =\ findViewById(R.id.progressBar\_ozono);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00166}00166\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d}{temperaturaProgressBar}}\ =\ findViewById(R.id.progressBar\_temperatura);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00167}00167\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a06d5645291ae87968ff1e394019d3240}{alertaTextView}}\ =\ findViewById(R.id.textView\_alerta);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00168}00168\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab24e1a4750eb87f05b6be85ada1d2633}{incidenciaTextView}}\ =\ findViewById(R.id.textView\_incidencia);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00169}00169\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}{estadoTextView}}\ =\ findViewById(R.id.textView\_estado);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00170}00170\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}{reportarIncidenciaTextView}}\ =\ findViewById(R.id.textView\_reportar\_incidencia);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00171}00171\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100}{nombreSensorTextView}}\ =\ findViewById(R.id.textView\_nombreSensor);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00172}00172\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a58033396e2958de254b5cfaf4ee4df3b}{verGraficasTextView}}\ =\ findViewById(R.id.textView\_graficas);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00173}00173\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}}\ =\ findViewById(R.id.img\_signal);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00174}00174\ \ \ \ \ \ \ \ \ ImageView\ cerrarSesionButton\ =\ findViewById(R.id.imageView\_cerrarSesion);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00175}00175\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00176}00176\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{TrackingDataHolder}}.\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ab9517d36ff53bf3841a95874c9602eca}{getInstance}}();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00177}00177\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00178}00178\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Logica\ para\ codigo\ de\ sensor}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00179}00179\ \ \ \ \ \ \ \ \ Intent\ currentintent\ =\ getIntent();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00180}00180\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (currentintent\ !=\ \textcolor{keyword}{null}\ \&\&\ currentintent.hasExtra(\textcolor{stringliteral}{"{}SENSOR\_CODE"{}}))\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{sensorId}}\ =\ currentintent.getStringExtra(\textcolor{stringliteral}{"{}SENSOR\_CODE"{}});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Mostrar\ el\ nombre}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ String\ displayMessage\ =\ \textcolor{stringliteral}{"{}Sensor\ "{}}\ +\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{sensorId}};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00184}00184\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100}{nombreSensorTextView}}\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100}{nombreSensorTextView}}.setText(displayMessage);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00188}00188\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00192}00192\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Listener\ para\ el\ botón\ de\ cerrar\ sesión}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00193}00193\ \textcolor{comment}{\ \ \ \ \ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00194}00194\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @brief\ Listener\ para\ el\ botón\ de\ cerrar\ sesión.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00195}00195\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Detiene\ el\ servicio\ de\ rastreo\ y\ navega\ de\ vuelta\ a\ la\ actividad\ principal.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00196}00196\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00197}00197\ \ \ \ \ \ \ \ \ cerrarSesionButton.setOnClickListener(v\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2}{stopTrackingService}}();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00199}00199\ \ \ \ \ \ \ \ \ \ \ \ \ Intent\ intent\ =\ \textcolor{keyword}{new}\ Intent(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{SesionSensorActivity}}.this,\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.class);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ startActivity(intent);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ finish();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00202}00202\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00203}00203\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00204}00204\ \textcolor{comment}{\ \ \ \ \ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00205}00205\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @brief\ Listener\ para\ el\ botón\ de\ reportar\ incidencia.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00206}00206\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Inicia\ \(\backslash\)ref\ EnvioIncidenciasActivity,\ pasando\ los\ datos\ de\ contexto\ (sensor,\ ubicación,\ última\ conexión).}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00207}00207\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00208}00208\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}{reportarIncidenciaTextView}}.setOnClickListener(v\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ Intent\ intent\ =\ \textcolor{keyword}{new}\ Intent(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{SesionSensorActivity}}.this,\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity}{EnvioIncidenciasActivity}}.class);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00211}00211\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Recopilamos\ los\ datos\ necesarios\ de\ los\ TextViews}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00212}00212\ \ \ \ \ \ \ \ \ \ \ \ \ String\ sensorName\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{sensorId}};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00213}00213\ \ \ \ \ \ \ \ \ \ \ \ \ String\ ubicacion\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f}{ubicacionTextView}}.getText().toString();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00214}00214\ \ \ \ \ \ \ \ \ \ \ \ \ String\ ultimaConexion\ =\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235}{ultimaConexionTextView}}.getText().toString();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00216}00216\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Los\ añadimos\ al\ Intent\ para\ que\ la\ otra\ actividad\ los\ pueda\ leer}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00217}00217\ \ \ \ \ \ \ \ \ \ \ \ \ intent.putExtra(\textcolor{stringliteral}{"{}SENSOR\_NAME"{}},\ sensorName);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00218}00218\ \ \ \ \ \ \ \ \ \ \ \ \ intent.putExtra(\textcolor{stringliteral}{"{}UBICACION"{}},\ ubicacion);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00219}00219\ \ \ \ \ \ \ \ \ \ \ \ \ intent.putExtra(\textcolor{stringliteral}{"{}ULTIMA\_CONEXION"{}},\ ultimaConexion);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00221}00221\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abc2d4d4182e104a61111a0bbe873658b}{reportarIncidenciaLauncher}}.launch(intent);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00222}00222\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00223}00223\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00224}00224\ \textcolor{comment}{\ \ \ \ \ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00225}00225\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @brief\ Listener\ para\ el\ botón\ "{}Saber\ más..."{}\ (gráficas).}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00226}00226\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Abre\ la\ actividad\ InformacionActivity.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00227}00227\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00228}00228\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a58033396e2958de254b5cfaf4ee4df3b}{verGraficasTextView}}.setOnClickListener(v\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00229}00229\ \ \ \ \ \ \ \ \ \ \ \ \ Intent\ intent\ =\ \textcolor{keyword}{new}\ Intent(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{SesionSensorActivity}}.this,\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{InformacionActivity}}.class);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00230}00230\ \ \ \ \ \ \ \ \ \ \ \ \ startActivity(intent);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00231}00231\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00232}00232\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00233}00233\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inicializamos\ los\ Observers}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00234}00234\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a2fc9953ddaccc2190e5e20be6bbd3932}{setupObservers}}();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00235}00235\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Pedimos\ los\ permisos\ necesarios}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00236}00236\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38}{checkPermissionsAndStartService}}();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00238}00238\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00240}00240\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ onCreate\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00241}00241\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00242}00242\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00243}00243\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ setupObservers\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00244}00244\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00245}00245\ \ \ \ \ \textcolor{comment}{//\ Funcion\ para\ inicializar\ los\ Observers\ que\ van\ a\ estar\ observando\ los\ cambios\ en\ los\ datos\ del\ sensor\ y\ del\ usuario}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00246}00246\ \ \ \ \ \textcolor{comment}{//Cambios\ en\ ubicacion,\ ultimaConexion,\ bateria,\ ozono,\ temperatura,\ co2,\ alerta,\ incidencia,\ estado}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00247}00247\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00248}00248\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Configura\ los\ observadores\ LiveData\ para\ actualizar\ la\ UI\ en\ tiempo\ real.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00249}00249\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00250}00250\ \textcolor{comment}{\ \ \ \ \ *\ ()\ -\/>\ setupObservers()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00251}00251\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00252}00252\ \textcolor{comment}{\ \ \ \ \ *\ Define\ la\ lógica\ de\ colores\ y\ umbrales\ para\ los\ indicadores\ visuales:}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00253}00253\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Batería:**\ Rojo\ si\ <=\ 15\%.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00254}00254\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Ozono\ (ppm):**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00255}00255\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Verde:\ <\ 0.6}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00256}00256\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Naranja:\ 0.6\ -\/\ 0.9}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00257}00257\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Rojo:\ >=\ 0.9}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00258}00258\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **Temperatura\ (ºC):**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00259}00259\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Azul:\ <=\ 20}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00260}00260\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Naranja:\ 20\ -\/\ 28}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00261}00261\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Rojo:\ >\ 28}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00262}00262\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **CO2\ (ppm):**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00263}00263\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Verde:\ <\ 800}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00264}00264\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Naranja:\ 800\ -\/\ 1200}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00265}00265\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Rojo:\ >=\ 1200}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00266}00266\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ **RSSI:**\ Actualiza\ el\ icono\ de\ barras\ según\ la\ potencia\ (dBm).}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00267}00267\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00268}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a2fc9953ddaccc2190e5e20be6bbd3932}{00268}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a2fc9953ddaccc2190e5e20be6bbd3932}{setupObservers}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00269}00269\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00270}00270\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Ubicacion\ del\ dispositivo\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00271}00271\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.locationData.observe(\textcolor{keyword}{this},\ address\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (address\ !=\ \textcolor{keyword}{null})\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f}{ubicacionTextView}}.setText(address);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00273}00273\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00274}00274\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00275}00275\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Hora\ de\ recepcion\ de\ datos\ del\ sensor\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00276}00276\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.timeData.observe(\textcolor{keyword}{this},\ time\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (time\ !=\ \textcolor{keyword}{null})\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235}{ultimaConexionTextView}}.setText(time);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00278}00278\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00279}00279\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00280}00280\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Bateria\ del\ dispositivo\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00281}00281\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Si\ es\ baja\ cambiamos\ el\ color\ a\ rojo\ para\ que\ destaque,\ si\ no\ el\ texto\ se\ ve\ en\ negro}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00282}00282\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.bateriaData.observe(\textcolor{keyword}{this},\ bateria\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bateria\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00284}00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}{bateriaTextView}}.setText(String.format(Locale.getDefault(),\ \textcolor{stringliteral}{"{}\%d\%\%"{}},\ bateria));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00285}00285\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (bateria\ <=\ 15)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00286}00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}{bateriaTextView}}.setTextColor(ContextCompat.getColor(\textcolor{keyword}{this},\ R.color.progress\_red));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00287}00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}{bateriaTextView}}.setTextColor(Color.BLACK);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00291}00291\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00292}00292\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00293}00293\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dato\ de\ ozono\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00294}00294\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Mostramos\ el\ dato\ de\ ozono\ y\ ademas\ en\ la\ progress\ bar\ se\ muestra\ por\ rangos\ de\ colores:}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00295}00295\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Verde:\ 0-\/0.6\ ppm,\ Amarillo:\ 0.6-\/0.9\ ppm\ y\ Rojo:\ >0.9\ ppm}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00296}00296\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.ozonoData.observe(\textcolor{keyword}{this},\ ozono\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ozono\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a1acfbca4cc082c2725d576c583c295a9}{ozonoTextView}}.setText(String.format(Locale.getDefault(),\ \textcolor{stringliteral}{"{}\%.3f\ ppm"{}},\ ozono));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c}{ozonoProgressBar}}.setProgress((\textcolor{keywordtype}{int})\ (ozono\ *\ 1000));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Drawable\ d\ =\ (ozono\ <\ 0.6)\ ?\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_green)\ :\ (ozono\ <\ 0.9)\ ?\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_orange)\ :\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_red);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c}{ozonoProgressBar}}.setProgressDrawable(d);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00302}00302\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00303}00303\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00304}00304\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00305}00305\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00306}00306\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dato\ de\ temperatura\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00307}00307\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Mostramos\ el\ dato\ de\ temperatura\ y\ ademas\ en\ la\ progress\ bar\ se\ muestra\ por\ rangos\ de\ colores:}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00308}00308\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Verde:\ 0-\/20\ ºC,\ Amarillo:\ 20-\/28\ ºC\ y\ Rojo:\ >28\ ºC}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00309}00309\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.temperaturaData.observe(\textcolor{keyword}{this},\ temperatura\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00310}00310\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (temperatura\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00311}00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abd01f7b84f09174e057960d24ae1f143}{temperaturaTextView}}.setText(String.format(Locale.getDefault(),\ \textcolor{stringliteral}{"{}\%.1f\ ºC"{}},\ temperatura));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00312}00312\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d}{temperaturaProgressBar}}.setProgress(temperatura.intValue());}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Drawable\ d\ =\ (temperatura\ <=\ 20)\ ?\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_blue)\ :\ (temperatura\ <=\ 28)\ ?\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_orange)\ :\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_red);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d}{temperaturaProgressBar}}.setProgressDrawable(d);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00316}00316\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00317}00317\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00318}00318\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Dato\ de\ Co2\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00319}00319\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Mostramos\ el\ dato\ de\ Co2\ y\ ademas\ en\ la\ progress\ bar\ se\ muestra\ por\ rangos\ de\ colores:}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00320}00320\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Verde:\ 0-\/800\ ppm,\ Amarillo:\ 800-\/1200\ ppm\ y\ Rojo:\ >1200\ ppm}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00321}00321\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.co2Data.observe(\textcolor{keyword}{this},\ co2\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (co2\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aec0b4f594c45986ea39e2efad8003678}{co2TextView}}.setText(String.format(Locale.getDefault(),\ \textcolor{stringliteral}{"{}\%d\ ppm"{}},\ co2));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b}{co2ProgressBar}}.setProgress(co2);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Drawable\ d\ =\ (co2\ <\ 800)\ ?\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_green)\ :\ (co2\ <\ 1200)\ ?\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_orange)\ :\ ContextCompat.getDrawable(\textcolor{keyword}{this},\ R.drawable.progress\_bar\_red);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b}{co2ProgressBar}}.setProgressDrawable(d);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00328}00328\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00329}00329\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00330}00330\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ RSSI\ (Señal)\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00331}00331\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Actualizamos\ el\ icono\ de\ la\ señal\ según\ el\ valor\ RSSI\ (dBm)}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00332}00332\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.rssiData.observe(\textcolor{keyword}{this},\ rssi\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rssi\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00334}00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rssi\ >=\ -\/60)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00335}00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}}.setImageResource(R.drawable.ic\_signal\_bars\_4);\ \textcolor{comment}{//\ Excelente}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (rssi\ >=\ -\/70)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}}.setImageResource(R.drawable.ic\_signal\_bars\_3);\ \textcolor{comment}{//\ Buena}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00338}00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (rssi\ >=\ -\/80)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}}.setImageResource(R.drawable.ic\_signal\_bars\_2);\ \textcolor{comment}{//\ Regular}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00340}00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (rssi\ >=\ -\/90)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00341}00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}}.setImageResource(R.drawable.ic\_signal\_bars\_1);\ \textcolor{comment}{//\ Mala}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00342}00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00343}00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}}.setImageResource(R.drawable.ic\_signal\_bars\_0);\ \textcolor{comment}{//\ Muy\ mala/Sin\ señal}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00344}00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00345}00345\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00346}00346\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00347}00347\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00348}00348\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Alertas\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00349}00349\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.alertData.observe(\textcolor{keyword}{this},\ alert\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00350}00350\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(alert\ !=\ \textcolor{keyword}{null})\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a06d5645291ae87968ff1e394019d3240}{alertaTextView}}.setText(alert);\ \textcolor{comment}{//\ si\ no\ es\ null\ muestra\ el\ texto\ de\ alerta}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00351}00351\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00352}00352\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00353}00353\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00354}00354\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Incidencias\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00355}00355\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.incidenciaData.observe(\textcolor{keyword}{this},\ incidencia\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00356}00356\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(incidencia\ !=\ \textcolor{keyword}{null})\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab24e1a4750eb87f05b6be85ada1d2633}{incidenciaTextView}}.setText(incidencia);\ \textcolor{comment}{//\ si\ no\ es\ null\ muestra\ el\ texto\ de\ incidencia}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00357}00357\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00358}00358\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00359}00359\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Estado\ conectado\ -\/\ desconectado\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00360}00360\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Si\ esta\ conectado\ cambiamos\ el\ color\ a\ verde,\ si\ no\ el\ texto\ se\ ve\ en\ rojo}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00361}00361\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{dataHolder}}.estadoData.observe(\textcolor{keyword}{this},\ estado\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00362}00362\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (estado\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00363}00363\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}{estadoTextView}}.setText(estado);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00364}00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{stringliteral}{"{}Conectado"{}}.equals(estado))\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00365}00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}{estadoTextView}}.setTextColor(ContextCompat.getColor(\textcolor{keyword}{this},\ R.color.progress\_green));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00366}00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}{reportarIncidenciaTextView}}.setVisibility(View.GONE);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00367}00367\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00368}00368\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}{estadoTextView}}.setTextColor(ContextCompat.getColor(\textcolor{keyword}{this},\ R.color.progress\_red));}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00369}00369\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}{reportarIncidenciaTextView}}.setVisibility(View.VISIBLE);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00370}00370\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{imgSignal}}.setImageResource(R.drawable.ic\_signal\_bars\_0);\ \textcolor{comment}{//\ Si\ desconectado,\ señal\ 0}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00371}00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00372}00372\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00373}00373\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00374}00374\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00375}00375\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00376}00376\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00377}00377\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00378}00378\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00379}00379\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ setupObservers\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00380}00380\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00381}00381\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00382}00382\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00383}00383\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Verifica\ si\ todos\ los\ permisos\ necesarios\ (Ubicación,\ Bluetooth)\ están\ concedidos.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00384}00384\ \textcolor{comment}{\ \ \ \ \ *\ Si\ no,\ solicita\ al\ usuario.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00385}00385\ \textcolor{comment}{\ \ \ \ \ *\ ()\ -\/>\ checkPermissionsAndStartService()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00386}00386\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00387}00387\ \textcolor{comment}{\ \ \ \ \ *\ Si\ faltan\ permisos,\ utiliza\ @ref\ requestPermissionLauncher\ para\ solicitarlos.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00388}00388\ \textcolor{comment}{\ \ \ \ \ *\ Si\ están\ concedidos,\ llama\ inmediatamente\ a\ @ref\ startTrackingService.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00389}00389\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00390}00390\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00391}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38}{00391}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38}{checkPermissionsAndStartService}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00392}00392\ \ \ \ \ \ \ \ \ String[]\ permissionsToRequest\ =\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00393}00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Manifest.permission.ACCESS\_FINE\_LOCATION,}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00394}00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Manifest.permission.BLUETOOTH\_SCAN,}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00395}00395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Manifest.permission.BLUETOOTH\_CONNECT}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00396}00396\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00397}00397\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00398}00398\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{boolean}\ allPermissionsGranted\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00399}00399\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (String\ permission\ :\ permissionsToRequest)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00400}00400\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ContextCompat.checkSelfPermission(\textcolor{keyword}{this},\ permission)\ !=\ PackageManager.PERMISSION\_GRANTED)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00401}00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ allPermissionsGranted\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00402}00402\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00403}00403\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00404}00404\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00405}00405\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00406}00406\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Si\ hay\ permisos\ empezamos\ el\ servicio\ de\ tracking}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00407}00407\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (allPermissionsGranted)\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00408}00408\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}{startTrackingService}}();}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00409}00409\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00410}00410\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a7d3405f571cc28014679435636a970fc}{requestPermissionLauncher}}.launch(permissionsToRequest);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00411}00411\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00412}00412\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00413}00413\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00414}00414\ \ \ \ \ \textcolor{comment}{//\ Metodo\ para\ empezar\ el\ servicio\ de\ tracking\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00415}00415\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00416}00416\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Inicia\ el\ servicio\ de\ rastreo\ (\(\backslash\)ref\ SensorTrackingService)\ como\ un\ servicio\ en\ primer\ plano.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00417}00417\ \textcolor{comment}{\ \ \ \ \ *\ Pasa\ el\ \(\backslash\)p\ sensorId\ al\ servicio\ para\ que\ pueda\ establecer\ su\ DocumentReference\ en\ Firestore.}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00418}00418\ \textcolor{comment}{\ \ \ \ \ *\ ()\ -\/>\ startTrackingService()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00419}00419\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00420}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}{00420}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}{startTrackingService}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00421}00421\ \ \ \ \ \ \ \ \ Intent\ serviceIntent\ =\ \textcolor{keyword}{new}\ Intent(\textcolor{keyword}{this},\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{SensorTrackingService}}.class);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00422}00422\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{sensorId}}\ !=\ \textcolor{keyword}{null})\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00423}00423\ \ \ \ \ \ \ \ \ \ \ \ \ serviceIntent.putExtra(\textcolor{stringliteral}{"{}SENSOR\_ID\_KEY"{}},\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{sensorId}});}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00424}00424\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00425}00425\ \ \ \ \ \ \ \ \ ContextCompat.startForegroundService(\textcolor{keyword}{this},\ serviceIntent);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00426}00426\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00427}00427\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00428}00428\ \ \ \ \ \textcolor{comment}{//\ Metodo\ para\ parar\ el\ servicio\ de\ tracking\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00429}00429\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00430}00430\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00431}00431\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Detiene\ el\ servicio\ de\ rastreo\ @ref\ SensorTrackingService}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00432}00432\ \textcolor{comment}{\ \ \ \ \ *\ ()\ -\/>\ stopTrackingService()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00433}00433\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00434}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2}{00434}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2}{stopTrackingService}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00435}00435\ \ \ \ \ \ \ \ \ Intent\ serviceIntent\ =\ \textcolor{keyword}{new}\ Intent(\textcolor{keyword}{this},\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{SensorTrackingService}}.class);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00436}00436\ \ \ \ \ \ \ \ \ stopService(serviceIntent);}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00437}00437\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00438}00438\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00439}00439\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00440}00440\ }
+\DoxyCodeLine{\Hypertarget{_sesion_sensor_activity_8java_source_l00441}00441\ \}}
+
+\end{DoxyCode}

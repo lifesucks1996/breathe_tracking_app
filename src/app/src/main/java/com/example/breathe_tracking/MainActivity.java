@@ -1,9 +1,9 @@
 /**
  * @file MainActivity.java
- * @brief Punto de entrada de la aplicación: Gestión de Login y Autenticación.
+ * @brief Actividad principal responsable del inicio de sesión (Login), escaneo de código QR y acceso biométrico.
  * @package com.example.breathe_tracking
- * @copyright Copyright © 2025
  */
+
 package com.example.breathe_tracking;
 
 import android.Manifest;
@@ -42,9 +42,31 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnCompleteListener;
 
+
+/**
+ *
+ * CLASE MAIN ACTIVITY - LOG IN
+ *
+ * Copyrigth © 2025
+ *
+ * Fecha, autor, aportacion: Sandra Moll Cots, Permisos bluetooh, ubicacion y  comportamiento login
+ * - Logica fake log in (30/10/25 - Sandra)
+ * - Lector QR (16/11/25 - Rocio)
+ * - Acceso biometrico (17/11/25 - Rocio)
+ * - Logica bbdd log in (30/10/25 - Rocio)
+ */
+
+
 /**
  * @class MainActivity
- * @brief Actividad de inicio de sesión multimodal (Manual, QR, Biometría).
+ * @brief Clase que gestiona la pantalla de inicio de sesión de la aplicación.
+ *
+ * Responsabilidades:
+ * 1. **Verificación de Sensor:** Comprueba la validez de un código de sensor en **Firebase Firestore**.
+ * 2. **Lector QR:** Permite escanear códigos QR para obtener el ID del sensor.
+ * 3. **Autenticación Biométrica:** Ofrece acceso rápido si existe un ID de sensor previamente guardado.
+ * 4. **Persistencia:** Guarda el último ID de sensor utilizado mediante SharedPreferences.
+ *
  * @extends AppCompatActivity
  *
  * @details
@@ -55,7 +77,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
  *
  * Independientemente del método, el código final se valida contra la colección `sensores` en **Firebase Firestore**
  * antes de permitir el acceso a @ref SesionSensorActivity.
- *
  *
  *
  * @author Sandra (Lógica base y permisos - 30/10/2025)
@@ -102,7 +123,12 @@ public class MainActivity extends AppCompatActivity {
      * @brief Método llamado al crear la actividad.
      * (savedInstanceState:Bundle) -> onCreate() -> ()
      *
-     * @param savedInstanceState Si la actividad se está recreando, este Bundle contiene los datos de estado.
+     * 1. Configura la UI (Botones, Textos).
+     * 2. Inicializa Firebase.
+     * 3. Lanza el prompt biométrico para intento de login rápido.
+     * 4. Configura los listeners para el botón de entrar y el escaneo QR.
+     *
+     * @param savedInstanceState Estado guardado de la aplicación.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
      * @brief Guarda el código del sensor en SharedPreferences e inicia la \ref SesionSensorActivity.
      * Esta función se llama tras un login exitoso (manual o biométrico).
      * (code:String) -> iniciarSesionExitosa() -> ()
-     *
      * @param code El código de sensor verificado.
      */
     private void iniciarSesionExitosa(String code) {
@@ -281,6 +306,10 @@ public class MainActivity extends AppCompatActivity {
     /**
      * @brief Verifica asíncronamente si el código del sensor existe como documento en la colección 'sensores' de Firebase Firestore.
      * (sensorCode:String) -> checkSensorCodeInDatabase() -> ()
+     *
+     * Busca el documento con ID `sensorCode` en la colección `sensores`.
+     * - Si existe: Llama a @ref iniciarSesionExitosa.
+     * - Si no existe o error: Muestra AlertDialog.
      *
      * @param sensorCode El código de sensor ingresado por el usuario.
      */

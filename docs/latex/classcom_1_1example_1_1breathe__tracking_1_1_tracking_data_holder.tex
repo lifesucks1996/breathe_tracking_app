@@ -1,0 +1,271 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+
+
+"{}\+Tablón de Anuncios"{} reactivo de la aplicación (Singleton + Live\+Data).  
+
+
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}{Tracking\+Data\+Holder}} \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ab9517d36ff53bf3841a95874c9602eca}{get\+Instance}} ()
+\begin{DoxyCompactList}\small\item\em Proporciona la única instancia accesible de la clase. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ab9517d36ff53bf3841a95874c9602eca}{get\+Instance()} -\/\texorpdfstring{$>$}{>} (instance\+:\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final Mutable\+Live\+Data$<$ String $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a5e7d100134871c09654e973abc6cdd8b}{location\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene la ubicación actual del dispositivo (ej\+: "{}\+Calle Falsa 123, Ciudad"{}). \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ String $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a1a1ed262868978a7570c80a4979bb8b6}{time\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene la hora de la última recepción de datos del sensor (ej\+: "{}Última conex. 14\+:30"{}). \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ Float $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a3675e15492b65c71f6f6e3a65181e4bf}{temperatura\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene la lectura de la temperatura en grados Celsius. \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ Float $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a2e7336e419f05ec7c96905f4dfca99dc}{ozono\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene la lectura del nivel de Ozono (O3) en ppm. \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ Integer $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a64b70ff8043f701e41c58c02a783c196}{co2\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene la lectura de la concentración de Dióxido de Carbono (CO2) en ppm. \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ Integer $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_aaf921d3b025949577b6e23d753877c19}{bateria\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene el porcentaje de batería del sensor. \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ Integer $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a312af5f627dfbe62954bd0ef35e91538}{rssi\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene la intensidad de la señal recibida (RSSI) en d\+Bm. \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ String $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ae14d9cdd37e1ef21a98ae605d947642b}{estado\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene el estado de conexión del sensor ("{}\+Conectado"{} o "{}\+Desconectado"{}). \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ String $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a656a0bcabba13a55fac2e77c8eaff1f6}{alert\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene una cadena con los mensajes de alertas de mediciones (CO2, O3, Temp) que superan umbrales. \end{DoxyCompactList}\item 
+final Mutable\+Live\+Data$<$ String $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_aad66a79e814879dfa3bbb9d621adc8ec}{incidencia\+Data}} = new Mutable\+Live\+Data$<$$>$()
+\begin{DoxyCompactList}\small\item\em Contiene un mensaje sobre incidencias (principalmente la pérdida de conexión del sensor). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}{Tracking\+Data\+Holder}} ()
+\begin{DoxyCompactList}\small\item\em Constructor privado para forzar el patrón Singleton. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}{Tracking\+Data\+Holder}} \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a870901b3fadea72fce8f00c5689e4f43}{instance}} = new \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}{Tracking\+Data\+Holder}}()
+\begin{DoxyCompactList}\small\item\em Instancia única y estática de la clase (Singleton). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+"{}\+Tablón de Anuncios"{} reactivo de la aplicación (Singleton + Live\+Data). 
+
+Esta clase implementa un almacén de datos centralizado que desacopla el productor de datos (\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{Sensor\+Tracking\+Service}) del consumidor (\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{Sesion\+Sensor\+Activity}).
+
+{\bfseries{Arquitectura\+:}} Actúa como un bus de eventos en tiempo real. Al usar {\ttfamily Mutable\+Live\+Data}, garantiza que\+:
+\begin{DoxyEnumerate}
+\item La UI siempre observe el último dato disponible.
+\item No se produzcan fugas de memoria (Memory Leaks) si la actividad se destruye.
+\item La actualización de la interfaz sea segura respecto a los hilos (Thread-\/safe) usando {\ttfamily .post\+Value()}.
+\end{DoxyEnumerate}
+
+\begin{DoxyAuthor}{Author}
+Sandra (Arquitectura Live\+Data -\/ 29/10/2025) 
+\end{DoxyAuthor}
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00028}{28}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!TrackingDataHolder@{TrackingDataHolder}}
+\index{TrackingDataHolder@{TrackingDataHolder}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{TrackingDataHolder()}{TrackingDataHolder()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec} 
+com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+Tracking\+Data\+Holder (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Constructor privado para forzar el patrón Singleton. 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00061}{61}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ab9517d36ff53bf3841a95874c9602eca}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!getInstance@{getInstance}}
+\index{getInstance@{getInstance}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{getInstance()}{getInstance()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ab9517d36ff53bf3841a95874c9602eca} 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}{Tracking\+Data\+Holder}} com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+get\+Instance (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Proporciona la única instancia accesible de la clase. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ab9517d36ff53bf3841a95874c9602eca}{get\+Instance()} -\/\texorpdfstring{$>$}{>} (instance\+:\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}). 
+
+\begin{DoxyReturn}{Returns}
+La instancia Singleton de \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}. 
+\end{DoxyReturn}
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00069}{69}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a656a0bcabba13a55fac2e77c8eaff1f6}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!alertData@{alertData}}
+\index{alertData@{alertData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{alertData}{alertData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a656a0bcabba13a55fac2e77c8eaff1f6} 
+final Mutable\+Live\+Data$<$String$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+alert\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene una cadena con los mensajes de alertas de mediciones (CO2, O3, Temp) que superan umbrales. 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00054}{54}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_aaf921d3b025949577b6e23d753877c19}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!bateriaData@{bateriaData}}
+\index{bateriaData@{bateriaData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{bateriaData}{bateriaData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_aaf921d3b025949577b6e23d753877c19} 
+final Mutable\+Live\+Data$<$Integer$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+bateria\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene el porcentaje de batería del sensor. 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00044}{44}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a64b70ff8043f701e41c58c02a783c196}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!co2Data@{co2Data}}
+\index{co2Data@{co2Data}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{co2Data}{co2Data}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a64b70ff8043f701e41c58c02a783c196} 
+final Mutable\+Live\+Data$<$Integer$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+co2\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene la lectura de la concentración de Dióxido de Carbono (CO2) en ppm. 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00042}{42}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ae14d9cdd37e1ef21a98ae605d947642b}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!estadoData@{estadoData}}
+\index{estadoData@{estadoData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{estadoData}{estadoData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_ae14d9cdd37e1ef21a98ae605d947642b} 
+final Mutable\+Live\+Data$<$String$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+estado\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene el estado de conexión del sensor ("{}\+Conectado"{} o "{}\+Desconectado"{}). 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00050}{50}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_aad66a79e814879dfa3bbb9d621adc8ec}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!incidenciaData@{incidenciaData}}
+\index{incidenciaData@{incidenciaData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{incidenciaData}{incidenciaData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_aad66a79e814879dfa3bbb9d621adc8ec} 
+final Mutable\+Live\+Data$<$String$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+incidencia\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene un mensaje sobre incidencias (principalmente la pérdida de conexión del sensor). 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00056}{56}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a870901b3fadea72fce8f00c5689e4f43}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!instance@{instance}}
+\index{instance@{instance}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{instance}{instance}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a870901b3fadea72fce8f00c5689e4f43} 
+final \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}{Tracking\+Data\+Holder}} com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+instance = new \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a23925a4cb092530d8d846b46390ec4ec}{Tracking\+Data\+Holder}}()\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Instancia única y estática de la clase (Singleton). 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00030}{30}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a5e7d100134871c09654e973abc6cdd8b}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!locationData@{locationData}}
+\index{locationData@{locationData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{locationData}{locationData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a5e7d100134871c09654e973abc6cdd8b} 
+final Mutable\+Live\+Data$<$String$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+location\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene la ubicación actual del dispositivo (ej\+: "{}\+Calle Falsa 123, Ciudad"{}). 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00034}{34}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a2e7336e419f05ec7c96905f4dfca99dc}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!ozonoData@{ozonoData}}
+\index{ozonoData@{ozonoData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{ozonoData}{ozonoData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a2e7336e419f05ec7c96905f4dfca99dc} 
+final Mutable\+Live\+Data$<$Float$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+ozono\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene la lectura del nivel de Ozono (O3) en ppm. 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00040}{40}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a312af5f627dfbe62954bd0ef35e91538}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!rssiData@{rssiData}}
+\index{rssiData@{rssiData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{rssiData}{rssiData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a312af5f627dfbe62954bd0ef35e91538} 
+final Mutable\+Live\+Data$<$Integer$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+rssi\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene la intensidad de la señal recibida (RSSI) en d\+Bm. 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00046}{46}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a3675e15492b65c71f6f6e3a65181e4bf}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!temperaturaData@{temperaturaData}}
+\index{temperaturaData@{temperaturaData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{temperaturaData}{temperaturaData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a3675e15492b65c71f6f6e3a65181e4bf} 
+final Mutable\+Live\+Data$<$Float$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+temperatura\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene la lectura de la temperatura en grados Celsius. 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00038}{38}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a1a1ed262868978a7570c80a4979bb8b6}\index{com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}!timeData@{timeData}}
+\index{timeData@{timeData}!com.example.breathe\_tracking.TrackingDataHolder@{com.example.breathe\_tracking.TrackingDataHolder}}
+\doxysubsubsection{\texorpdfstring{timeData}{timeData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder_a1a1ed262868978a7570c80a4979bb8b6} 
+final Mutable\+Live\+Data$<$String$>$ com.\+example.\+breathe\+\_\+tracking.\+Tracking\+Data\+Holder.\+time\+Data = new Mutable\+Live\+Data$<$$>$()}
+
+
+
+Contiene la hora de la última recepción de datos del sensor (ej\+: "{}Última conex. 14\+:30"{}). 
+
+
+
+Definition at line \mbox{\hyperlink{_tracking_data_holder_8java_source_l00036}{36}} of file \mbox{\hyperlink{_tracking_data_holder_8java_source}{Tracking\+Data\+Holder.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_tracking_data_holder_8java}{Tracking\+Data\+Holder.\+java}}\end{DoxyCompactItemize}

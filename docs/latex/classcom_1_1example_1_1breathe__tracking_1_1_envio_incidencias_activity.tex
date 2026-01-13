@@ -1,0 +1,83 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Envio\+Incidencias\+Activity Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity}\index{com.example.breathe\_tracking.EnvioIncidenciasActivity@{com.example.breathe\_tracking.EnvioIncidenciasActivity}}
+
+
+Gestiona la interfaz y lógica para reportar incidencias de desconexión.  
+
+
+
+
+Inherits App\+Compat\+Activity.
+
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity_a81d7f6711809287661cd2b7f06457ff5}{on\+Create}} (Bundle saved\+Instance\+State)
+\begin{DoxyCompactList}\small\item\em Método de inicialización de la actividad. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Gestiona la interfaz y lógica para reportar incidencias de desconexión. 
+
+Esta actividad se encarga de\+:
+\begin{DoxyEnumerate}
+\item Recibir datos del sensor fallido via Intent.
+\item Pre-\/cargar un formulario con un mensaje y título sugerido.
+\item Enviar un correo electrónico al administrador usando \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{Java\+Mail\+API}.
+\item Registrar la incidencia en la colección \textquotesingle{}incidencias\textquotesingle{} de Firebase Firestore.
+\end{DoxyEnumerate}
+
+\begin{DoxyAuthor}{Author}
+Sandra (Creación y autocomplete) 
+
+Rocio (Subida a Firebase) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+30/10/2024 (Creación) 
+
+25/11/2024 (Integración Firebase)
+\end{DoxyDate}
+\begin{DoxySeeAlso}{See also}
+\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_java_mail_a_p_i}{Java\+Mail\+API} 
+\end{DoxySeeAlso}
+
+
+Definition at line \mbox{\hyperlink{_envio_incidencias_activity_8java_source_l00045}{45}} of file \mbox{\hyperlink{_envio_incidencias_activity_8java_source}{Envio\+Incidencias\+Activity.\+java}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity_a81d7f6711809287661cd2b7f06457ff5}\index{com.example.breathe\_tracking.EnvioIncidenciasActivity@{com.example.breathe\_tracking.EnvioIncidenciasActivity}!onCreate@{onCreate}}
+\index{onCreate@{onCreate}!com.example.breathe\_tracking.EnvioIncidenciasActivity@{com.example.breathe\_tracking.EnvioIncidenciasActivity}}
+\doxysubsubsection{\texorpdfstring{onCreate()}{onCreate()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity_a81d7f6711809287661cd2b7f06457ff5} 
+void com.\+example.\+breathe\+\_\+tracking.\+Envio\+Incidencias\+Activity.\+on\+Create (\begin{DoxyParamCaption}\item[{Bundle}]{saved\+Instance\+State}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Método de inicialización de la actividad. 
+
+Se encarga de\+:
+\begin{DoxyItemize}
+\item Vincular las vistas del layout.
+\item Recuperar datos del Intent (SENSOR\+\_\+\+NAME, UBICACION, ULTIMA\+\_\+\+CONEXION).
+\item Autocompletar los campos de texto con un mensaje preformateado.
+\item Configurar los listeners para los botones de Aceptar y Cancelar.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em saved\+Instance\+State} & Estado guardado de la aplicación (si existe). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_envio_incidencias_activity_8java_source_l00058}{58}} of file \mbox{\hyperlink{_envio_incidencias_activity_8java_source}{Envio\+Incidencias\+Activity.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_envio_incidencias_activity_8java}{Envio\+Incidencias\+Activity.\+java}}\end{DoxyCompactItemize}

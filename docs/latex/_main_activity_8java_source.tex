@@ -1,0 +1,354 @@
+\doxysection{Main\+Activity.\+java}
+\hypertarget{_main_activity_8java_source}{}\label{_main_activity_8java_source}\index{src/app/src/main/java/com/example/breathe\_tracking/MainActivity.java@{src/app/src/main/java/com/example/breathe\_tracking/MainActivity.java}}
+\mbox{\hyperlink{_main_activity_8java}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00001}00001\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00002}00002\ \textcolor{comment}{\ *\ @file\ MainActivity.java}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00003}00003\ \textcolor{comment}{\ *\ @brief\ Punto\ de\ entrada\ de\ la\ aplicación:\ Gestión\ de\ Login\ y\ Autenticación.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00004}00004\ \textcolor{comment}{\ *\ @package\ com.example.breathe\_tracking}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00005}00005\ \textcolor{comment}{\ *\ @copyright\ Copyright\ ©\ 2025}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00006}00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00008}00008\ \textcolor{keyword}{package\ }com.example.breathe\_tracking;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00010}00010\ \textcolor{keyword}{import}\ android.Manifest;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00011}00011\ \textcolor{keyword}{import}\ android.content.Intent;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00012}00012\ \textcolor{keyword}{import}\ android.content.SharedPreferences;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00013}00013\ \textcolor{keyword}{import}\ android.content.pm.PackageManager;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00014}00014\ \textcolor{keyword}{import}\ android.os.Bundle;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00015}00015\ \textcolor{keyword}{import}\ android.provider.MediaStore;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00016}00016\ \textcolor{keyword}{import}\ android.util.Log;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00017}00017\ \textcolor{keyword}{import}\ android.view.View;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00018}00018\ \textcolor{keyword}{import}\ android.widget.Button;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00019}00019\ \textcolor{keyword}{import}\ android.widget.EditText;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00020}00020\ \textcolor{keyword}{import}\ android.widget.TextView;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00021}00021\ \textcolor{keyword}{import}\ android.widget.Toast;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00023}00023\ \textcolor{keyword}{import}\ androidx.activity.result.ActivityResultLauncher;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00024}00024\ \textcolor{keyword}{import}\ androidx.activity.result.contract.ActivityResultContracts;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00025}00025\ \textcolor{keyword}{import}\ androidx.annotation.NonNull;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00026}00026\ \textcolor{keyword}{import}\ androidx.appcompat.app.AlertDialog;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00027}00027\ \textcolor{keyword}{import}\ androidx.appcompat.app.AppCompatActivity;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00028}00028\ \textcolor{keyword}{import}\ androidx.biometric.BiometricPrompt;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00029}00029\ \textcolor{keyword}{import}\ androidx.core.content.ContextCompat;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00031}00031\ \textcolor{keyword}{import}\ com.google.zxing.integration.android.IntentIntegrator;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00032}00032\ \textcolor{keyword}{import}\ com.google.zxing.integration.android.IntentResult;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00034}00034\ \textcolor{keyword}{import}\ com.google.firebase.database.DatabaseReference;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00035}00035\ \textcolor{keyword}{import}\ com.google.firebase.database.FirebaseDatabase;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00036}00036\ \textcolor{keyword}{import}\ com.google.firebase.database.DataSnapshot;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00037}00037\ \textcolor{keyword}{import}\ com.google.firebase.database.DatabaseError;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00038}00038\ \textcolor{keyword}{import}\ com.google.firebase.database.ValueEventListener;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00040}00040\ \textcolor{keyword}{import}\ com.google.firebase.firestore.DocumentSnapshot;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00041}00041\ \textcolor{keyword}{import}\ com.google.firebase.firestore.FirebaseFirestore;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00042}00042\ \textcolor{comment}{//\ Necesarios\ para\ la\ consulta}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00043}00043\ \textcolor{keyword}{import}\ com.google.android.gms.tasks.Task;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00044}00044\ \textcolor{keyword}{import}\ com.google.android.gms.tasks.OnCompleteListener;}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00045}00045\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00046}00046\ \textcolor{comment}{/**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00047}00047\ \textcolor{comment}{\ *\ @class\ MainActivity}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00048}00048\ \textcolor{comment}{\ *\ @brief\ Actividad\ de\ inicio\ de\ sesión\ multimodal\ (Manual,\ QR,\ Biometría).}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00049}00049\ \textcolor{comment}{\ *\ @extends\ AppCompatActivity}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00050}00050\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00051}00051\ \textcolor{comment}{\ *\ @details}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00052}00052\ \textcolor{comment}{\ *\ Esta\ clase\ gestiona\ el\ acceso\ seguro\ a\ la\ aplicación.\ Implementa\ tres\ métodos\ de\ entrada:}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00053}00053\ \textcolor{comment}{\ *\ 1.\ **Manual:**\ El\ usuario\ introduce\ el\ código\ alfanumérico\ del\ sensor.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00054}00054\ \textcolor{comment}{\ *\ 2.\ **QR:**\ Escaneo\ mediante\ la\ cámara\ usando\ la\ librería\ ZXing.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00055}00055\ \textcolor{comment}{\ *\ 3.\ **Biométrico:**\ Acceso\ rápido\ mediante\ huella\ dactilar\ si\ ya\ hubo\ un\ inicio\ de\ sesión\ previo\ exitoso.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00056}00056\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00057}00057\ \textcolor{comment}{\ *\ Independientemente\ del\ método,\ el\ código\ final\ se\ valida\ contra\ la\ colección\ \`{}sensores`\ en\ **Firebase\ Firestore**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00058}00058\ \textcolor{comment}{\ *\ antes\ de\ permitir\ el\ acceso\ a\ @ref\ SesionSensorActivity.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00059}00059\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00060}00060\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00061}00061\ \textcolor{comment}{\ *\ @author\ Sandra\ (Lógica\ base\ y\ permisos\ -\/\ 30/10/2025)}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00062}00062\ \textcolor{comment}{\ *\ @author\ Rocio\ (Lógica\ BBDD\ -\/\ 30/10/2025)}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00063}00063\ \textcolor{comment}{\ *\ @author\ Rocio\ (Lector\ QR\ -\/\ 16/11/2025)}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00064}00064\ \textcolor{comment}{\ *\ @author\ Rocio\ (Acceso\ Biométrico\ -\/\ 17/11/2025)}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00065}00065\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00066}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{00066}}\ \textcolor{keyword}{public}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}\ \textcolor{keyword}{extends}\ AppCompatActivity\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00067}00067\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00068}00068\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Campo\ de\ texto\ para\ ingresar\ manualmente\ el\ código\ del\ sensor.\ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00069}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ac4d76c764cb0a31d2436297956a510d0}{00069}}\ \ \ \ \ \textcolor{keyword}{private}\ EditText\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ac4d76c764cb0a31d2436297956a510d0}{sensorCodeEditText}};}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00070}00070\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00071}00071\ \textcolor{comment}{\ \ \ \ /**\ @brief\ Instancia\ de\ Firebase\ Firestore\ para\ la\ verificación\ del\ código.\ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00072}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae8402ecb9fe3aade2d85de4557a8f6c2}{00072}}\ \ \ \ \ \textcolor{keyword}{private}\ FirebaseFirestore\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae8402ecb9fe3aade2d85de4557a8f6c2}{db}};}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00075}00075\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Definición\ del\ Lanzador\ de\ Permisos\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00076}00076\ \ \ \ \ \textcolor{comment}{//\ Permisos\ para\ abrir\ la\ camara\ (si\ acepta\ llama\ al\ metodo\ para\ abrir\ la\ camara,\ si\ no\ se\ muestra\ un\ toast)}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00077}00077\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00078}00078\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Launcher\ para\ solicitar\ el\ permiso\ de\ cámara\ necesario\ para\ el\ escáner\ QR.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00079}00079\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00080}00080\ \textcolor{comment}{\ \ \ \ \ *\ @ref\ openCamera()\ es\ llamado\ si\ el\ permiso\ es\ concedido}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00081}00081\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00082}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a6a91b83cba2c2570d26677eafc502fe2}{00082}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keyword}{final}\ ActivityResultLauncher<String>\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a6a91b83cba2c2570d26677eafc502fe2}{requestPermissionLauncher}}\ =\ registerForActivityResult(}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ ActivityResultContracts.RequestPermission(),}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ isGranted\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (isGranted)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ openCamera();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Permiso\ de\ cámara\ denegado"{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00091}00091\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ Lanzador\ de\ Permisos\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00094}00094\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/\ Lanzador\ de\ la\ camara\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00095}00095\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00096}00096\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00097}00097\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Gestiona\ el\ resultado\ de\ la\ actividad\ de\ escaneo\ QR\ (ZXing).}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00098}00098\ \textcolor{comment}{\ \ \ \ \ *\ Recibe\ el\ string\ decodificado\ y\ lo\ pega\ en\ el\ campo\ de\ texto.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00099}00099\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00100}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0d0e953bf1ad46581482d0dcf4e6d0f7}{00100}}\ \ \ \ \ \textcolor{keyword}{private}\ ActivityResultLauncher<Intent>\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0d0e953bf1ad46581482d0dcf4e6d0f7}{qrScannerLauncher}};}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00101}00101\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/\ Fin\ Lanzador\ de\ la\ camara\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00104}00104\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Metodo\ Principal\ (onCreate)\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00105}00105\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00106}00106\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00107}00107\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Inicialización\ de\ la\ actividad.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00108}00108\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00109}00109\ \textcolor{comment}{\ \ \ \ \ *\ (savedInstanceState:Bundle)\ -\/>\ onCreate()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00110}00110\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00111}00111\ \textcolor{comment}{\ \ \ \ \ *\ 1.\ Configura\ la\ UI\ (Botones,\ Textos).}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00112}00112\ \textcolor{comment}{\ \ \ \ \ *\ 2.\ Inicializa\ Firebase.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00113}00113\ \textcolor{comment}{\ \ \ \ \ *\ 3.\ Lanza\ el\ prompt\ biométrico\ para\ intento\ de\ login\ rápido.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00114}00114\ \textcolor{comment}{\ \ \ \ \ *\ 4.\ Configura\ los\ listeners\ para\ el\ botón\ de\ entrar\ y\ el\ escaneo\ QR.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00115}00115\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00116}00116\ \textcolor{comment}{\ \ \ \ \ *\ @param\ savedInstanceState\ Estado\ guardado\ de\ la\ aplicación.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00117}00117\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00118}00118\ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00119}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a3acd9a596b16fd0a3d0c91cd78760756}{00119}}\ \ \ \ \ \textcolor{keyword}{protected}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a3acd9a596b16fd0a3d0c91cd78760756}{onCreate}}(Bundle\ savedInstanceState)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00120}00120\ \ \ \ \ \ \ \ \ super.onCreate(savedInstanceState);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00121}00121\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Vinculamos\ con\ la\ vista\ de\ login}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00122}00122\ \ \ \ \ \ \ \ \ setContentView(R.layout.login);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00124}00124\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inicialización\ de\ Firebase}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00125}00125\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae8402ecb9fe3aade2d85de4557a8f6c2}{db}}\ =\ FirebaseFirestore.getInstance();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00127}00127\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Buscamos\ los\ elementos\ de\ la\ vista\ \ y\ los\ inicializamos\ en\ variables}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00128}00128\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ac4d76c764cb0a31d2436297956a510d0}{sensorCodeEditText}}\ =\ findViewById(R.id.editText\_codigo);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00129}00129\ \ \ \ \ \ \ \ \ Button\ loginButton\ =\ findViewById(R.id.button\_entrar);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00130}00130\ \ \ \ \ \ \ \ \ TextView\ qrCodeTextView\ =\ findViewById(R.id.textView\_codigoQR);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00132}00132\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Llamada\ a\ acceso\ biométrico}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00133}00133\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a}{mostrarAutenticacionBiometrica}}();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00134}00134\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00135}00135\ \textcolor{comment}{\ \ \ \ \ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00136}00136\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @brief\ Inicializamos\ el\ manejador\ de\ resultados\ del\ QR.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00137}00137\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Procesa\ el\ resultado\ del\ escaneo,\ pegando\ el\ contenido\ en\ el\ campo\ del\ código\ del\ sensor.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00138}00138\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00139}00139\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Inicializamos\ el\ manejador\ de\ resultados\ del\ QR}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00140}00140\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0d0e953bf1ad46581482d0dcf4e6d0f7}{qrScannerLauncher}}\ =\ registerForActivityResult(}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ ActivityResultContracts.StartActivityForResult(),}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ result\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Manejador\ del\ resultado\ de\ la\ actividad\ QR}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IntentResult\ scanResult\ =\ IntentIntegrator.parseActivityResult(result.getResultCode(),\ result.getData());}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00145}00145\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (scanResult\ !=\ null\ \&\&\ scanResult.getContents()\ !=\ null)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ String\ codigoQR\ =\ scanResult.getContents();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00149}00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//PEGAR\ EL\ CÓDIGO\ EN\ EL\ CAMPO}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sensorCodeEditText.setText(codigoQR);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Código\ de\ sesión\ pegado"{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00153}00153\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ if\ (result.getResultCode()\ ==\ RESULT\_CANCELED)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Escaneo\ cancelado"{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00157}00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00158}00158\ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00160}00160\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00161}00161\ \textcolor{comment}{\ \ \ \ \ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00162}00162\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @brief\ Listener\ para\ el\ botón\ de\ login.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00163}00163\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Recoge\ el\ código,\ verifica\ que\ no\ esté\ vacío\ y\ llama\ a}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00164}00164\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @ref\ checkSensorCodeInDatabase().}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00165}00165\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00166}00166\ \ \ \ \ \ \ \ \ loginButton.setOnClickListener(v\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00167}00167\ \ \ \ \ \ \ \ \ \ \ \ \ String\ sensorCode\ =\ sensorCodeEditText.getText().toString().trim();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00168}00168\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00169}00169\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Comprobamos\ que\ el\ campo\ no\ esté\ vacío}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sensorCode.isEmpty())\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Si\ el\ campo\ está\ vacío,\ mostramos\ un\ mensaje\ de\ error}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ AlertDialog.Builder(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.this)}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setTitle(\textcolor{stringliteral}{"{}Error,\ campo\ vacío"{}})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00174}00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setMessage(\textcolor{stringliteral}{"{}Añade\ el\ código\ del\ sensor\ para\ vincular."{}})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setPositiveButton(\textcolor{stringliteral}{"{}Aceptar"{}},\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Si\ no\ está\ vacío,\ iniciamos\ la\ verificación\ asíncrona\ con\ Firebase}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ checkSensorCodeInDatabase(sensorCode);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00181}00181\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00182}00182\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00183}00183\ \textcolor{comment}{\ \ \ \ \ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00184}00184\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ @brief\ Listener\ para\ el\ texto\ del\ QR.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00185}00185\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ *\ Comprueba\ el\ permiso\ de\ cámara\ y,\ si\ es\ necesario,\ lo\ solicita\ antes\ de\ abrir\ la\ cámara.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00186}00186\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00187}00187\ \ \ \ \ \ \ \ \ qrCodeTextView.setOnClickListener(v\ -\/>\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00188}00188\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Comprobamos\ si\ hay\ permiso\ para\ abrir\ la\ camara.\ Si\ no\ lo\ tenemos,\ lo\ pedimos!!}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00189}00189\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ContextCompat.checkSelfPermission(}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00190}00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{this},\ Manifest.permission.CAMERA)\ ==}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00191}00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ PackageManager.PERMISSION\_GRANTED)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00192}00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ openCamera();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00193}00193\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00194}00194\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ requestPermissionLauncher.launch(Manifest.permission.CAMERA);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00195}00195\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00196}00196\ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00197}00197\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00198}00198\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ Metodo\ Principal\ (onCreate)\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00199}00199\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00201}00201\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Intent\ para\ abrir\ la\ camara\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00202}00202\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00203}00203\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Inicializa\ y\ lanza\ la\ actividad\ del\ escáner\ QR.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00204}00204\ \textcolor{comment}{\ \ \ \ \ *\ ()\ -\/>\ openCamera()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00205}00205\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00206}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17}{00206}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a926e9cf10d827a42e877105acbc05e17}{openCamera}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00207}00207\ \ \ \ \ \ \ \ \ IntentIntegrator\ integrator\ =\ \textcolor{keyword}{new}\ IntentIntegrator(\textcolor{keyword}{this});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00208}00208\ \ \ \ \ \ \ \ \ integrator.setDesiredBarcodeFormats(IntentIntegrator.QR\_CODE);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00209}00209\ \ \ \ \ \ \ \ \ integrator.setPrompt(\textcolor{stringliteral}{"{}Escanea\ el\ Código\ de\ Sesión"{}});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00210}00210\ \ \ \ \ \ \ \ \ integrator.setCameraId(0);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00211}00211\ \ \ \ \ \ \ \ \ integrator.setBeepEnabled(\textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00212}00212\ \ \ \ \ \ \ \ \ integrator.setBarcodeImageEnabled(\textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00213}00213\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00214}00214\ \ \ \ \ \ \ \ \ Intent\ scanIntent\ =\ integrator.createScanIntent();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00215}00215\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00216}00216\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Iniciar\ el\ escaneo\ usando\ el\ lanzador\ que\ configuramos\ para\ manejar\ el\ resultado}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00217}00217\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0d0e953bf1ad46581482d0dcf4e6d0f7}{qrScannerLauncher}}.launch(scanIntent);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00218}00218\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00219}00219\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ Intent\ para\ abrir\ la\ camara\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00220}00220\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00221}00221\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00222}00222\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Metodos\ para\ acceso\ biométrico\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}\textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00223}00223\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00224}00224\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Muestra\ el\ diálogo\ de\ autenticación\ biométrica\ (huella\ dactilar).}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00225}00225\ \textcolor{comment}{\ \ \ \ \ *\ Si\ la\ autenticación\ es\ exitosa,\ intenta\ recuperar\ el\ último\ ID\ de\ sensor\ guardado\ para\ iniciar\ la\ sesión\ rápida.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00226}00226\ \textcolor{comment}{\ \ \ \ \ *\ ()\ -\/>\ mostrarAutenticacionBiometrica()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00227}00227\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00228}00228\ \textcolor{comment}{\ \ \ \ \ *\ Lógica:}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00229}00229\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Si\ la\ huella\ es\ válida\ -\/>\ Recupera\ \`{}LAST\_SENSOR\_ID`\ de\ SharedPreferences.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00230}00230\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Si\ hay\ un\ ID\ guardado\ -\/>\ Inicia\ sesión\ automáticamente\ (@ref\ iniciarSesionExitosa).}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00231}00231\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Si\ no\ hay\ ID\ -\/>\ Mantiene\ al\ usuario\ en\ la\ pantalla\ para\ login\ manual.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00232}00232\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00233}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a}{00233}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a063fb17dd1d35cc7db4ae8eb7d569a2a}{mostrarAutenticacionBiometrica}}()\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00234}00234\ \ \ \ \ \ \ \ \ BiometricPrompt.PromptInfo\ promptInfo\ =\ \textcolor{keyword}{new}\ BiometricPrompt.PromptInfo.Builder()}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00235}00235\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setTitle(\textcolor{stringliteral}{"{}Acceso\ Biométrico"{}})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00236}00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setSubtitle(\textcolor{stringliteral}{"{}Usa\ tu\ huella\ dactilar\ para\ iniciar\ sesión"{}})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setNegativeButtonText(\textcolor{stringliteral}{"{}Usar\ código\ de\ sensor"{}})\ \textcolor{comment}{//\ Opción\ para\ volver\ al\ login\ normal}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setConfirmationRequired(\textcolor{keyword}{true})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00239}00239\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .build();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00240}00240\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00241}00241\ \ \ \ \ \ \ \ \ BiometricPrompt\ biometricPrompt\ =\ \textcolor{keyword}{new}\ BiometricPrompt(}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.this,}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00243}00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ContextCompat.getMainExecutor(\textcolor{keyword}{this}),}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ BiometricPrompt.AuthenticationCallback()\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ public\ void\ onAuthenticationSucceeded(@NonNull\ BiometricPrompt.AuthenticationResult\ result)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ super.onAuthenticationSucceeded(result);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1.\ Recuperar\ el\ último\ ID\ guardado}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00249}00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SharedPreferences\ prefs\ =\ getSharedPreferences(\textcolor{stringliteral}{"{}AppPrefs"{}},\ MODE\_PRIVATE);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00250}00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ String\ lastSensorId\ =\ prefs.getString(\textcolor{stringliteral}{"{}LAST\_SENSOR\_ID"{}},\ null);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00251}00251\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00252}00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (lastSensorId\ !=\ null)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00253}00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2.\ Si\ se\ encuentra\ un\ ID\ real,\ iniciar\ la\ sesión\ con\ ese\ ID.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00254}00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Log.d(\textcolor{stringliteral}{"{}BIOMETRIA"{}},\ \textcolor{stringliteral}{"{}Acceso\ biométrico\ exitoso.\ Usando\ ID\ guardado:\ "{}}\ +\ lastSensorId);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00255}00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ iniciarSesionExitosa(lastSensorId);\ \textcolor{comment}{//\ ¡Usamos\ el\ ID\ real\ aquí!}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00256}00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ else\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00257}00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 3.\ Caso\ de\ primer\ uso:\ No\ hay\ ID\ guardado.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00258}00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(MainActivity.this,\ \textcolor{stringliteral}{"{}Inicie\ sesión\ con\ un\ código\ primero\ para\ habilitar\ el\ acceso\ rápido."{}},\ Toast.LENGTH\_LONG).show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00259}00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nota:\ Mantenemos\ el\ usuario\ en\ la\ pantalla\ de\ login.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00260}00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00261}00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00262}00262\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00263}00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ onAuthenticationError(\textcolor{keywordtype}{int}\ errorCode,\ @NonNull\ CharSequence\ errString)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00265}00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ super.onAuthenticationError(errorCode,\ errString);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00266}00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Error}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00267}00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.this,\ \textcolor{stringliteral}{"{}Error\ de\ autenticación:\ "{}}\ +\ errString,\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00268}00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00269}00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00270}00270\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00271}00271\ \ \ \ \ \ \ \ \ biometricPrompt.authenticate(promptInfo);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00272}00272\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00273}00273\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00274}00274\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00275}00275\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Guarda\ el\ código\ del\ sensor\ en\ SharedPreferences\ e\ inicia\ la\ \(\backslash\)ref\ SesionSensorActivity.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00276}00276\ \textcolor{comment}{\ \ \ \ \ *\ Esta\ función\ se\ llama\ tras\ un\ login\ exitoso\ (manual\ o\ biométrico).}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00277}00277\ \textcolor{comment}{\ \ \ \ \ *\ (code:String)\ -\/>\ iniciarSesionExitosa()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00278}00278\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00279}00279\ \textcolor{comment}{\ \ \ \ \ *\ @param\ code\ El\ código\ de\ sensor\ verificado.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00280}00280\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00281}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{00281}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{iniciarSesionExitosa}}(String\ code)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00282}00282\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Esta\ acción\ se\ realiza\ siempre,\ sobreescribiendo\ el\ ID\ con\ el\ mismo\ ID,\ lo\ cual\ es\ seguro.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00283}00283\ \ \ \ \ \ \ \ \ SharedPreferences\ prefs\ =\ getSharedPreferences(\textcolor{stringliteral}{"{}AppPrefs"{}},\ MODE\_PRIVATE);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00284}00284\ \ \ \ \ \ \ \ \ prefs.edit().putString(\textcolor{stringliteral}{"{}LAST\_SENSOR\_ID"{}},\ code).apply();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00285}00285\ \ \ \ \ \ \ \ \ Log.d(\textcolor{stringliteral}{"{}BIOMETRIA"{}},\ \textcolor{stringliteral}{"{}ID\ de\ sensor\ guardado/actualizado:\ "{}}\ +\ code);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00286}00286\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00287}00287\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inicio\ de\ actividad}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00288}00288\ \ \ \ \ \ \ \ \ Intent\ intent\ =\ \textcolor{keyword}{new}\ Intent(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.this,\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{SesionSensorActivity}}.class);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00289}00289\ \ \ \ \ \ \ \ \ intent.putExtra(\textcolor{stringliteral}{"{}SENSOR\_CODE"{}},\ code);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00290}00290\ \ \ \ \ \ \ \ \ startActivity(intent);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00291}00291\ \ \ \ \ \ \ \ \ finish();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00292}00292\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00293}00293\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00294}00294\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ Metodos\ para\ acceso\ biométrico\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00295}00295\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00296}00296\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Inicio\ Metodo\ para\ comprobación\ firebase\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00297}00297\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00298}00298\ \textcolor{comment}{\ \ \ \ /**}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00299}00299\ \textcolor{comment}{\ \ \ \ \ *\ @brief\ Verifica\ asíncronamente\ si\ el\ código\ del\ sensor\ existe\ como\ documento\ en\ la\ colección\ 'sensores'\ de\ Firebase\ Firestore.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00300}00300\ \textcolor{comment}{\ \ \ \ \ *\ (sensorCode:String)\ -\/>\ checkSensorCodeInDatabase()\ -\/>\ ()}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00301}00301\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00302}00302\ \textcolor{comment}{\ \ \ \ \ *\ Busca\ el\ documento\ con\ ID\ \`{}sensorCode`\ en\ la\ colección\ \`{}sensores`.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00303}00303\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Si\ existe:\ Llama\ a\ @ref\ iniciarSesionExitosa.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00304}00304\ \textcolor{comment}{\ \ \ \ \ *\ -\/\ Si\ no\ existe\ o\ error:\ Muestra\ AlertDialog.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00305}00305\ \textcolor{comment}{\ \ \ \ \ *}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00306}00306\ \textcolor{comment}{\ \ \ \ \ *\ @param\ sensorCode\ El\ código\ de\ sensor\ ingresado\ por\ el\ usuario.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00307}00307\ \textcolor{comment}{\ \ \ \ \ */}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00308}\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27}{00308}}\ \ \ \ \ \textcolor{keyword}{private}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae060a75f7aa56f5b3bc76d59aeeaae27}{checkSensorCodeInDatabase}}(String\ sensorCode)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00309}00309\ \ \ \ \ \ \ \ \ Toast.makeText(\textcolor{keyword}{this},\ \textcolor{stringliteral}{"{}Verificando\ código\ en\ Firestore..."{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00311}00311\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Referencia\ específica\ al\ documento\ del\ sensor:\ coleccion(sensores)/documento(código)}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00312}00312\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_ae8402ecb9fe3aade2d85de4557a8f6c2}{db}}.collection(\textcolor{stringliteral}{"{}sensores"{}}).document(sensorCode)}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00313}00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .get()\ \textcolor{comment}{//\ Consulta\ de\ un\ solo\ evento}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00314}00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .addOnCompleteListener(\textcolor{keyword}{new}\ OnCompleteListener<DocumentSnapshot>()\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00315}00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ @Override}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00316}00316\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keywordtype}{void}\ onComplete(@NonNull\ Task<DocumentSnapshot>\ task)\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00317}00317\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (task.isSuccessful())\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ DocumentSnapshot\ document\ =\ task.getResult();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00319}00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Diseño\ Lógico:\ Validación\ de\ Existencia}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (document.exists())\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Éxito:\ El\ documento\ existe\ en\ la\ colección\ 'sensores'.}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Log.d(\textcolor{stringliteral}{"{}Firestore\_LOGIN"{}},\ \textcolor{stringliteral}{"{}Sensor\ encontrado:\ "{}}\ +\ sensorCode);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.this,\ \textcolor{stringliteral}{"{}Conexión\ exitosa\ con\ el\ sensor."{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity_a0c31b44f61008ab2fc5af0b331badebd}{iniciarSesionExitosa}}(sensorCode);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallo\ 1:\ El\ código\ NO\ existe}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Log.e(\textcolor{stringliteral}{"{}Firestore\_LOGIN"{}},\ \textcolor{stringliteral}{"{}Código\ NO\ encontrado:\ "{}}\ +\ sensorCode);}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ AlertDialog.Builder(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.this)}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00329}00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setTitle(\textcolor{stringliteral}{"{}Error\ de\ Vinculación"{}})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00330}00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setMessage(\textcolor{stringliteral}{"{}El\ código\ de\ sensor\ '"{}}\ +\ sensorCode\ +\ \textcolor{stringliteral}{"{}'\ no\ es\ válido\ o\ no\ está\ registrado."{}})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00331}00331\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setPositiveButton(\textcolor{stringliteral}{"{}Aceptar"{}},\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00333}00333\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00334}00334\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00335}00335\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fallo\ 2:\ Error\ de\ conexión\ o\ tarea}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00336}00336\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Log.e(\textcolor{stringliteral}{"{}Firestore\_LOGIN"{}},\ \textcolor{stringliteral}{"{}Fallo\ al\ consultar\ Firestore:\ "{}},\ task.getException());}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00337}00337\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ AlertDialog.Builder(\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_main_activity}{MainActivity}}.this)}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00338}00338\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setTitle(\textcolor{stringliteral}{"{}Error\ de\ Conexión"{}})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00339}00339\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setMessage(\textcolor{stringliteral}{"{}Fallo\ al\ consultar\ la\ BD:\ "{}}\ +\ task.getException().getMessage())}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00340}00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .setPositiveButton(\textcolor{stringliteral}{"{}Aceptar"{}},\ \textcolor{keyword}{null})}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00341}00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .show();}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00342}00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00343}00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00344}00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00345}00345\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00346}00346\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/\ Fin\ Metodo\ para\ comprobación\ firebase\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00347}00347\ }
+\DoxyCodeLine{\Hypertarget{_main_activity_8java_source_l00348}00348\ \}}
+
+\end{DoxyCode}

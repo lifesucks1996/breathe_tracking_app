@@ -1,0 +1,539 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+
+
+Actividad principal que muestra la interfaz de usuario con los datos del sensor en tiempo real.  
+
+
+
+
+Inherits App\+Compat\+Activity.
+
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8d1e80a1b6b857e96a12e1d73419817e}{on\+Create}} (Bundle saved\+Instance\+State)
+\begin{DoxyCompactList}\small\item\em Inicialización de la actividad. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a2fc9953ddaccc2190e5e20be6bbd3932}{setup\+Observers}} ()
+\begin{DoxyCompactList}\small\item\em Configura los observadores Live\+Data para actualizar la UI en tiempo real. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38}{check\+Permissions\+And\+Start\+Service}} ()
+\begin{DoxyCompactList}\small\item\em Verifica si todos los permisos necesarios (Ubicación, Bluetooth) están concedidos. Si no, solicita al usuario. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38}{check\+Permissions\+And\+Start\+Service()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}{start\+Tracking\+Service}} ()
+\begin{DoxyCompactList}\small\item\em Inicia el servicio de rastreo (\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{Sensor\+Tracking\+Service}) como un servicio en primer plano. Pasa el {\ttfamily sensor\+Id} al servicio para que pueda establecer su Document\+Reference en Firestore. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}{start\+Tracking\+Service()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2}{stop\+Tracking\+Service}} ()
+\begin{DoxyCompactList}\small\item\em Detiene el servicio de rastreo \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{Sensor\+Tracking\+Service} () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2}{stop\+Tracking\+Service()} -\/\texorpdfstring{$>$}{>} (). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f}{ubicacion\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra la ubicación actual del dispositivo. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235}{ultima\+Conexion\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra la hora de la última conexión/recepción de datos del sensor. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}{bateria\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra el porcentaje de batería del sensor. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a1acfbca4cc082c2725d576c583c295a9}{ozono\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra el nivel de ozono. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abd01f7b84f09174e057960d24ae1f143}{temperatura\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra la temperatura. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aec0b4f594c45986ea39e2efad8003678}{co2\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra la concentración de CO2. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a06d5645291ae87968ff1e394019d3240}{alerta\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra las alertas de mediciones fuera de rango. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab24e1a4750eb87f05b6be85ada1d2633}{incidencia\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra el estado de incidencias o de desconexión. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}{estado\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra el estado de conexión del sensor ("{}\+Conectado"{}/"{}\+Desconectado"{}). \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}{reportar\+Incidencia\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Botón o enlace para iniciar la actividad de reportar incidencia. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100}{nombre\+Sensor\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Muestra el código o nombre del sensor que se está rastreando. \end{DoxyCompactList}\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a58033396e2958de254b5cfaf4ee4df3b}{ver\+Graficas\+Text\+View}}
+\begin{DoxyCompactList}\small\item\em Botón para ir a la pantalla de gráficas de información. \end{DoxyCompactList}\item 
+Image\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}{img\+Signal}}
+\begin{DoxyCompactList}\small\item\em Icono para mostrar la intensidad de la señal (RSSI). \end{DoxyCompactList}\item 
+Progress\+Bar \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b}{co2\+Progress\+Bar}}
+\begin{DoxyCompactList}\small\item\em Barra de progreso visual para el nivel de CO2. \end{DoxyCompactList}\item 
+Progress\+Bar \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c}{ozono\+Progress\+Bar}}
+\begin{DoxyCompactList}\small\item\em Barra de progreso visual para el nivel de Ozono. \end{DoxyCompactList}\item 
+Progress\+Bar \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d}{temperatura\+Progress\+Bar}}
+\begin{DoxyCompactList}\small\item\em Barra de progreso visual para el nivel de Temperatura. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}} \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}{data\+Holder}}
+\begin{DoxyCompactList}\small\item\em Instancia Singleton para acceder a los datos observados (Live\+Data). \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}{sensor\+Id}}
+\begin{DoxyCompactList}\small\item\em Código único del sensor que se está monitorizando. \end{DoxyCompactList}\item 
+final Activity\+Result\+Launcher$<$ Intent $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abc2d4d4182e104a61111a0bbe873658b}{reportar\+Incidencia\+Launcher}}
+\begin{DoxyCompactList}\small\item\em Lanzador de actividad para gestionar el resultado del reporte de incidencias. \end{DoxyCompactList}\item 
+final Activity\+Result\+Launcher$<$ String\mbox{[}$\,$\mbox{]}$>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a7d3405f571cc28014679435636a970fc}{request\+Permission\+Launcher}}
+\begin{DoxyCompactList}\small\item\em Launcher para solicitar múltiples permisos de la aplicación. Si los permisos se conceden (específicamente ACCESS\+\_\+\+FINE\+\_\+\+LOCATION), inicia el servicio de rastreo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Actividad principal que muestra la interfaz de usuario con los datos del sensor en tiempo real. 
+
+Esta clase actúa como el "{}\+Dashboard"{} principal de la aplicación. Su arquitectura se basa en el patrón Observer a través de la clase Singleton \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}.
+
+{\bfseries{Funcionalidades principales\+:}}
+\begin{DoxyEnumerate}
+\item {\bfseries{Visualización de Datos\+:}} Muestra CO2, Ozono, Temperatura, Batería y Ubicación actualizándose automáticamente.
+\item {\bfseries{Gestión de Servicios\+:}} Inicia y detiene el \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{Sensor\+Tracking\+Service} (Foreground Service).
+\item {\bfseries{Feedback Visual\+:}} Cambia el color de las barras de progreso según umbrales de seguridad definidos.
+\item {\bfseries{Gestión de Incidencias\+:}} Permite reportar problemas de conexión o hardware.
+\end{DoxyEnumerate}
+
+\begin{DoxyAuthor}{Author}
+Sandra (UI, Lógica de visualización y alertas -\/ 11/11/2025) 
+
+Rocio (Conexión con base de datos y lógica de servicio -\/ 19/11/2025) 
+\end{DoxyAuthor}
+\begin{DoxySeeAlso}{See also}
+\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{Sensor\+Tracking\+Service} 
+
+\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder} 
+\end{DoxySeeAlso}
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00053}{53}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!checkPermissionsAndStartService@{checkPermissionsAndStartService}}
+\index{checkPermissionsAndStartService@{checkPermissionsAndStartService}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{checkPermissionsAndStartService()}{checkPermissionsAndStartService()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+check\+Permissions\+And\+Start\+Service (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Verifica si todos los permisos necesarios (Ubicación, Bluetooth) están concedidos. Si no, solicita al usuario. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8bb38b7d40d97ef4892d4a02aa6a1e38}{check\+Permissions\+And\+Start\+Service()} -\/\texorpdfstring{$>$}{>} (). 
+
+Si faltan permisos, utiliza \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a7d3405f571cc28014679435636a970fc}{request\+Permission\+Launcher} para solicitarlos. Si están concedidos, llama inmediatamente a \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}{start\+Tracking\+Service}. 
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00391}{391}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8d1e80a1b6b857e96a12e1d73419817e}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!onCreate@{onCreate}}
+\index{onCreate@{onCreate}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{onCreate()}{onCreate()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a8d1e80a1b6b857e96a12e1d73419817e} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+on\+Create (\begin{DoxyParamCaption}\item[{Bundle}]{saved\+Instance\+State}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Inicialización de la actividad. 
+
+
+\begin{DoxyEnumerate}
+\item Vincula todas las vistas del layout.
+\item Recupera el SENSOR\+\_\+\+CODE del Intent.
+\item Configura los listeners de los botones (Cerrar sesión, Reportar, Ver Gráficas).
+\item Inicializa los observadores de datos.
+\item Verifica permisos e inicia el servicio.
+\end{DoxyEnumerate}
+
+
+\begin{DoxyParams}{Parameters}
+{\em saved\+Instance\+State} & Estado guardado de la aplicación. \\
+\hline
+\end{DoxyParams}
+Listener para el botón de cerrar sesión. Detiene el servicio de rastreo y navega de vuelta a la actividad principal.
+
+Listener para el botón de reportar incidencia. Inicia \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity}{Envio\+Incidencias\+Activity}, pasando los datos de contexto (sensor, ubicación, última conexión).
+
+Listener para el botón "{}\+Saber más..."{} (gráficas). Abre la actividad \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{Informacion\+Activity}.
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00153}{153}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a2fc9953ddaccc2190e5e20be6bbd3932}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!setupObservers@{setupObservers}}
+\index{setupObservers@{setupObservers}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{setupObservers()}{setupObservers()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a2fc9953ddaccc2190e5e20be6bbd3932} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+setup\+Observers (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Configura los observadores Live\+Data para actualizar la UI en tiempo real. 
+
+() -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a2fc9953ddaccc2190e5e20be6bbd3932}{setup\+Observers()} -\/\texorpdfstring{$>$}{>} ()
+
+Define la lógica de colores y umbrales para los indicadores visuales\+:
+\begin{DoxyItemize}
+\item {\bfseries{Batería\+:}} Rojo si \texorpdfstring{$<$}{<}= 15\%.
+\item {\bfseries{Ozono (ppm)\+:}}
+\item Verde\+: \texorpdfstring{$<$}{<} 0.\+6
+\item Naranja\+: 0.\+6 -\/ 0.\+9
+\item Rojo\+: \texorpdfstring{$>$}{>}= 0.\+9
+\item {\bfseries{Temperatura (ºC)\+:}}
+\item Azul\+: \texorpdfstring{$<$}{<}= 20
+\item Naranja\+: 20 -\/ 28
+\item Rojo\+: \texorpdfstring{$>$}{>} 28
+\item {\bfseries{CO2 (ppm)\+:}}
+\item Verde\+: \texorpdfstring{$<$}{<} 800
+\item Naranja\+: 800 -\/ 1200
+\item Rojo\+: \texorpdfstring{$>$}{>}= 1200
+\item {\bfseries{RSSI\+:}} Actualiza el icono de barras según la potencia (d\+Bm). 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00268}{268}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!startTrackingService@{startTrackingService}}
+\index{startTrackingService@{startTrackingService}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{startTrackingService()}{startTrackingService()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+start\+Tracking\+Service (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Inicia el servicio de rastreo (\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{Sensor\+Tracking\+Service}) como un servicio en primer plano. Pasa el {\ttfamily sensor\+Id} al servicio para que pueda establecer su Document\+Reference en Firestore. () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a828addef0fed5bc5f6754f42d4f7c097}{start\+Tracking\+Service()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00420}{420}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!stopTrackingService@{stopTrackingService}}
+\index{stopTrackingService@{stopTrackingService}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{stopTrackingService()}{stopTrackingService()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2} 
+void com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+stop\+Tracking\+Service (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Detiene el servicio de rastreo \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sensor_tracking_service}{Sensor\+Tracking\+Service} () -\/\texorpdfstring{$>$}{>} \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abca5dece64e2b83075ac28627658f6d2}{stop\+Tracking\+Service()} -\/\texorpdfstring{$>$}{>} (). 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00434}{434}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a06d5645291ae87968ff1e394019d3240}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!alertaTextView@{alertaTextView}}
+\index{alertaTextView@{alertaTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{alertaTextView}{alertaTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a06d5645291ae87968ff1e394019d3240} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+alerta\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra las alertas de mediciones fuera de rango. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00068}{68}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!bateriaTextView@{bateriaTextView}}
+\index{bateriaTextView@{bateriaTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{bateriaTextView}{bateriaTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a548c0cd32ec7534a6174d3414faee1fe} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+bateria\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra el porcentaje de batería del sensor. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00060}{60}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!co2ProgressBar@{co2ProgressBar}}
+\index{co2ProgressBar@{co2ProgressBar}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{co2ProgressBar}{co2ProgressBar}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a84ea0d4a0fc32a6df279730675130f9b} 
+Progress\+Bar com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+co2\+Progress\+Bar\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Barra de progreso visual para el nivel de CO2. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00084}{84}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aec0b4f594c45986ea39e2efad8003678}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!co2TextView@{co2TextView}}
+\index{co2TextView@{co2TextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{co2TextView}{co2TextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aec0b4f594c45986ea39e2efad8003678} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+co2\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra la concentración de CO2. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00066}{66}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!dataHolder@{dataHolder}}
+\index{dataHolder@{dataHolder}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{dataHolder}{dataHolder}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a703e8b9a6614b39f0548cfb4b0d1aa4f} 
+\mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_tracking_data_holder}{Tracking\+Data\+Holder}} com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+data\+Holder\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Instancia Singleton para acceder a los datos observados (Live\+Data). 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00091}{91}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!estadoTextView@{estadoTextView}}
+\index{estadoTextView@{estadoTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{estadoTextView}{estadoTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a017711ddfadb765705e6c9cb17d687c7} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+estado\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra el estado de conexión del sensor ("{}\+Conectado"{}/"{}\+Desconectado"{}). 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00072}{72}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!imgSignal@{imgSignal}}
+\index{imgSignal@{imgSignal}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{imgSignal}{imgSignal}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a32e4bd93ebd9043e8964a2276be1f552} 
+Image\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+img\+Signal\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Icono para mostrar la intensidad de la señal (RSSI). 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00080}{80}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab24e1a4750eb87f05b6be85ada1d2633}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!incidenciaTextView@{incidenciaTextView}}
+\index{incidenciaTextView@{incidenciaTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{incidenciaTextView}{incidenciaTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab24e1a4750eb87f05b6be85ada1d2633} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+incidencia\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra el estado de incidencias o de desconexión. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00070}{70}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!nombreSensorTextView@{nombreSensorTextView}}
+\index{nombreSensorTextView@{nombreSensorTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{nombreSensorTextView}{nombreSensorTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a0d97b1601fcfd6509275d7fbd97db100} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+nombre\+Sensor\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra el código o nombre del sensor que se está rastreando. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00076}{76}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!ozonoProgressBar@{ozonoProgressBar}}
+\index{ozonoProgressBar@{ozonoProgressBar}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{ozonoProgressBar}{ozonoProgressBar}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac8d47772dfae04c85ee0e265f9862f3c} 
+Progress\+Bar com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+ozono\+Progress\+Bar\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Barra de progreso visual para el nivel de Ozono. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00086}{86}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a1acfbca4cc082c2725d576c583c295a9}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!ozonoTextView@{ozonoTextView}}
+\index{ozonoTextView@{ozonoTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{ozonoTextView}{ozonoTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a1acfbca4cc082c2725d576c583c295a9} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+ozono\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra el nivel de ozono. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00062}{62}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abc2d4d4182e104a61111a0bbe873658b}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!reportarIncidenciaLauncher@{reportarIncidenciaLauncher}}
+\index{reportarIncidenciaLauncher@{reportarIncidenciaLauncher}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{reportarIncidenciaLauncher}{reportarIncidenciaLauncher}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abc2d4d4182e104a61111a0bbe873658b} 
+final Activity\+Result\+Launcher$<$Intent$>$ com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+reportar\+Incidencia\+Launcher\hspace{0.3cm}{\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ registerForActivityResult(}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ ActivityResultContracts.StartActivityForResult(),}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ result\ -\/>\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (result.getResultCode()\ ==\ Activity.RESULT\_OK)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setText(\textcolor{stringliteral}{"{}Incidencia\ reportada"{}});}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setTextColor(Color.LTGRAY);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setClickable(false);}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reportarIncidenciaTextView.setEnabled(false);}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Incidencia\ registrada\ correctamente"{}},\ Toast.LENGTH\_SHORT).show();}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ )}
+
+\end{DoxyCode}
+
+
+Lanzador de actividad para gestionar el resultado del reporte de incidencias. 
+
+Registra un callback para la actividad de envío de incidencias (\doxylink{classcom_1_1example_1_1breathe__tracking_1_1_envio_incidencias_activity}{Envio\+Incidencias\+Activity}). Escucha el código de resultado (result\+Code) al finalizar dicha actividad.
+
+Si el resultado es Activity.\+RESULT\+\_\+\+OK\+:
+\begin{DoxyItemize}
+\item Actualiza el texto del botón a "{}\+Incidencia reportada"{}.
+\item Cambia el color del texto a gris para indicar visualmente que está deshabilitado.
+\item Desactiva la interacción (set\+Clickable(false) y set\+Enabled(false)) para prevenir envíos duplicados.
+\item Muestra un mensaje Toast de confirmación al usuario. 
+\end{DoxyItemize}
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00108}{108}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!reportarIncidenciaTextView@{reportarIncidenciaTextView}}
+\index{reportarIncidenciaTextView@{reportarIncidenciaTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{reportarIncidenciaTextView}{reportarIncidenciaTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a94d59e65412efbe5035e218b892ea893} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+reportar\+Incidencia\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Botón o enlace para iniciar la actividad de reportar incidencia. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00074}{74}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a7d3405f571cc28014679435636a970fc}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!requestPermissionLauncher@{requestPermissionLauncher}}
+\index{requestPermissionLauncher@{requestPermissionLauncher}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{requestPermissionLauncher}{requestPermissionLauncher}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a7d3405f571cc28014679435636a970fc} 
+final Activity\+Result\+Launcher$<$String\mbox{[}$\,$\mbox{]}$>$ com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+request\+Permission\+Launcher\hspace{0.3cm}{\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ registerForActivityResult(}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ ActivityResultContracts.RequestMultiplePermissions(),}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ permissions\ -\/>\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (Boolean.TRUE.equals(permissions.get(Manifest.permission.ACCESS\_FINE\_LOCATION)))\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ startTrackingService();}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Toast.makeText(this,\ \textcolor{stringliteral}{"{}Permisos\ necesarios\ denegados"{}},\ Toast.LENGTH\_LONG).show();}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \})}
+
+\end{DoxyCode}
+
+
+Launcher para solicitar múltiples permisos de la aplicación. Si los permisos se conceden (específicamente ACCESS\+\_\+\+FINE\+\_\+\+LOCATION), inicia el servicio de rastreo. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00129}{129}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!sensorId@{sensorId}}
+\index{sensorId@{sensorId}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{sensorId}{sensorId}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_aac82a5fae923d86dcbb772a72c6546d4} 
+String com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+sensor\+Id\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Código único del sensor que se está monitorizando. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00093}{93}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!temperaturaProgressBar@{temperaturaProgressBar}}
+\index{temperaturaProgressBar@{temperaturaProgressBar}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{temperaturaProgressBar}{temperaturaProgressBar}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a59b00d55623ea9e9d43392365bfcea0d} 
+Progress\+Bar com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+temperatura\+Progress\+Bar\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Barra de progreso visual para el nivel de Temperatura. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00088}{88}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abd01f7b84f09174e057960d24ae1f143}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!temperaturaTextView@{temperaturaTextView}}
+\index{temperaturaTextView@{temperaturaTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{temperaturaTextView}{temperaturaTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_abd01f7b84f09174e057960d24ae1f143} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+temperatura\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra la temperatura. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00064}{64}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!ubicacionTextView@{ubicacionTextView}}
+\index{ubicacionTextView@{ubicacionTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{ubicacionTextView}{ubicacionTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ac1e3fcdf9cc5c99301d76dfe1e566f2f} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+ubicacion\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra la ubicación actual del dispositivo. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00056}{56}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!ultimaConexionTextView@{ultimaConexionTextView}}
+\index{ultimaConexionTextView@{ultimaConexionTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{ultimaConexionTextView}{ultimaConexionTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_ab048e290f49b0493e7314388e610b235} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+ultima\+Conexion\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Muestra la hora de la última conexión/recepción de datos del sensor. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00058}{58}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a58033396e2958de254b5cfaf4ee4df3b}\index{com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}!verGraficasTextView@{verGraficasTextView}}
+\index{verGraficasTextView@{verGraficasTextView}!com.example.breathe\_tracking.SesionSensorActivity@{com.example.breathe\_tracking.SesionSensorActivity}}
+\doxysubsubsection{\texorpdfstring{verGraficasTextView}{verGraficasTextView}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_sesion_sensor_activity_a58033396e2958de254b5cfaf4ee4df3b} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Sesion\+Sensor\+Activity.\+ver\+Graficas\+Text\+View\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Botón para ir a la pantalla de gráficas de información. 
+
+
+
+Definition at line \mbox{\hyperlink{_sesion_sensor_activity_8java_source_l00078}{78}} of file \mbox{\hyperlink{_sesion_sensor_activity_8java_source}{Sesion\+Sensor\+Activity.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_sesion_sensor_activity_8java}{Sesion\+Sensor\+Activity.\+java}}\end{DoxyCompactItemize}

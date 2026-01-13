@@ -1,8 +1,8 @@
 /**
  * @file Utilidades.java
- * @brief Clase de utilidades estáticas para manipulación y conversión de datos.
+ * @brief Clase que proporciona métodos estáticos para la manipulación y conversión entre diferentes tipos de datos,
+ * especialmente para la conversión entre cadenas, arrays de bytes, enteros, longs y UUIDs.
  * @package com.example.breathe_tracking
- * @copyright Copyright © 2025
  */
 package com.example.breathe_tracking;
 
@@ -10,13 +10,12 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 
+// -----------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------
 /**
  * @class Utilidades
- * @brief Colección de métodos estáticos para conversiones de bajo nivel.
- *
- * Proporciona herramientas para transformar tipos de datos primitivos (int, long)
- * y objetos complejos (UUID, String) en arrays de bytes y viceversa.
- * Útil para la comunicación con dispositivos BLE o protocolos binarios.
+ * @brief Colección de métodos utilitarios estáticos para conversiones de tipos de bajo nivel.
+ * Copyrigth © 2025
  */
 public class Utilidades {
 
@@ -35,14 +34,13 @@ public class Utilidades {
 
     // -------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------
-
     /**
-     * @brief Genera un UUID a partir de una cadena de exactamente 16 caracteres
+     * @brief Convierte una cadena de 16 caracteres en un objeto UUID.
      * (uuid:String) -> stringToUUID() -> UUID
      *
      * @details
-     * La cadena se divide en dos partes de 8 caracteres. Cada parte se convierte
-     * en un valor 'long' (8 bytes) para formar los bits más y menos significativos del UUID.
+     *      * La cadena se divide en dos partes de 8 caracteres. Cada parte se convierte
+     *      * en un valor 'long' (8 bytes) para formar los bits más y menos significativos del UUID.
      *
      * @param uuid La cadena de 16 caracteres a convertir.
      * @return El objeto UUID resultante.

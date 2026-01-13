@@ -1,0 +1,278 @@
+\doxysection{com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity Class Reference}
+\hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}{}\label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+
+
+Muestra el gráfico de datos históricos (CO2, O3, etc.) leídos de Firebase Firestore.  
+
+
+
+
+Inherits App\+Compat\+Activity.
+
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ac7d809bf8aee24e11f2a483fd20044ce}{on\+Create}} (Bundle saved\+Instance\+State)
+\begin{DoxyCompactList}\small\item\em Método de creación de la actividad. Inicializa las vistas, configura el Spinner de selección de gas y lanza la carga de datos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a9492beef6cafafca6335d80bcf464d82}{cargar\+Datos\+De\+Firebase}} ()
+\begin{DoxyCompactList}\small\item\em Consulta Firestore para obtener los arrays de datos históricos. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1e5e089018ae71c4b0a224c3f70f9a99}{configurar\+Estilo\+Grafico}} ()
+\begin{DoxyCompactList}\small\item\em Configuración general de estilo para el componente Line\+Chart. Habilita zoom, touch y configura ejes básicos. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ae17403258dbc108552eb03aba0714e55}{configurar\+Eje\+XDemo}} ()
+\begin{DoxyCompactList}\small\item\em Configura el Eje X para mostrar específicamente 24 horas (00\+:00 -\/ 23\+:00). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a4bda0dfff982c777cf0b88de7cc579c1}{cargar\+Datos\+Gas}} (int position)
+\begin{DoxyCompactList}\small\item\em Carga y dibuja los datos del gas seleccionado en el Spinner. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ad4fa7b96fc28c137eaf2975d8e6cd79e}{evaluar\+Exposicion}} (List$<$ Entry $>$ datos, float limite\+Seguro, float limite\+Peligro)
+\begin{DoxyCompactList}\small\item\em Evalúa los datos mostrados y actualiza el icono y texto de estado. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Firebase\+Firestore \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_af3116d902f8be151c98fbb0555d7a7d6}{db}}
+\item 
+List$<$ Gas\+Data $>$ \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historical\+Data}} = new Array\+List$<$$>$()
+\item 
+Line\+Chart \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}{chart}}
+\item 
+Spinner \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}{spinner}}
+\item 
+Image\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}{img\+Carita}}
+\item 
+Image\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a2059672c52836ea2e80400024a15c416}{img\+Back\+Arrow}}
+\item 
+Text\+View \mbox{\hyperlink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}{txt\+Explicacion}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Muestra el gráfico de datos históricos (CO2, O3, etc.) leídos de Firebase Firestore. 
+
+Esta actividad gestiona la visualización de la evolución de contaminantes en un periodo de 24 horas. Su funcionamiento se divide en\+:
+\begin{DoxyEnumerate}
+\item Conexión a Firebase Firestore para recuperar la colección \textquotesingle{}datos\+\_\+grafico\textquotesingle{}.
+\item Procesamiento de arrays de datos (un array por contaminante) en una lista de objetos Gas\+Data.
+\item Renderizado de un gráfico de líneas interactivo usando la librería MPAndroid\+Chart.
+\item Evaluación dinámica del riesgo (lógica de "{}semáforo"{} y carita) según los umbrales de cada gas.
+\end{DoxyEnumerate}
+
+\begin{DoxyAuthor}{Author}
+Sandra (Creación actividad y XML) 
+
+Rocio (Conexión con Base de Datos y lógica gráfica) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+27/11/2024 (Inicio) 
+
+06/12/2024 (Integración Firebase) 
+\end{DoxyDate}
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00126}{126}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a9492beef6cafafca6335d80bcf464d82}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!cargarDatosDeFirebase@{cargarDatosDeFirebase}}
+\index{cargarDatosDeFirebase@{cargarDatosDeFirebase}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{cargarDatosDeFirebase()}{cargarDatosDeFirebase()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a9492beef6cafafca6335d80bcf464d82} 
+void com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+cargar\+Datos\+De\+Firebase (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Consulta Firestore para obtener los arrays de datos históricos. 
+
+Lee la colección \textquotesingle{}datos\+\_\+grafico\textquotesingle{}, donde cada documento representa un gas y contiene un array \textquotesingle{}valor\textquotesingle{} con 24 mediciones. Transforma estos arrays horizontales en una lista vertical de objetos Gas\+Data. 
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00199}{199}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a4bda0dfff982c777cf0b88de7cc579c1}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!cargarDatosGas@{cargarDatosGas}}
+\index{cargarDatosGas@{cargarDatosGas}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{cargarDatosGas()}{cargarDatosGas()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a4bda0dfff982c777cf0b88de7cc579c1} 
+void com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+cargar\+Datos\+Gas (\begin{DoxyParamCaption}\item[{int}]{position}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Carga y dibuja los datos del gas seleccionado en el Spinner. 
+
+Este método se encarga de\+:
+\begin{DoxyItemize}
+\item Extraer los valores correspondientes de {\ttfamily \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}{historical\+Data}}.
+\item Definir colores, unidades y límites de seguridad específicos para cada gas.
+\item Dibujar las líneas límite (Limit\+Lines) en el gráfico.
+\item Llamar a \doxylink{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ad4fa7b96fc28c137eaf2975d8e6cd79e}{evaluar\+Exposicion} para actualizar la interfaz.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em position} & Índice del gas seleccionado en el Spinner (0=O3, 1=CO, etc). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00324}{324}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ae17403258dbc108552eb03aba0714e55}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!configurarEjeXDemo@{configurarEjeXDemo}}
+\index{configurarEjeXDemo@{configurarEjeXDemo}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{configurarEjeXDemo()}{configurarEjeXDemo()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ae17403258dbc108552eb03aba0714e55} 
+void com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+configurar\+Eje\+XDemo (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Configura el Eje X para mostrar específicamente 24 horas (00\+:00 -\/ 23\+:00). 
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00297}{297}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1e5e089018ae71c4b0a224c3f70f9a99}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!configurarEstiloGrafico@{configurarEstiloGrafico}}
+\index{configurarEstiloGrafico@{configurarEstiloGrafico}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{configurarEstiloGrafico()}{configurarEstiloGrafico()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1e5e089018ae71c4b0a224c3f70f9a99} 
+void com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+configurar\+Estilo\+Grafico (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Configuración general de estilo para el componente Line\+Chart. Habilita zoom, touch y configura ejes básicos. 
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00275}{275}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ad4fa7b96fc28c137eaf2975d8e6cd79e}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!evaluarExposicion@{evaluarExposicion}}
+\index{evaluarExposicion@{evaluarExposicion}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{evaluarExposicion()}{evaluarExposicion()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ad4fa7b96fc28c137eaf2975d8e6cd79e} 
+void com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+evaluar\+Exposicion (\begin{DoxyParamCaption}\item[{List$<$ Entry $>$}]{datos}{, }\item[{float}]{limite\+Seguro}{, }\item[{float}]{limite\+Peligro}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Evalúa los datos mostrados y actualiza el icono y texto de estado. 
+
+Lógica de clasificación\+:
+\begin{DoxyItemize}
+\item {\bfseries{Crítico (Face Sad)\+:}} 4 o más puntos superan el límite de peligro.
+\item {\bfseries{Advertencia (Face Neutral)\+:}} Al menos 1 punto supera el límite de peligro (pico aislado).
+\item {\bfseries{Alerta Moderada (Face Neutral)\+:}} 10 o más puntos superan el límite seguro.
+\item {\bfseries{Aceptable (Face Happy)\+:}} Algunos puntos (1-\/9) superan el límite seguro.
+\item {\bfseries{Óptimo (Face Happy)\+:}} Todos los valores están por debajo del límite seguro.
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em datos} & Lista de entradas (puntos) del gráfico actual. \\
+\hline
+{\em limite\+Seguro} & Valor umbral de seguridad. \\
+\hline
+{\em limite\+Peligro} & Valor umbral de peligro. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00454}{454}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ac7d809bf8aee24e11f2a483fd20044ce}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!onCreate@{onCreate}}
+\index{onCreate@{onCreate}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{onCreate()}{onCreate()}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_ac7d809bf8aee24e11f2a483fd20044ce} 
+void com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+on\+Create (\begin{DoxyParamCaption}\item[{Bundle}]{saved\+Instance\+State}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Método de creación de la actividad. Inicializa las vistas, configura el Spinner de selección de gas y lanza la carga de datos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em saved\+Instance\+State} & Estado guardado de la instancia. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00148}{148}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!chart@{chart}}
+\index{chart@{chart}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{chart}{chart}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a6bf30772bb6c4750d2602899a890357a} 
+Line\+Chart com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+chart\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00135}{135}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_af3116d902f8be151c98fbb0555d7a7d6}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!db@{db}}
+\index{db@{db}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{db}{db}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_af3116d902f8be151c98fbb0555d7a7d6} 
+Firebase\+Firestore com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+db\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00129}{129}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!historicalData@{historicalData}}
+\index{historicalData@{historicalData}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{historicalData}{historicalData}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a300f4148a89caee4d881da97c351610e} 
+List$<$Gas\+Data$>$ com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+historical\+Data = new Array\+List$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00132}{132}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a2059672c52836ea2e80400024a15c416}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!imgBackArrow@{imgBackArrow}}
+\index{imgBackArrow@{imgBackArrow}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{imgBackArrow}{imgBackArrow}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a2059672c52836ea2e80400024a15c416} 
+Image\+View com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+img\+Back\+Arrow\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00138}{138}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!imgCarita@{imgCarita}}
+\index{imgCarita@{imgCarita}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{imgCarita}{imgCarita}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a356b1ccad4357540f9b2aa43b6997954} 
+Image\+View com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+img\+Carita\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00137}{137}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!spinner@{spinner}}
+\index{spinner@{spinner}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{spinner}{spinner}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a061f427f2e29734da0af32d4d1e53e3d} 
+Spinner com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+spinner\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00136}{136}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+\Hypertarget{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769}\index{com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}!txtExplicacion@{txtExplicacion}}
+\index{txtExplicacion@{txtExplicacion}!com.example.breathe\_tracking.InformacionActivity@{com.example.breathe\_tracking.InformacionActivity}}
+\doxysubsubsection{\texorpdfstring{txtExplicacion}{txtExplicacion}}
+{\footnotesize\ttfamily \label{classcom_1_1example_1_1breathe__tracking_1_1_informacion_activity_a1d5529f302e98279cc6f56081c50a769} 
+Text\+View com.\+example.\+breathe\+\_\+tracking.\+Informacion\+Activity.\+txt\+Explicacion\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Definition at line \mbox{\hyperlink{_informacion_activity_8java_source_l00139}{139}} of file \mbox{\hyperlink{_informacion_activity_8java_source}{Informacion\+Activity.\+java}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/app/src/main/java/com/example/breathe\+\_\+tracking/\mbox{\hyperlink{_informacion_activity_8java}{Informacion\+Activity.\+java}}\end{DoxyCompactItemize}
