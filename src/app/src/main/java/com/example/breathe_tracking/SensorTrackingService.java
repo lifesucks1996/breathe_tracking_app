@@ -694,28 +694,37 @@ public class SensorTrackingService extends Service implements SensorEventListene
     public static boolean esBateriaCritica(int bateria) {
         return bateria <= 15;
     }
+    /**
+     * @brief Maneja los eventos de los sensores de hardware del dispositivo.
+     * @details Calcula los pasos y la distancia recorrida desde el inicio de la sesión.
+     * (event:SensorEvent) -> onSensorChanged() -> ()
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-            float totalStepsSinceReboot = event.values[0];
+            // El sensor devuelve los pasos totales desde que se encendió el móvil
+            float pasosTotalesDispositivo = event.values[0];
 
+            // Calibración: Al recibir el primer dato, lo guardamos como referencia "cero"
             if (initialSteps == -1) {
-                initialSteps = totalStepsSinceReboot; // Calibración inicial
+                initialSteps = pasosTotalesDispositivo;
+                Log.d(ETIQUETA_LOG, "Sensor de pasos calibrado. Inicio en: " + initialSteps);
             }
 
-            int currentSteps = (int) (totalStepsSinceReboot - initialSteps);
-            // Zancada promedio estimada: 0.72 metros
-            float estimatedDistance = currentSteps * 0.72f;
+            // Calculamos los pasos reales de esta sesión
+            int pasosSesion = (int) (pasosTotalesDispositivo - initialSteps);
 
-            // Publicar datos al DataHolder (Debes añadir estos LiveData en TrackingDataHolder)
-            dataHolder.pasosData.postValue(currentSteps);
-            dataHolder.distanciaData.postValue(estimatedDistance);
+            // Cálculo de distancia: zancada promedio de 0.72 metros
+            float distanciaMetros = pasosSesion * 0.72f;
 
-            // Opcional: Subir a Firebase junto con el resto de datos
-            // subirDatosAFirebase(..., currentSteps, estimatedDistance);
+            // Actualizamos el DataHolder para que la UI se entere
+            // Nota: Asegúrate de tener pasosData y distanciaData definidos en TrackingDataHolder
+            dataHolder.pasosData.postValue(pasosSesion);
+            dataHolder.distanciaData.postValue(distanciaMetros);
+
+            Log.d(ETIQUETA_LOG, "Actividad actualizada - Pasos: " + pasosSesion + " | Metros: " + distanciaMetros);
         }
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 

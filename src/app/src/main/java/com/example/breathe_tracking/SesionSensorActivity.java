@@ -424,16 +424,19 @@ public class SesionSensorActivity extends AppCompatActivity {
     }
 
     private void setupActivityObservers() {
-        // Observamos los pasos y la distancia calculada en el servicio
+        // Observar los pasos (Solo el número)
         dataHolder.pasosData.observe(this, pasos -> {
-            tvPasos.setText("Pasos: " + pasos);
+            tvPasos.setText(String.valueOf(pasos));
         });
 
-        dataHolder.distanciaData.observe(this, distancia -> {
-            if (distancia >= 1000) {
-                tvDistancia.setText(String.format(Locale.getDefault(), "Distancia: %.2f km", distancia / 1000f));
+        // Observar la distancia (Solo el valor con su unidad)
+        dataHolder.distanciaData.observe(this, metros -> {
+            if (metros < 1000) {
+                // Ejemplo: "125 m"
+                tvDistancia.setText(String.format(Locale.getDefault(), "%.0f m", metros));
             } else {
-                tvDistancia.setText(String.format(Locale.getDefault(), "Distancia: %.0f m", distancia));
+                // Ejemplo: "1.25 km"
+                tvDistancia.setText(String.format(Locale.getDefault(), "%.2f km", metros / 1000f));
             }
         });
     }
