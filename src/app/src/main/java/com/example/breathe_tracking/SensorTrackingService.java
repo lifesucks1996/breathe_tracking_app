@@ -55,6 +55,12 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.Map;
 
+// Imports de recorrido - distancia
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
 /**
  * @class SensorTrackingService
  * @brief Servicio de Android que se ejecuta en primer plano para monitorizar un sensor BLE ("rocio").
@@ -92,7 +98,7 @@ import java.util.Map;
  * @author Sandra (Ubicación, LiveData, Alertas, Watchdog, Firebase - 27/10, 29/10, 04/11, 06/11, 17/11)
  */
 
-public class SensorTrackingService extends Service {
+public class SensorTrackingService extends Service implements SensorEventListener{
 
     // --- Constantes de Configuración ---
     /** @brief Etiqueta utilizada para los logs de Android. */
@@ -157,6 +163,10 @@ public class SensorTrackingService extends Service {
     private String sensorCode;
     /** @brief Referencia al documento del sensor en Firestore. */
     private DocumentReference sensorDocRef;
+
+    private SensorManager sensorManager;
+    private Sensor stepSensor;
+    private float initialSteps = -1; // Punto de referencia al iniciar el servicio
 
 
     // --- onCreate --------------------------------------------------------------------------------------
@@ -225,6 +235,14 @@ public class SensorTrackingService extends Service {
 
 
         };
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        stepSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
+        if (stepSensor != null) {
+            sensorManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_UI);
+        }
+
     }
     // --- Fin onCreate ----------------------------------------------------------------------------------
 
@@ -293,21 +311,6 @@ public class SensorTrackingService extends Service {
     // --- Fin onStarCommand -----------------------------------------------------------------------------
 
 
-    //--- onDestory ------------------------------------------------------------------------------------
-    // Se llama cuando la Activity (SesionSensorActivity) se destruye
-    /**
-     * @brief Se llama al destruir el servicio.
-     * Libera recursos: detiene las actualizaciones de ubicación, el escaneo BLE y el watchdog.
-     * () -> onDestroy() -> ()
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (fusedLocationClient != null) fusedLocationClient.removeLocationUpdates(locationCallback);
-        detenerEscaneoBeacon();
-        watchdogHandler.removeCallbacks(watchdogRunnable);
-    }
-    // --- Fin onDestroy -------------------------------------------------------------------------------
 
     /**
      * Metodos para recibir, filtrar y decodificar el  Beacon
@@ -484,7 +487,7 @@ public class SensorTrackingService extends Service {
             cancelAlertNotification(BATTERY_ALERT_ID);
         }
 
-        // Si no hay alertas ni incidencias mostramos: Sin alertas/incidencias
+        /* Si no hay alertas ni incidencias mostramos: Sin alertas/incidencias
         if (currentAlertMessages.isEmpty()) {
             dataHolder.alertData.postValue("Sin alertas");
         } else {
@@ -497,7 +500,7 @@ public class SensorTrackingService extends Service {
 
         if ("Conectado".equals(dataHolder.estadoData.getValue())) {
             dataHolder.incidenciaData.postValue("Sin incidencias");
-        }
+        }*/
     }
     // --- fin alertas sobre medidas ---------------------------------------------------------------------------------
 
@@ -691,5 +694,62 @@ public class SensorTrackingService extends Service {
     public static boolean esBateriaCritica(int bateria) {
         return bateria <= 15;
     }
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+            float totalStepsSinceReboot = event.values[0];
+
+            if (initialSteps == -1) {
+                initialSteps = totalStepsSinceReboot; // Calibración inicial
+            }
+
+            int currentSteps = (int) (totalStepsSinceReboot - initialSteps);
+            // Zancada promedio estimada: 0.72 metros
+            float estimatedDistance = currentSteps * 0.72f;
+
+            // Publicar datos al DataHolder (Debes añadir estos LiveData en TrackingDataHolder)
+            dataHolder.pasosData.postValue(currentSteps);
+            dataHolder.distanciaData.postValue(estimatedDistance);
+
+            // Opcional: Subir a Firebase junto con el resto de datos
+            // subirDatosAFirebase(..., currentSteps, estimatedDistance);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+
+    //--- onDestory ------------------------------------------------------------------------------------
+    // Se llama cuando la Activity (SesionSensorActivity) se destruye
+    /**
+     * @brief Se llama al destruir el servicio.
+     * Libera recursos: detiene las actualizaciones de ubicación, el escaneo BLE y el watchdog.
+     * () -> onDestroy() -> ()
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // 1. Detener actualizaciones de ubicación
+        if (fusedLocationClient != null) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
+
+        // 2. Detener escaneo Bluetooth
+        detenerEscaneoBeacon();
+
+        // 3. Detener Watchdog
+        watchdogHandler.removeCallbacks(watchdogRunnable);
+
+        // 4. NUEVO: Detener sensor de pasos para ahorrar batería
+        if (sensorManager != null) {
+            sensorManager.unregisterListener(this);
+        }
+
+        Log.d(ETIQUETA_LOG, "Servicio destruido y recursos liberados.");
+    }
+
+    // --- Fin onDestroy -------------------------------------------------------------------------------
 
 }

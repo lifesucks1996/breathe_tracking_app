@@ -75,4 +75,8 @@ public class TrackingDataHolder {
     public static TrackingDataHolder getInstance() {
         return instance;
     }
+
+    // En TrackingDataHolder.java
+    public MutableLiveData<Integer> pasosData = new MutableLiveData<>(0);
+    public MutableLiveData<Float> distanciaData = new MutableLiveData<>(0.0f);
 }

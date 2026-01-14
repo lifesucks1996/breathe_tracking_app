@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.hardware.SensorManager;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -117,6 +118,9 @@ public class SesionSensorActivity extends AppCompatActivity {
     /** @brief Listener para la resolución de incidencias. */
     private ListenerRegistration incidenciaListener;
 
+    // --- Lógica de pasos y metros ---
+    private TextView tvPasos, tvDistancia;
+
 
 
     /**
@@ -177,6 +181,11 @@ public class SesionSensorActivity extends AppCompatActivity {
 
         setupObservers();
         checkPermissionsAndStartService();
+
+        tvPasos = findViewById(R.id.textView_pasos);
+        tvDistancia = findViewById(R.id.textView_distancia);
+
+        setupActivityObservers(); // Observar los pasos desde el DataHolder
     }
 
     /**
@@ -364,6 +373,11 @@ public class SesionSensorActivity extends AppCompatActivity {
             requiredPermissions.add(Manifest.permission.POST_NOTIFICATIONS);
         }
 
+        // Permiso de actividad física
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            requiredPermissions.add(Manifest.permission.ACTIVITY_RECOGNITION);
+        }
+
         List<String> permissionsToRequest = new ArrayList<>();
         for (String permission : requiredPermissions) {
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
@@ -407,5 +421,20 @@ public class SesionSensorActivity extends AppCompatActivity {
         if (incidenciaListener != null) {
             incidenciaListener.remove();
         }
+    }
+
+    private void setupActivityObservers() {
+        // Observamos los pasos y la distancia calculada en el servicio
+        dataHolder.pasosData.observe(this, pasos -> {
+            tvPasos.setText("Pasos: " + pasos);
+        });
+
+        dataHolder.distanciaData.observe(this, distancia -> {
+            if (distancia >= 1000) {
+                tvDistancia.setText(String.format(Locale.getDefault(), "Distancia: %.2f km", distancia / 1000f));
+            } else {
+                tvDistancia.setText(String.format(Locale.getDefault(), "Distancia: %.0f m", distancia));
+            }
+        });
     }
 }
