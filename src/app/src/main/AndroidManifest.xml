@@ -26,6 +26,9 @@
     <!-- Permiso para Internet (mail) -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Permiso para Actividad (Pasos/Metros) -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
 
 
 
