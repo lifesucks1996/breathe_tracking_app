@@ -127,6 +127,17 @@
                 android:textColor="#333333"
                 android:textSize="16sp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/link_web"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:text="Ver mapa en la web"
+            android:textSize="18sp"
+            android:clickable="true"
+            android:focusable="true" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
