@@ -9,6 +9,8 @@ package com.example.breathe_tracking;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -159,6 +161,20 @@ public class InformacionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.informacion);
+
+        // 1. Buscar el TextView
+        TextView linkWeb = findViewById(R.id.link_web);
+
+        // 2. Dibujar la línea de subrayado (Underline)
+        linkWeb.setPaintFlags(linkWeb.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        // 3. Darle la funcionalidad de abrir el enlace al hacer clic
+        linkWeb.setOnClickListener(v -> {
+            String url = "https://nongrained-noninstinctively-loreta.ngrok-free.dev/src/users_map.html";
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
+        });
 
         // 1. Inicialización de Firebase y obtención del ID
         db = FirebaseFirestore.getInstance();

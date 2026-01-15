@@ -8,6 +8,8 @@
 package com.example.breathe_tracking;
 
 import android.content.Intent;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -79,6 +81,7 @@ public class IncidenciasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.incidencias);
 
+
         Intent intent = getIntent();
         if (intent != null) {
             sensorId = intent.getStringExtra("SENSOR_NAME");
@@ -100,6 +103,8 @@ public class IncidenciasActivity extends AppCompatActivity {
             newintent.putExtra("UBICACION", ubicacion);
             startActivity(newintent);
         });
+
+
 
         setupObserversLocales();
     }
